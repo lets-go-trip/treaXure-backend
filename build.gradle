@@ -7,11 +7,7 @@ plugins {
 group = 'com.trip'
 version = '0.0.1-SNAPSHOT'
 
-java {
-	toolchain {
-		languageVersion = JavaLanguageVersion.of(21)
-	}
-}
+sourceCompatibility = '17'
 
 configurations {
 	compileOnly {
@@ -32,6 +28,7 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+	testImplementation 'com.h2database:h2'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
