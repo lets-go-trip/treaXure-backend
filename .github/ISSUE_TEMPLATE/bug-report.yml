@@ -1,0 +1,36 @@
+name: Bug report
+description: Report a bug or unexpected behavior
+labels: [fix]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ⚠️ Please describe the bug clearly and provide steps to reproduce it if possible.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      placeholder: e.g. Timer doesn't reset properly after reaching delay
+    validations:
+      required: true
+
+  - type: textarea
+    id: todo
+    attributes:
+      label: Todo
+      placeholder: |
+        - [ ] Reproduce the bug
+        - [ ] Fix the issue
+        - [ ] Add test case
+        - [ ] Update related code
+    validations:
+      required: false
+
+  - type: textarea
+    id: etc
+    attributes:
+      label: ETC
+      description: Additional notes, error messages, or screenshots
+      placeholder: Logs, screenshots, or other useful info
