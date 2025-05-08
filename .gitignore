@@ -369,3 +369,6 @@ gradle-app.setting
 *.hprof
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,windows,linux,visualstudiocode,eclipse,intellij,java,git,maven,gradle,netbeans
+
+# Custom application properties
+application-local.yml

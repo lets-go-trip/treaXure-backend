@@ -1,2 +1,2 @@
-# Xplore-backend
-Xplore Backend 코드입니다.
+# Xplore-temp-backend
+서울 속 보물찾기

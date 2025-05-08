@@ -1,0 +1,40 @@
+# Spring Boot 기본 설정
+spring:
+  application:
+    name: xplore-backend
+  profiles:
+    active: local
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+# 데이터베이스 설정 예시 (H2 In-Memory Database)
+# datasource:
+#   url: jdbc:h2:mem:xplore;DB_CLOSE_DELAY=-1
+# jpa:
+#   database-platform: org.hibernate.dialect.H2Dialect
+#   hibernate:
+#     ddl-auto: update
+#   show-sql: true 
+
+# H2 Console (개발용 인메모리 DB 사용 시)
+#  h2:
+#    console:
+#      enabled: true
+#      path: /h2-console
+#  datasource:
+#    url: jdbc:h2:mem:testdb # H2 DB 사용 시
+#    driver-class-name: org.h2.Driver
+#    username: sa
+#    password:
+
+# MySQL 또는 다른 DB 사용 시 해당 설정 추가
+#  datasource:
+#    url: jdbc:mysql://localhost:3306/데이터베이스명?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8
+#    username: 유저명
+#    password: 패스워드
+#    driver-class-name: com.mysql.cj.jdbc.Driver 
