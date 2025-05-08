@@ -1,0 +1,12 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "XploreApplication",
+            "request": "launch",
+            "mainClass": "com.trip.xplore.XploreApplication",
+            "projectName": "xplore"
+        },
+        {}
+    ]
+}
