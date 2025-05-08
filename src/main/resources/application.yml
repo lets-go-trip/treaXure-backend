@@ -1,0 +1,16 @@
+# Spring Boot 기본 설정
+spring:
+  application:
+    name: xplore-backend
+
+# 데이터베이스 설정 예시 (H2 In-Memory Database)
+# datasource:
+#   url: jdbc:h2:mem:xplore;DB_CLOSE_DELAY=-1
+#   driver-class-name: org.h2.Driver
+#   username: sa
+#   password: password
+# jpa:
+#   database-platform: org.hibernate.dialect.H2Dialect
+#   hibernate:
+#     ddl-auto: update
+#   show-sql: true 
