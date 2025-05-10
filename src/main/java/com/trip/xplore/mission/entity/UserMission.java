@@ -36,7 +36,7 @@ public class UserMission {
     private String description;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "type", nullable = false, columnDefinition = "ENUM('VISIT','PHOTO','POSE') DEFAULT 'PHOTO'", comment = "미션 유형")
+    @Column(name = "type", nullable = false, columnDefinition = "ENUM('VISIT','board','POSE') DEFAULT 'board'", comment = "미션 유형")
     private MissionType type;
 
     @Column(name = "score", nullable = false, columnDefinition = "INT DEFAULT 10", comment = "미션 점수")

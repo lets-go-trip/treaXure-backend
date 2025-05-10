@@ -1,6 +1,6 @@
 package com.trip.treaxure.like.entity;
 
-import com.trip.treaxure.photo.entity.Board;
+import com.trip.treaxure.board.entity.Board;
 import com.trip.treaxure.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;

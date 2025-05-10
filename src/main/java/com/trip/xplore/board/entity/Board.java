@@ -1,4 +1,4 @@
-package com.trip.treaxure.photo.entity;
+package com.trip.treaxure.board.entity;
 
 import com.trip.treaxure.mission.entity.UserMission;
 import jakarta.persistence.*;
@@ -18,8 +18,8 @@ public class Board {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "photo_id", nullable = false, comment = "게시글 고유 ID")
-    private Integer photoId;
+    @Column(name = "board_id", nullable = false, comment = "게시글 고유 ID")
+    private Integer boardId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mission_id", nullable = false)
