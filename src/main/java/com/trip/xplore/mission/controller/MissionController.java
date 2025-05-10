@@ -1,7 +1,7 @@
-package com.trip.xplore.mission.controller;
+package com.trip.treaxure.mission.controller;
 
-import com.trip.xplore.mission.entity.Mission;
-import com.trip.xplore.mission.service.MissionService;
+import com.trip.treaxure.mission.entity.Mission;
+import com.trip.treaxure.mission.service.MissionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

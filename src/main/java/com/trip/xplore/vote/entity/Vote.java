@@ -1,4 +1,4 @@
-package com.trip.xplore.vote.entity;
+package com.trip.treaxure.vote.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

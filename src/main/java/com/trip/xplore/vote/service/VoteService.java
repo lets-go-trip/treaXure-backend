@@ -1,7 +1,7 @@
-package com.trip.xplore.vote.service;
+package com.trip.treaxure.vote.service;
 
-import com.trip.xplore.vote.entity.Vote;
-import com.trip.xplore.vote.repository.VoteRepository;
+import com.trip.treaxure.vote.entity.Vote;
+import com.trip.treaxure.vote.repository.VoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

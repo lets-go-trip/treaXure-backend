@@ -1,7 +1,7 @@
-package com.trip.xplore.user.controller;
+package com.trip.treaxure.user.controller;
 
-import com.trip.xplore.user.entity.User;
-import com.trip.xplore.user.service.UserService;
+import com.trip.treaxure.user.entity.User;
+import com.trip.treaxure.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

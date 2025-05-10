@@ -1,7 +1,7 @@
-package com.trip.xplore.like.service;
+package com.trip.treaxure.like.service;
 
-import com.trip.xplore.like.entity.Like;
-import com.trip.xplore.like.repository.LikeRepository;
+import com.trip.treaxure.like.entity.Like;
+import com.trip.treaxure.like.repository.LikeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

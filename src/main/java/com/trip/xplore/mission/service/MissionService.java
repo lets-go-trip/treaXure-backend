@@ -1,7 +1,7 @@
-package com.trip.xplore.mission.service;
+package com.trip.treaxure.mission.service;
 
-import com.trip.xplore.mission.entity.Mission;
-import com.trip.xplore.mission.repository.MissionRepository;
+import com.trip.treaxure.mission.entity.Mission;
+import com.trip.treaxure.mission.repository.MissionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

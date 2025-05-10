@@ -1,7 +1,7 @@
-package com.trip.xplore.user.repository;
+package com.trip.treaxure.user.repository;
 
-import com.trip.xplore.user.entity.User;
-import com.trip.xplore.user.entity.User.UserRole;
+import com.trip.treaxure.user.entity.User;
+import com.trip.treaxure.user.entity.User.UserRole;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

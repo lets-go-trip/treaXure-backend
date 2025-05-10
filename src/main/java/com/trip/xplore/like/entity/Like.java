@@ -1,23 +1,34 @@
-package com.trip.xplore.like.entity;
+package com.trip.treaxure.like.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.trip.treaxure.photo.entity.Board;
+import com.trip.treaxure.user.entity.User;
+import jakarta.persistence.*;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "LIKE")
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@IdClass(LikeId.class)
 public class Like {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "post_id", nullable = false)
+    private Board post;
 
-    // TODO: Add other fields related to Like (e.g., relationships to User, Photo, etc.)
+    @Id
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @CreationTimestamp
+    @Column(name = "created_at", nullable = false, updatable = false, comment = "좋아요한 시각")
+    private LocalDateTime createdAt;
 } 

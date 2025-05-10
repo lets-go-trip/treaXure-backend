@@ -1,7 +1,7 @@
-package com.trip.xplore.photo.controller;
+package com.trip.treaxure.photo.controller;
 
-import com.trip.xplore.photo.entity.Photo;
-import com.trip.xplore.photo.service.PhotoService;
+import com.trip.treaxure.photo.entity.Photo;
+import com.trip.treaxure.photo.service.PhotoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

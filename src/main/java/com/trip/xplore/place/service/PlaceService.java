@@ -1,7 +1,7 @@
-package com.trip.xplore.place.service;
+package com.trip.treaxure.place.service;
 
-import com.trip.xplore.place.entity.Place;
-import com.trip.xplore.place.repository.PlaceRepository;
+import com.trip.treaxure.place.entity.Place;
+import com.trip.treaxure.place.repository.PlaceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

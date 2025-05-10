@@ -1,7 +1,7 @@
-package com.trip.xplore.vote.controller;
+package com.trip.treaxure.vote.controller;
 
-import com.trip.xplore.vote.entity.Vote;
-import com.trip.xplore.vote.service.VoteService;
+import com.trip.treaxure.vote.entity.Vote;
+import com.trip.treaxure.vote.service.VoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

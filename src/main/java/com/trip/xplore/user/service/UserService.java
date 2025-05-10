@@ -1,7 +1,7 @@
-package com.trip.xplore.user.service;
+package com.trip.treaxure.user.service;
 
-import com.trip.xplore.user.entity.User;
-import com.trip.xplore.user.repository.UserRepository;
+import com.trip.treaxure.user.entity.User;
+import com.trip.treaxure.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

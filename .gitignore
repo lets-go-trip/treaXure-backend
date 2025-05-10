@@ -128,7 +128,7 @@ local.properties
 # CMake
 cmake-build-*/
 
-# Mongo Explorer plugin
+# Mongo Etreaxurer plugin
 .idea/**/mongoSettings.xml
 
 # File-based project format

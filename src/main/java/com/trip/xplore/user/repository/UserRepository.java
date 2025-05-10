@@ -1,6 +1,6 @@
-package com.trip.xplore.user.repository;
+package com.trip.treaxure.user.repository;
 
-import com.trip.xplore.user.entity.User;
+import com.trip.treaxure.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

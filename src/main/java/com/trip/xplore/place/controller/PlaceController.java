@@ -1,7 +1,7 @@
-package com.trip.xplore.place.controller;
+package com.trip.treaxure.place.controller;
 
-import com.trip.xplore.place.entity.Place;
-import com.trip.xplore.place.service.PlaceService;
+import com.trip.treaxure.place.entity.Place;
+import com.trip.treaxure.place.service.PlaceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

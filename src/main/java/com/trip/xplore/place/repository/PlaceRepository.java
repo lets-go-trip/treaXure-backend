@@ -1,6 +1,6 @@
-package com.trip.xplore.place.repository;
+package com.trip.treaxure.place.repository;
 
-import com.trip.xplore.place.entity.Place;
+import com.trip.treaxure.place.entity.Place;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PlaceRepository extends JpaRepository<Place, Long> {

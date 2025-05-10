@@ -1,7 +1,7 @@
-package com.trip.xplore.photo.service;
+package com.trip.treaxure.photo.service;
 
-import com.trip.xplore.photo.entity.Photo;
-import com.trip.xplore.photo.repository.PhotoRepository;
+import com.trip.treaxure.photo.entity.Photo;
+import com.trip.treaxure.photo.repository.PhotoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package com.trip.xplore.mission.entity;
+package com.trip.treaxure.mission.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
