@@ -44,7 +44,7 @@ public class UserRepositoryTest {
         entityManager.clear();
 
         // 사용자 조회
-        User foundUser = userRepository.findById(savedUser.getId()).orElse(null);
+        User foundUser = userRepository.findById(savedUser.getUserId()).orElse(null);
         
         // 검증
         assertNotNull(foundUser);
@@ -75,7 +75,7 @@ public class UserRepositoryTest {
         entityManager.clear();
         
         // 사용자 조회
-        User foundUser = userRepository.findById(savedUser.getId()).orElse(null);
+        User foundUser = userRepository.findById(savedUser.getUserId()).orElse(null);
         
         // 기본값 검증
         assertNotNull(foundUser);
@@ -120,7 +120,7 @@ public class UserRepositoryTest {
         entityManager.clear();
         
         // 업데이트된 사용자 조회
-        User foundUser = userRepository.findById(updatedUser.getId()).orElse(null);
+        User foundUser = userRepository.findById(updatedUser.getUserId()).orElse(null);
         
         // 검증
         assertNotNull(foundUser);
