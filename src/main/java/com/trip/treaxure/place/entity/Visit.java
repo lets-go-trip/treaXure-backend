@@ -1,6 +1,6 @@
 package com.trip.treaxure.place.entity;
 
-import com.trip.treaxure.user.entity.User;
+import com.trip.treaxure.member.entity.Member;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "VISIT", 
        uniqueConstraints = {
-           @UniqueConstraint(name = "uk_user_place", columnNames = {"user_id", "place_id"})
+           @UniqueConstraint(name = "uk_member_place", columnNames = {"member_id", "place_id"})
        }
 )
 @Getter
@@ -32,10 +32,10 @@ public class Visit {
     private Integer visitId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "member_id", nullable = false)
     @Comment("사용자 고유 ID")
-    @Schema(description = "방문한 사용자", implementation = User.class)
-    private User user;
+    @Schema(description = "방문한 사용자", implementation = Member.class)
+    private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "place_id", nullable = false)

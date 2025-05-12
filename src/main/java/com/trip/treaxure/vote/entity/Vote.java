@@ -1,7 +1,7 @@
 package com.trip.treaxure.vote.entity;
 
 import com.trip.treaxure.board.entity.Board;
-import com.trip.treaxure.user.entity.User;
+import com.trip.treaxure.member.entity.Member;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
 @Table(name = "VOTE", 
        uniqueConstraints = {
-           @UniqueConstraint(name = "uk_week_user_post", columnNames = {"week_id", "user_id", "post_id"})
+           @UniqueConstraint(name = "uk_week_member_board", columnNames = {"week_id", "member_id", "board_id"})
        }
 )
 @Entity
@@ -35,16 +35,16 @@ public class Vote {
     private Week weekId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "member_id", nullable = false)
     @Comment("투표한 사용자 고유 ID")
-    @Schema(description = "투표한 사용자 정보", implementation = User.class)
-    private User userId;
+    @Schema(description = "투표한 사용자 정보", implementation = Member.class)
+    private Member memberId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id", nullable = false)
+    @JoinColumn(name = "board_id", nullable = false)
     @Comment("게시글 고유 ID")
     @Schema(description = "투표 대상 게시글", implementation = Board.class)
-    private Board postId;
+    private Board boardId;
 
     @Column(name = "Field")
     @Comment("필드")

@@ -36,10 +36,10 @@ public class Board {
     @Schema(description = "사진의 저장 URL", example = "https://example.com/image.jpg")
     private String imageUrl;
 
-    @Column(name = "like_count", nullable = false)
+    @Column(name = "favorite_count", nullable = false)
     @Comment("좋아요 개수")
     @Schema(description = "좋아요 수", example = "5")
-    private Integer likeCount;
+    private Integer favoriteCount;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)

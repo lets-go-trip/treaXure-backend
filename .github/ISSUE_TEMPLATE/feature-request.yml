@@ -6,7 +6,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        👇 Please describe the feature you'd like to implement.
+        👇 Please describe the feature you'd favorite to implement.
 
   - type: textarea
     id: description

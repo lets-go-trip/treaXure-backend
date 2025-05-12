@@ -1,5 +1,5 @@
-2025-05-11 08:30:13 database: wrong user or password; user: "SA"
-org.h2.message.DbException: Wrong user name or password [28000-220]
+2025-05-11 08:30:13 database: wrong member or password; member: "SA"
+org.h2.message.DbException: Wrong member name or password [28000-220]
 	at org.h2.message.DbException.get(DbException.java:223)
 	at org.h2.message.DbException.get(DbException.java:199)
 	at org.h2.message.DbException.get(DbException.java:188)
@@ -28,12 +28,12 @@ org.h2.message.DbException: Wrong user name or password [28000-220]
 	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
 	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
 	at java.base/java.lang.Thread.run(Thread.java:833)
-Caused by: org.h2.jdbc.JdbcSQLInvalidAuthorizationSpecException: Wrong user name or password [28000-220]
+Caused by: org.h2.jdbc.JdbcSQLInvalidAuthorizationSpecException: Wrong member name or password [28000-220]
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:522)
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
 	... 28 more
-2025-05-11 20:15:23.675566+09:00 database: wrong user or password; user: "SA"
-org.h2.message.DbException: Wrong user name or password [28000-232]
+2025-05-11 20:15:23.675566+09:00 database: wrong member or password; member: "SA"
+org.h2.message.DbException: Wrong member name or password [28000-232]
 	at org.h2.message.DbException.get(DbException.java:223)
 	at org.h2.message.DbException.get(DbException.java:199)
 	at org.h2.message.DbException.get(DbException.java:188)
@@ -88,12 +88,12 @@ org.h2.message.DbException: Wrong user name or password [28000-232]
 	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1362)
 	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1351)
 	at com.trip.treaxure.treaxureApplication.main(treaxureApplication.java:10)
-Caused by: org.h2.jdbc.JdbcSQLInvalidAuthorizationSpecException: Wrong user name or password [28000-232]
+Caused by: org.h2.jdbc.JdbcSQLInvalidAuthorizationSpecException: Wrong member name or password [28000-232]
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:522)
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
 	... 54 more
-2025-05-11 20:15:26.198548+09:00 database: wrong user or password; user: "SA"
-org.h2.message.DbException: Wrong user name or password [28000-232]
+2025-05-11 20:15:26.198548+09:00 database: wrong member or password; member: "SA"
+org.h2.message.DbException: Wrong member name or password [28000-232]
 	at org.h2.message.DbException.get(DbException.java:223)
 	at org.h2.message.DbException.get(DbException.java:199)
 	at org.h2.message.DbException.get(DbException.java:188)
@@ -155,38 +155,38 @@ org.h2.message.DbException: Wrong user name or password [28000-232]
 	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1362)
 	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1351)
 	at com.trip.treaxure.treaxureApplication.main(treaxureApplication.java:10)
-Caused by: org.h2.jdbc.JdbcSQLInvalidAuthorizationSpecException: Wrong user name or password [28000-232]
+Caused by: org.h2.jdbc.JdbcSQLInvalidAuthorizationSpecException: Wrong member name or password [28000-232]
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:522)
 	at org.h2.message.DbException.getJdbcSQLException(DbException.java:489)
 	... 61 more
 2025-05-11 20:20:34.036429+09:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    drop table if exists [*]like cascade "; expected "identifier"; SQL statement:
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    drop table if exists [*]favorite cascade "; expected "identifier"; SQL statement:
 
-    drop table if exists like cascade  [42001-232]
+    drop table if exists favorite cascade  [42001-232]
 2025-05-11 20:20:34.040310+09:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    drop table if exists [*]user cascade "; expected "identifier"; SQL statement:
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    drop table if exists [*]member cascade "; expected "identifier"; SQL statement:
 
-    drop table if exists user cascade  [42001-232]
+    drop table if exists member cascade  [42001-232]
 2025-05-11 20:20:34.048278+09:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    create table [*]like (\000a        post_id integer not null,\000a        user_id integer not null,\000a        created_at timestamp(6) not null,\000a        primary key (post_id, user_id)\000a    )"; expected "identifier"; SQL statement:
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    create table [*]favorite (\000a        board_id integer not null,\000a        member_id integer not null,\000a        created_at timestamp(6) not null,\000a        primary key (board_id, member_id)\000a    )"; expected "identifier"; SQL statement:
 
-    create table like (
-        post_id integer not null,
-        user_id integer not null,
+    create table favorite (
+        board_id integer not null,
+        member_id integer not null,
         created_at timestamp(6) not null,
-        primary key (post_id, user_id)
+        primary key (board_id, member_id)
     ) [42001-232]
 2025-05-11 20:20:34.049205+09:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    comment on column [*]like.created_at is\000a        '좋아요한 시각'"; expected "identifier"; SQL statement:
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    comment on column [*]favorite.created_at is\000a        '좋아요한 시각'"; expected "identifier"; SQL statement:
 
-    comment on column like.created_at is
+    comment on column favorite.created_at is
         '좋아요한 시각' [42001-232]
 2025-05-11 20:20:34.055480+09:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    create table [*]user (\000a        is_active TINYINT(1) DEFAULT 1 not null,\000a        user_id integer generated by default as identity,\000a        created_at timestamp(6) not null,\000a        updated_at timestamp(6) not null,\000a        email varchar(255) not null,\000a        nickname varchar(255) not null,\000a        password varchar(255) not null,\000a        profile_url varchar(255),\000a        role ENUM('ADMIN','USER') DEFAULT 'USER' not null,\000a        primary key (user_id)\000a    )"; expected "identifier"; SQL statement:
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    create table [*]member (\000a        is_active TINYINT(1) DEFAULT 1 not null,\000a        member_id integer generated by default as identity,\000a        created_at timestamp(6) not null,\000a        updated_at timestamp(6) not null,\000a        email varchar(255) not null,\000a        nickname varchar(255) not null,\000a        password varchar(255) not null,\000a        profile_url varchar(255),\000a        role ENUM('ADMIN','USER') DEFAULT 'USER' not null,\000a        primary key (member_id)\000a    )"; expected "identifier"; SQL statement:
 
-    create table user (
+    create table member (
         is_active TINYINT(1) DEFAULT 1 not null,
-        user_id integer generated by default as identity,
+        member_id integer generated by default as identity,
         created_at timestamp(6) not null,
         updated_at timestamp(6) not null,
         email varchar(255) not null,
@@ -194,107 +194,107 @@ org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a   
         password varchar(255) not null,
         profile_url varchar(255),
         role ENUM('ADMIN','USER') DEFAULT 'USER' not null,
-        primary key (user_id)
+        primary key (member_id)
     ) [42001-232]
 2025-05-11 20:20:34.056321+09:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    comment on column [*]user.is_active is\000a        '계정 활성화 여부'"; expected "identifier"; SQL statement:
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    comment on column [*]member.is_active is\000a        '계정 활성화 여부'"; expected "identifier"; SQL statement:
 
-    comment on column user.is_active is
+    comment on column member.is_active is
         '계정 활성화 여부' [42001-232]
 2025-05-11 20:20:34.057372+09:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    comment on column [*]user.user_id is\000a        '사용자 고유 ID'"; expected "identifier"; SQL statement:
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    comment on column [*]member.member_id is\000a        '사용자 고유 ID'"; expected "identifier"; SQL statement:
 
-    comment on column user.user_id is
+    comment on column member.member_id is
         '사용자 고유 ID' [42001-232]
 2025-05-11 20:20:34.058366+09:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    comment on column [*]user.created_at is\000a        '가입 시각'"; expected "identifier"; SQL statement:
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    comment on column [*]member.created_at is\000a        '가입 시각'"; expected "identifier"; SQL statement:
 
-    comment on column user.created_at is
+    comment on column member.created_at is
         '가입 시각' [42001-232]
 2025-05-11 20:20:34.059303+09:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    comment on column [*]user.updated_at is\000a        '수정 시각'"; expected "identifier"; SQL statement:
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    comment on column [*]member.updated_at is\000a        '수정 시각'"; expected "identifier"; SQL statement:
 
-    comment on column user.updated_at is
+    comment on column member.updated_at is
         '수정 시각' [42001-232]
 2025-05-11 20:20:34.060186+09:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    comment on column [*]user.email is\000a        '로그인용 이메일'"; expected "identifier"; SQL statement:
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    comment on column [*]member.email is\000a        '로그인용 이메일'"; expected "identifier"; SQL statement:
 
-    comment on column user.email is
+    comment on column member.email is
         '로그인용 이메일' [42001-232]
 2025-05-11 20:20:34.061105+09:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    comment on column [*]user.nickname is\000a        '닉네임'"; expected "identifier"; SQL statement:
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    comment on column [*]member.nickname is\000a        '닉네임'"; expected "identifier"; SQL statement:
 
-    comment on column user.nickname is
+    comment on column member.nickname is
         '닉네임' [42001-232]
 2025-05-11 20:20:34.061980+09:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    comment on column [*]user.password is\000a        '해시된 비밀번호'"; expected "identifier"; SQL statement:
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    comment on column [*]member.password is\000a        '해시된 비밀번호'"; expected "identifier"; SQL statement:
 
-    comment on column user.password is
+    comment on column member.password is
         '해시된 비밀번호' [42001-232]
 2025-05-11 20:20:34.062876+09:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    comment on column [*]user.profile_url is\000a        '프로필 이미지 URL'"; expected "identifier"; SQL statement:
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    comment on column [*]member.profile_url is\000a        '프로필 이미지 URL'"; expected "identifier"; SQL statement:
 
-    comment on column user.profile_url is
+    comment on column member.profile_url is
         '프로필 이미지 URL' [42001-232]
 2025-05-11 20:20:34.063797+09:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    comment on column [*]user.role is\000a        '권한'"; expected "identifier"; SQL statement:
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    comment on column [*]member.role is\000a        '권한'"; expected "identifier"; SQL statement:
 
-    comment on column user.role is
+    comment on column member.role is
         '권한' [42001-232]
 2025-05-11 20:20:34.081832+09:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    alter table if exists [*]like \000a       add constraint FKr941wbyqumn1w0msgbg49gbqi \000a       foreign key (post_id) \000a       references boards"; expected "identifier"; SQL statement:
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    alter table if exists [*]favorite \000a       add constraint FKr941wbyqumn1w0msgbg49gbqi \000a       foreign key (board_id) \000a       references boards"; expected "identifier"; SQL statement:
 
-    alter table if exists like 
+    alter table if exists favorite
        add constraint FKr941wbyqumn1w0msgbg49gbqi 
-       foreign key (post_id) 
+       foreign key (board_id)
        references boards [42001-232]
 2025-05-11 20:20:34.082575+09:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    alter table if exists [*]like \000a       add constraint FK8oigksxpjdxgas3g45u4ba88b \000a       foreign key (user_id) \000a       references user"; expected "identifier"; SQL statement:
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    alter table if exists [*]favorite \000a       add constraint FK8oigksxpjdxgas3g45u4ba88b \000a       foreign key (member_id) \000a       references member"; expected "identifier"; SQL statement:
 
-    alter table if exists like 
+    alter table if exists favorite
        add constraint FK8oigksxpjdxgas3g45u4ba88b 
-       foreign key (user_id) 
-       references user [42001-232]
+       foreign key (member_id)
+       references member [42001-232]
 2025-05-11 20:20:34.084085+09:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    alter table if exists user_mission \000a       add constraint FKfsmo8ipks83kcuqtky39hxyvc \000a       foreign key (user_id) \000a       references [*]user"; expected "identifier"; SQL statement:
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    alter table if exists member_mission \000a       add constraint FKfsmo8ipks83kcuqtky39hxyvc \000a       foreign key (member_id) \000a       references [*]member"; expected "identifier"; SQL statement:
 
-    alter table if exists user_mission 
+    alter table if exists member_mission
        add constraint FKfsmo8ipks83kcuqtky39hxyvc 
-       foreign key (user_id) 
-       references user [42001-232]
+       foreign key (member_id)
+       references member [42001-232]
 2025-05-11 20:20:34.085522+09:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    alter table if exists visit \000a       add constraint FKtly3l2y9j92oskaoh7bmx0drt \000a       foreign key (user_id) \000a       references [*]user"; expected "identifier"; SQL statement:
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    alter table if exists visit \000a       add constraint FKtly3l2y9j92oskaoh7bmx0drt \000a       foreign key (member_id) \000a       references [*]member"; expected "identifier"; SQL statement:
 
     alter table if exists visit 
        add constraint FKtly3l2y9j92oskaoh7bmx0drt 
-       foreign key (user_id) 
-       references user [42001-232]
+       foreign key (member_id)
+       references member [42001-232]
 2025-05-11 20:20:34.087050+09:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    alter table if exists weekly_board \000a       add constraint FK4bfclnodqe9y7b6647k9grlkx \000a       foreign key (user_id) \000a       references [*]user"; expected "identifier"; SQL statement:
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    alter table if exists weekly_board \000a       add constraint FK4bfclnodqe9y7b6647k9grlkx \000a       foreign key (member_id) \000a       references [*]member"; expected "identifier"; SQL statement:
 
     alter table if exists weekly_board 
        add constraint FK4bfclnodqe9y7b6647k9grlkx 
-       foreign key (user_id) 
-       references user [42001-232]
+       foreign key (member_id)
+       references member [42001-232]
 2025-05-11 20:24:59.317609+09:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    create table [*]like (\000a        post_id integer not null,\000a        user_id integer not null,\000a        created_at timestamp(6) not null,\000a        primary key (post_id, user_id)\000a    )"; expected "identifier"; SQL statement:
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    create table [*]favorite (\000a        board_id integer not null,\000a        member_id integer not null,\000a        created_at timestamp(6) not null,\000a        primary key (board_id, member_id)\000a    )"; expected "identifier"; SQL statement:
 
-    create table like (
-        post_id integer not null,
-        user_id integer not null,
+    create table favorite (
+        board_id integer not null,
+        member_id integer not null,
         created_at timestamp(6) not null,
-        primary key (post_id, user_id)
+        primary key (board_id, member_id)
     ) [42001-232]
 2025-05-11 20:24:59.321452+09:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    comment on column [*]like.created_at is\000a        '좋아요한 시각'"; expected "identifier"; SQL statement:
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    comment on column [*]favorite.created_at is\000a        '좋아요한 시각'"; expected "identifier"; SQL statement:
 
-    comment on column like.created_at is
+    comment on column favorite.created_at is
         '좋아요한 시각' [42001-232]
 2025-05-11 20:24:59.323153+09:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    create table [*]user (\000a        user_id integer generated by default as identity,\000a        created_at timestamp(6) not null,\000a        email varchar(255) not null,\000a        is_active TINYINT(1) DEFAULT 1 not null,\000a        nickname varchar(255) not null,\000a        password varchar(255) not null,\000a        profile_url varchar(255),\000a        role ENUM('ADMIN','USER') DEFAULT 'USER' not null,\000a        updated_at timestamp(6) not null,\000a        primary key (user_id)\000a    )"; expected "identifier"; SQL statement:
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    create table [*]member (\000a        member_id integer generated by default as identity,\000a        created_at timestamp(6) not null,\000a        email varchar(255) not null,\000a        is_active TINYINT(1) DEFAULT 1 not null,\000a        nickname varchar(255) not null,\000a        password varchar(255) not null,\000a        profile_url varchar(255),\000a        role ENUM('ADMIN','USER') DEFAULT 'USER' not null,\000a        updated_at timestamp(6) not null,\000a        primary key (member_id)\000a    )"; expected "identifier"; SQL statement:
 
-    create table user (
-        user_id integer generated by default as identity,
+    create table member (
+        member_id integer generated by default as identity,
         created_at timestamp(6) not null,
         email varchar(255) not null,
         is_active TINYINT(1) DEFAULT 1 not null,
@@ -303,98 +303,98 @@ org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a   
         profile_url varchar(255),
         role ENUM('ADMIN','USER') DEFAULT 'USER' not null,
         updated_at timestamp(6) not null,
-        primary key (user_id)
+        primary key (member_id)
     ) [42001-232]
 2025-05-11 20:24:59.323960+09:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    comment on column [*]user.user_id is\000a        '사용자 고유 ID'"; expected "identifier"; SQL statement:
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    comment on column [*]member.member_id is\000a        '사용자 고유 ID'"; expected "identifier"; SQL statement:
 
-    comment on column user.user_id is
+    comment on column member.member_id is
         '사용자 고유 ID' [42001-232]
 2025-05-11 20:24:59.325014+09:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    comment on column [*]user.created_at is\000a        '가입 시각'"; expected "identifier"; SQL statement:
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    comment on column [*]member.created_at is\000a        '가입 시각'"; expected "identifier"; SQL statement:
 
-    comment on column user.created_at is
+    comment on column member.created_at is
         '가입 시각' [42001-232]
 2025-05-11 20:24:59.325987+09:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    comment on column [*]user.email is\000a        '로그인용 이메일'"; expected "identifier"; SQL statement:
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    comment on column [*]member.email is\000a        '로그인용 이메일'"; expected "identifier"; SQL statement:
 
-    comment on column user.email is
+    comment on column member.email is
         '로그인용 이메일' [42001-232]
 2025-05-11 20:24:59.326975+09:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    comment on column [*]user.is_active is\000a        '계정 활성화 여부'"; expected "identifier"; SQL statement:
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    comment on column [*]member.is_active is\000a        '계정 활성화 여부'"; expected "identifier"; SQL statement:
 
-    comment on column user.is_active is
+    comment on column member.is_active is
         '계정 활성화 여부' [42001-232]
 2025-05-11 20:24:59.327902+09:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    comment on column [*]user.nickname is\000a        '닉네임'"; expected "identifier"; SQL statement:
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    comment on column [*]member.nickname is\000a        '닉네임'"; expected "identifier"; SQL statement:
 
-    comment on column user.nickname is
+    comment on column member.nickname is
         '닉네임' [42001-232]
 2025-05-11 20:24:59.328829+09:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    comment on column [*]user.password is\000a        '해시된 비밀번호'"; expected "identifier"; SQL statement:
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    comment on column [*]member.password is\000a        '해시된 비밀번호'"; expected "identifier"; SQL statement:
 
-    comment on column user.password is
+    comment on column member.password is
         '해시된 비밀번호' [42001-232]
 2025-05-11 20:24:59.329732+09:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    comment on column [*]user.profile_url is\000a        '프로필 이미지 URL'"; expected "identifier"; SQL statement:
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    comment on column [*]member.profile_url is\000a        '프로필 이미지 URL'"; expected "identifier"; SQL statement:
 
-    comment on column user.profile_url is
+    comment on column member.profile_url is
         '프로필 이미지 URL' [42001-232]
 2025-05-11 20:24:59.330635+09:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    comment on column [*]user.role is\000a        '권한'"; expected "identifier"; SQL statement:
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    comment on column [*]member.role is\000a        '권한'"; expected "identifier"; SQL statement:
 
-    comment on column user.role is
+    comment on column member.role is
         '권한' [42001-232]
 2025-05-11 20:24:59.331333+09:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    comment on column [*]user.updated_at is\000a        '수정 시각'"; expected "identifier"; SQL statement:
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    comment on column [*]member.updated_at is\000a        '수정 시각'"; expected "identifier"; SQL statement:
 
-    comment on column user.updated_at is
+    comment on column member.updated_at is
         '수정 시각' [42001-232]
 2025-05-11 20:24:59.336546+09:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    alter table if exists [*]like \000a       add constraint FKr941wbyqumn1w0msgbg49gbqi \000a       foreign key (post_id) \000a       references boards"; expected "identifier"; SQL statement:
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    alter table if exists [*]favorite \000a       add constraint FKr941wbyqumn1w0msgbg49gbqi \000a       foreign key (board_id) \000a       references boards"; expected "identifier"; SQL statement:
 
-    alter table if exists like 
+    alter table if exists favorite
        add constraint FKr941wbyqumn1w0msgbg49gbqi 
-       foreign key (post_id) 
+       foreign key (board_id)
        references boards [42001-232]
 2025-05-11 20:24:59.337193+09:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    alter table if exists [*]like \000a       add constraint FK8oigksxpjdxgas3g45u4ba88b \000a       foreign key (user_id) \000a       references user"; expected "identifier"; SQL statement:
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    alter table if exists [*]favorite \000a       add constraint FK8oigksxpjdxgas3g45u4ba88b \000a       foreign key (member_id) \000a       references member"; expected "identifier"; SQL statement:
 
-    alter table if exists like 
+    alter table if exists favorite
        add constraint FK8oigksxpjdxgas3g45u4ba88b 
-       foreign key (user_id) 
-       references user [42001-232]
+       foreign key (member_id)
+       references member [42001-232]
 2025-05-11 20:24:59.338216+09:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    alter table if exists user_mission \000a       add constraint FKfsmo8ipks83kcuqtky39hxyvc \000a       foreign key (user_id) \000a       references [*]user"; expected "identifier"; SQL statement:
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    alter table if exists member_mission \000a       add constraint FKfsmo8ipks83kcuqtky39hxyvc \000a       foreign key (member_id) \000a       references [*]member"; expected "identifier"; SQL statement:
 
-    alter table if exists user_mission 
+    alter table if exists member_mission
        add constraint FKfsmo8ipks83kcuqtky39hxyvc 
-       foreign key (user_id) 
-       references user [42001-232]
+       foreign key (member_id)
+       references member [42001-232]
 2025-05-11 20:24:59.339070+09:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    alter table if exists visit \000a       add constraint FKtly3l2y9j92oskaoh7bmx0drt \000a       foreign key (user_id) \000a       references [*]user"; expected "identifier"; SQL statement:
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    alter table if exists visit \000a       add constraint FKtly3l2y9j92oskaoh7bmx0drt \000a       foreign key (member_id) \000a       references [*]member"; expected "identifier"; SQL statement:
 
     alter table if exists visit 
        add constraint FKtly3l2y9j92oskaoh7bmx0drt 
-       foreign key (user_id) 
-       references user [42001-232]
+       foreign key (member_id)
+       references member [42001-232]
 2025-05-11 20:24:59.340223+09:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    alter table if exists weekly_board \000a       add constraint FK4bfclnodqe9y7b6647k9grlkx \000a       foreign key (user_id) \000a       references [*]user"; expected "identifier"; SQL statement:
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    alter table if exists weekly_board \000a       add constraint FK4bfclnodqe9y7b6647k9grlkx \000a       foreign key (member_id) \000a       references [*]member"; expected "identifier"; SQL statement:
 
     alter table if exists weekly_board 
        add constraint FK4bfclnodqe9y7b6647k9grlkx 
-       foreign key (user_id) 
-       references user [42001-232]
+       foreign key (member_id)
+       references member [42001-232]
 2025-05-11 20:31:53.991200+09:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    drop table if exists [*]user cascade "; expected "identifier"; SQL statement:
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    drop table if exists [*]member cascade "; expected "identifier"; SQL statement:
 
-    drop table if exists user cascade  [42001-232]
+    drop table if exists member cascade  [42001-232]
 2025-05-11 20:31:53.997703+09:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    create table [*]user (\000a        is_active TINYINT(1) DEFAULT 1 not null,\000a        user_id integer generated by default as identity,\000a        created_at timestamp(6) not null,\000a        updated_at timestamp(6) not null,\000a        email varchar(255) not null,\000a        nickname varchar(255) not null,\000a        password varchar(255) not null,\000a        profile_url varchar(255),\000a        role ENUM('ADMIN','USER') DEFAULT 'USER' not null,\000a        primary key (user_id)\000a    )"; expected "identifier"; SQL statement:
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    create table [*]member (\000a        is_active TINYINT(1) DEFAULT 1 not null,\000a        member_id integer generated by default as identity,\000a        created_at timestamp(6) not null,\000a        updated_at timestamp(6) not null,\000a        email varchar(255) not null,\000a        nickname varchar(255) not null,\000a        password varchar(255) not null,\000a        profile_url varchar(255),\000a        role ENUM('ADMIN','USER') DEFAULT 'USER' not null,\000a        primary key (member_id)\000a    )"; expected "identifier"; SQL statement:
 
-    create table user (
+    create table member (
         is_active TINYINT(1) DEFAULT 1 not null,
-        user_id integer generated by default as identity,
+        member_id integer generated by default as identity,
         created_at timestamp(6) not null,
         updated_at timestamp(6) not null,
         email varchar(255) not null,
@@ -402,124 +402,124 @@ org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a   
         password varchar(255) not null,
         profile_url varchar(255),
         role ENUM('ADMIN','USER') DEFAULT 'USER' not null,
-        primary key (user_id)
+        primary key (member_id)
     ) [42001-232]
 2025-05-11 20:31:53.998865+09:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    comment on column [*]user.is_active is\000a        '계정 활성화 여부'"; expected "identifier"; SQL statement:
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    comment on column [*]member.is_active is\000a        '계정 활성화 여부'"; expected "identifier"; SQL statement:
 
-    comment on column user.is_active is
+    comment on column member.is_active is
         '계정 활성화 여부' [42001-232]
 2025-05-11 20:31:54.000314+09:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    comment on column [*]user.user_id is\000a        '사용자 고유 ID'"; expected "identifier"; SQL statement:
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    comment on column [*]member.member_id is\000a        '사용자 고유 ID'"; expected "identifier"; SQL statement:
 
-    comment on column user.user_id is
+    comment on column member.member_id is
         '사용자 고유 ID' [42001-232]
 2025-05-11 20:31:54.001379+09:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    comment on column [*]user.created_at is\000a        '가입 시각'"; expected "identifier"; SQL statement:
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    comment on column [*]member.created_at is\000a        '가입 시각'"; expected "identifier"; SQL statement:
 
-    comment on column user.created_at is
+    comment on column member.created_at is
         '가입 시각' [42001-232]
 2025-05-11 20:31:54.002376+09:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    comment on column [*]user.updated_at is\000a        '수정 시각'"; expected "identifier"; SQL statement:
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    comment on column [*]member.updated_at is\000a        '수정 시각'"; expected "identifier"; SQL statement:
 
-    comment on column user.updated_at is
+    comment on column member.updated_at is
         '수정 시각' [42001-232]
 2025-05-11 20:31:54.003364+09:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    comment on column [*]user.email is\000a        '로그인용 이메일'"; expected "identifier"; SQL statement:
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    comment on column [*]member.email is\000a        '로그인용 이메일'"; expected "identifier"; SQL statement:
 
-    comment on column user.email is
+    comment on column member.email is
         '로그인용 이메일' [42001-232]
 2025-05-11 20:31:54.004294+09:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    comment on column [*]user.nickname is\000a        '닉네임'"; expected "identifier"; SQL statement:
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    comment on column [*]member.nickname is\000a        '닉네임'"; expected "identifier"; SQL statement:
 
-    comment on column user.nickname is
+    comment on column member.nickname is
         '닉네임' [42001-232]
 2025-05-11 20:31:54.005257+09:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    comment on column [*]user.password is\000a        '해시된 비밀번호'"; expected "identifier"; SQL statement:
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    comment on column [*]member.password is\000a        '해시된 비밀번호'"; expected "identifier"; SQL statement:
 
-    comment on column user.password is
+    comment on column member.password is
         '해시된 비밀번호' [42001-232]
 2025-05-11 20:31:54.006170+09:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    comment on column [*]user.profile_url is\000a        '프로필 이미지 URL'"; expected "identifier"; SQL statement:
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    comment on column [*]member.profile_url is\000a        '프로필 이미지 URL'"; expected "identifier"; SQL statement:
 
-    comment on column user.profile_url is
+    comment on column member.profile_url is
         '프로필 이미지 URL' [42001-232]
 2025-05-11 20:31:54.007084+09:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    comment on column [*]user.role is\000a        '권한'"; expected "identifier"; SQL statement:
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    comment on column [*]member.role is\000a        '권한'"; expected "identifier"; SQL statement:
 
-    comment on column user.role is
+    comment on column member.role is
         '권한' [42001-232]
 2025-05-11 20:38:08.637589+09:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    drop table if exists [*]like cascade "; expected "identifier"; SQL statement:
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    drop table if exists [*]favorite cascade "; expected "identifier"; SQL statement:
 
-    drop table if exists like cascade  [42001-232]
+    drop table if exists favorite cascade  [42001-232]
 2025-05-11 20:38:08.649942+09:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    create table [*]like (\000a        post_id integer not null,\000a        user_id integer not null,\000a        created_at timestamp(6) not null,\000a        primary key (post_id, user_id)\000a    )"; expected "identifier"; SQL statement:
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    create table [*]favorite (\000a        board_id integer not null,\000a        member_id integer not null,\000a        created_at timestamp(6) not null,\000a        primary key (board_id, member_id)\000a    )"; expected "identifier"; SQL statement:
 
-    create table like (
-        post_id integer not null,
-        user_id integer not null,
+    create table favorite (
+        board_id integer not null,
+        member_id integer not null,
         created_at timestamp(6) not null,
-        primary key (post_id, user_id)
+        primary key (board_id, member_id)
     ) [42001-232]
 2025-05-11 20:38:08.651027+09:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    comment on column [*]like.created_at is\000a        '좋아요한 시각'"; expected "identifier"; SQL statement:
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    comment on column [*]favorite.created_at is\000a        '좋아요한 시각'"; expected "identifier"; SQL statement:
 
-    comment on column like.created_at is
+    comment on column favorite.created_at is
         '좋아요한 시각' [42001-232]
 2025-05-11 20:38:08.669892+09:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    alter table if exists [*]like \000a       add constraint FKr941wbyqumn1w0msgbg49gbqi \000a       foreign key (post_id) \000a       references boards"; expected "identifier"; SQL statement:
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    alter table if exists [*]favorite \000a       add constraint FKr941wbyqumn1w0msgbg49gbqi \000a       foreign key (board_id) \000a       references boards"; expected "identifier"; SQL statement:
 
-    alter table if exists like 
+    alter table if exists favorite
        add constraint FKr941wbyqumn1w0msgbg49gbqi 
-       foreign key (post_id) 
+       foreign key (board_id)
        references boards [42001-232]
 2025-05-11 20:38:08.670815+09:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    alter table if exists [*]like \000a       add constraint FKpvwmssxj34ruenejswt3jb57h \000a       foreign key (user_id) \000a       references member"; expected "identifier"; SQL statement:
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    alter table if exists [*]favorite \000a       add constraint FKpvwmssxj34ruenejswt3jb57h \000a       foreign key (member_id) \000a       references member"; expected "identifier"; SQL statement:
 
-    alter table if exists like 
+    alter table if exists favorite
        add constraint FKpvwmssxj34ruenejswt3jb57h 
-       foreign key (user_id) 
+       foreign key (member_id)
        references member [42001-232]
 2025-05-11 21:13:56.466309+09:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    create table vote (\000a        post_id INT COMMENT '게시글 고유 ID' not null,\000a        user_id INT COMMENT '투표한 사용자 고유 ID' not null,\000a        vote_id INT COMMENT '투표 고유 ID' [*]generated by default as identity,\000a        week_id INT COMMENT '주 고유 ID' not null,\000a        field VARCHAR(255) COMMENT '필드',\000a        primary key (vote_id)\000a    )"; expected "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, OR, CONSTRAINT, PRIMARY KEY, UNIQUE, NOT NULL, CHECK, REFERENCES, ,, )"; SQL statement:
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    create table vote (\000a        board_id INT COMMENT '게시글 고유 ID' not null,\000a        member_id INT COMMENT '투표한 사용자 고유 ID' not null,\000a        vote_id INT COMMENT '투표 고유 ID' [*]generated by default as identity,\000a        week_id INT COMMENT '주 고유 ID' not null,\000a        field VARCHAR(255) COMMENT '필드',\000a        primary key (vote_id)\000a    )"; expected "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, Ifavorite, REGEXP, AND, OR, CONSTRAINT, PRIMARY KEY, UNIQUE, NOT NULL, CHECK, REFERENCES, ,, )"; SQL statement:
 
     create table vote (
-        post_id INT COMMENT '게시글 고유 ID' not null,
-        user_id INT COMMENT '투표한 사용자 고유 ID' not null,
+        board_id INT COMMENT '게시글 고유 ID' not null,
+        member_id INT COMMENT '투표한 사용자 고유 ID' not null,
         vote_id INT COMMENT '투표 고유 ID' generated by default as identity,
         week_id INT COMMENT '주 고유 ID' not null,
         field VARCHAR(255) COMMENT '필드',
         primary key (vote_id)
     ) [42001-232]
 2025-05-11 21:16:43.056572+09:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    create table vote (\000a        post_id INT COMMENT '게시글 고유 ID' not null,\000a        user_id INT COMMENT '투표한 사용자 고유 ID' not null,\000a        vote_id INT COMMENT '투표 고유 ID' [*]generated by default as identity,\000a        week_id INT COMMENT '주 고유 ID' not null,\000a        field VARCHAR(255) COMMENT '필드',\000a        primary key (vote_id)\000a    )"; expected "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, OR, CONSTRAINT, PRIMARY KEY, UNIQUE, NOT NULL, CHECK, REFERENCES, ,, )"; SQL statement:
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    create table vote (\000a        board_id INT COMMENT '게시글 고유 ID' not null,\000a        member_id INT COMMENT '투표한 사용자 고유 ID' not null,\000a        vote_id INT COMMENT '투표 고유 ID' [*]generated by default as identity,\000a        week_id INT COMMENT '주 고유 ID' not null,\000a        field VARCHAR(255) COMMENT '필드',\000a        primary key (vote_id)\000a    )"; expected "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, Ifavorite, REGEXP, AND, OR, CONSTRAINT, PRIMARY KEY, UNIQUE, NOT NULL, CHECK, REFERENCES, ,, )"; SQL statement:
 
     create table vote (
-        post_id INT COMMENT '게시글 고유 ID' not null,
-        user_id INT COMMENT '투표한 사용자 고유 ID' not null,
+        board_id INT COMMENT '게시글 고유 ID' not null,
+        member_id INT COMMENT '투표한 사용자 고유 ID' not null,
         vote_id INT COMMENT '투표 고유 ID' generated by default as identity,
         week_id INT COMMENT '주 고유 ID' not null,
         field VARCHAR(255) COMMENT '필드',
         primary key (vote_id)
     ) [42001-232]
 2025-05-11 21:20:23.251960+09:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    create table vote (\000a        post_id INT COMMENT '게시글 고유 ID' not null,\000a        user_id INT COMMENT '투표한 사용자 고유 ID' not null,\000a        vote_id INT COMMENT '투표 고유 ID' [*]generated by default as identity,\000a        week_id INT COMMENT '주 고유 ID' not null,\000a        field VARCHAR(255) COMMENT '필드',\000a        primary key (vote_id)\000a    )"; expected "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, OR, CONSTRAINT, PRIMARY KEY, UNIQUE, NOT NULL, CHECK, REFERENCES, ,, )"; SQL statement:
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    create table vote (\000a        board_id INT COMMENT '게시글 고유 ID' not null,\000a        member_id INT COMMENT '투표한 사용자 고유 ID' not null,\000a        vote_id INT COMMENT '투표 고유 ID' [*]generated by default as identity,\000a        week_id INT COMMENT '주 고유 ID' not null,\000a        field VARCHAR(255) COMMENT '필드',\000a        primary key (vote_id)\000a    )"; expected "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, Ifavorite, REGEXP, AND, OR, CONSTRAINT, PRIMARY KEY, UNIQUE, NOT NULL, CHECK, REFERENCES, ,, )"; SQL statement:
 
     create table vote (
-        post_id INT COMMENT '게시글 고유 ID' not null,
-        user_id INT COMMENT '투표한 사용자 고유 ID' not null,
+        board_id INT COMMENT '게시글 고유 ID' not null,
+        member_id INT COMMENT '투표한 사용자 고유 ID' not null,
         vote_id INT COMMENT '투표 고유 ID' generated by default as identity,
         week_id INT COMMENT '주 고유 ID' not null,
         field VARCHAR(255) COMMENT '필드',
         primary key (vote_id)
     ) [42001-232]
 2025-05-11 21:21:07.946966+09:00 jdbc[3]: exception
-org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    create table vote (\000a        post_id INT COMMENT '게시글 고유 ID' not null,\000a        user_id INT COMMENT '투표한 사용자 고유 ID' not null,\000a        vote_id INT COMMENT '투표 고유 ID' [*]generated by default as identity,\000a        week_id INT COMMENT '주 고유 ID' not null,\000a        field VARCHAR(255) COMMENT '필드',\000a        primary key (vote_id)\000a    )"; expected "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, ILIKE, REGEXP, AND, OR, CONSTRAINT, PRIMARY KEY, UNIQUE, NOT NULL, CHECK, REFERENCES, ,, )"; SQL statement:
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "\000a    create table vote (\000a        board_id INT COMMENT '게시글 고유 ID' not null,\000a        member_id INT COMMENT '투표한 사용자 고유 ID' not null,\000a        vote_id INT COMMENT '투표 고유 ID' [*]generated by default as identity,\000a        week_id INT COMMENT '주 고유 ID' not null,\000a        field VARCHAR(255) COMMENT '필드',\000a        primary key (vote_id)\000a    )"; expected "[, ., ::, AT, FORMAT, *, /, %, +, -, ||, NOT, IS, Ifavorite, REGEXP, AND, OR, CONSTRAINT, PRIMARY KEY, UNIQUE, NOT NULL, CHECK, REFERENCES, ,, )"; SQL statement:
 
     create table vote (
-        post_id INT COMMENT '게시글 고유 ID' not null,
-        user_id INT COMMENT '투표한 사용자 고유 ID' not null,
+        board_id INT COMMENT '게시글 고유 ID' not null,
+        member_id INT COMMENT '투표한 사용자 고유 ID' not null,
         vote_id INT COMMENT '투표 고유 ID' generated by default as identity,
         week_id INT COMMENT '주 고유 ID' not null,
         field VARCHAR(255) COMMENT '필드',
