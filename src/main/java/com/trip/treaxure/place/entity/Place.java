@@ -6,6 +6,8 @@ import org.hibernate.annotations.Comment;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.time.LocalDateTime;
@@ -17,6 +19,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "장소 정보를 나타내는 엔티티")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) // Hibernate 프록시 무시
 public class Place {
 
     @Id
@@ -87,10 +90,6 @@ public class Place {
 
     @Column(name = "is_active", nullable = false, columnDefinition = "TINYINT(1) DEFAULT 1")
     @Comment("장소 활성화 여부")
-    @Schema(
-        description = "장소 활성 여부",
-        example = "true",
-        accessMode = Schema.AccessMode.READ_ONLY   // 읽기 전용
-    )
+    @Schema(description = "장소 활성 여부", example = "true")
     private Boolean isActive = true;
 }
