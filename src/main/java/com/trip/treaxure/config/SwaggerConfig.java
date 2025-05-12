@@ -12,10 +12,10 @@ import io.swagger.v3.oas.annotations.info.Info;
 public class SwaggerConfig {
 
     @Bean
-    public GroupedOpenApi userApi() {
+    public GroupedOpenApi memberApi() {
         return GroupedOpenApi.builder()
-                .group("User API")
-                .pathsToMatch("/api/users/**")
+                .group("Member API")
+                .pathsToMatch("/api/members/**")
                 .build();
     }
 
@@ -44,10 +44,10 @@ public class SwaggerConfig {
     }
 
     @Bean
-    public GroupedOpenApi likeApi() {
+    public GroupedOpenApi favoriteApi() {
         return GroupedOpenApi.builder()
-                .group("Like API")
-                .pathsToMatch("/api/likes/**")
+                .group("Favorite API")
+                .pathsToMatch("/api/favorites/**")
                 .build();
     }
 

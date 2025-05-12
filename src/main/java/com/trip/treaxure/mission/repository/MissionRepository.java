@@ -22,10 +22,10 @@ public interface MissionRepository extends JpaRepository<Mission, Long> {
     /**
      * 특정 사용자의 미션 조회
      *
-     * @param userId 사용자 ID
+     * @param memberId 사용자 ID
      * @return 해당 사용자가 생성한 미션 목록
      */
-    List<Mission> findByUserId(Long userId);
+    List<Mission> findByMemberId(Long memberId);
 
     /**
      * 상태별 미션 조회
