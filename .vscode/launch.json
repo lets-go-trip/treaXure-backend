@@ -2,10 +2,10 @@
     "configurations": [
         {
             "type": "java",
-            "name": "XploreApplication",
+            "name": "treaxureApplication",
             "request": "launch",
-            "mainClass": "com.trip.xplore.XploreApplication",
-            "projectName": "xplore"
+            "mainClass": "com.trip.treaxure.treaxureApplication",
+            "projectName": "treaxure"
         },
         {}
     ]
