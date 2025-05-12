@@ -1,6 +1,9 @@
 # Created by https://www.toptal.com/developers/gitignore/api/macos,windows,linux,visualstudiocode,eclipse,intellij,java,git,maven,gradle,netbeans
 # Edit at https://www.toptal.com/developers/gitignore?templates=macos,windows,linux,visualstudiocode,eclipse,intellij,java,git,maven,gradle,netbeans
 
+### H2 ###
+*.db
+
 ### Eclipse ###
 .metadata
 bin/
