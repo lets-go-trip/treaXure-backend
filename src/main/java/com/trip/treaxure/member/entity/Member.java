@@ -28,7 +28,7 @@ public class Member {
 
     @Column(name = "email", nullable = false)
     @Comment("로그인용 이메일")
-    @Schema(description = "사용자 이메일", example = "user@example.com")
+    @Schema(description = "사용자 이메일", example = "member@example.com")
     private String email;
 
     @Column(name = "password", nullable = false)
