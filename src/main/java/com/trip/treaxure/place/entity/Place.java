@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "PLACE")
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "장소 정보를 나타내는 엔티티")
@@ -22,7 +23,11 @@ public class Place {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "place_id", nullable = false)
     @Comment("장소 고유 ID")
-    @Schema(description = "장소 고유 ID", example = "1")
+    @Schema(
+        description = "장소 고유 ID",
+        example = "1",
+        accessMode = Schema.AccessMode.READ_ONLY   // 읽기 전용
+    )
     private Integer placeId;
 
     @Column(name = "name", nullable = false)
@@ -63,17 +68,29 @@ public class Place {
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     @Comment("등록 시각")
-    @Schema(description = "등록 시각", example = "2025-05-11T10:00:00")
+    @Schema(
+        description = "등록 시각",
+        example = "2025-05-11T10:00:00",
+        accessMode = Schema.AccessMode.READ_ONLY   // 읽기 전용
+    )
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
     @Column(name = "updated_at", nullable = false)
     @Comment("수정 시각")
-    @Schema(description = "수정 시각", example = "2025-05-12T09:00:00")
+    @Schema(
+        description = "수정 시각",
+        example = "2025-05-12T09:00:00",
+        accessMode = Schema.AccessMode.READ_ONLY   // 읽기 전용
+    )
     private LocalDateTime updatedAt;
 
     @Column(name = "is_active", nullable = false, columnDefinition = "TINYINT(1) DEFAULT 1")
     @Comment("장소 활성화 여부")
-    @Schema(description = "장소 활성 여부", example = "true")
+    @Schema(
+        description = "장소 활성 여부",
+        example = "true",
+        accessMode = Schema.AccessMode.READ_ONLY   // 읽기 전용
+    )
     private Boolean isActive = true;
-} 
+}
