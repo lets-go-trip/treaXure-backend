@@ -33,7 +33,7 @@ public class PlaceService {
      * @param id 장소 ID
      * @return 장소 Optional
      */
-    public Optional<Place> getPlaceById(Long id) {
+    public Optional<Place> getPlaceById(Integer id) {
         return placeRepository.findById(id);
     }
 
@@ -52,7 +52,7 @@ public class PlaceService {
      *
      * @param id 삭제할 장소 ID
      */
-    public void deletePlace(Long id) {
+    public void deletePlace(Integer id) {
         placeRepository.deleteById(id);
     }
 }
