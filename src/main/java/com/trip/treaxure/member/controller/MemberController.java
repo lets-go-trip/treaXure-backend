@@ -1,6 +1,5 @@
 package com.trip.treaxure.member.controller;
 
-import com.trip.treaxure.common.ApiResponse;
 import com.trip.treaxure.member.dto.BoardDetailResponse;
 import com.trip.treaxure.member.dto.BoardListResponse;
 import com.trip.treaxure.member.dto.MemberProfileResponse;
@@ -10,6 +9,11 @@ import com.trip.treaxure.member.service.MemberService;
 
 import io.swagger.v3.oas.annotations.*;
 
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +26,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/v1/members")
+@RequestMapping("/api/members")
 @Tag(name = "Member", description = "회원 관련 API")
 @SecurityRequirement(name = "bearerAuth")
 public class MemberController {
@@ -55,21 +59,21 @@ public class MemberController {
         memberService.deleteMember(id);
         return ResponseEntity.noContent().build();
     }
-    
+
     @GetMapping("/me")
     @Operation(
-        summary = "내 프로필 조회", 
+        summary = "내 프로필 조회",
         description = "현재 로그인한 회원의 프로필 정보를 조회합니다"
     )
     @ApiResponses({
         @io.swagger.v3.oas.annotations.responses.ApiResponse(
-            responseCode = "200", 
-            description = "조회 성공", 
+            responseCode = "200",
+            description = "조회 성공",
             content = @Content(schema = @Schema(implementation = MemberProfileResponse.class))
         ),
         @io.swagger.v3.oas.annotations.responses.ApiResponse(
-            responseCode = "401", 
-            description = "인증 실패", 
+            responseCode = "401",
+            description = "인증 실패",
             content = @Content(schema = @Schema(implementation = com.trip.treaxure.common.ApiResponse.class))
         )
     })
@@ -78,26 +82,26 @@ public class MemberController {
         MemberProfileResponse response = memberService.getMyProfile(userDetails);
         return ResponseEntity.ok(response);
     }
-    
+
     @PutMapping("/me")
     @Operation(
-        summary = "내 프로필 수정", 
+        summary = "내 프로필 수정",
         description = "현재 로그인한 회원의 프로필 정보를 수정합니다"
     )
     @ApiResponses({
         @io.swagger.v3.oas.annotations.responses.ApiResponse(
-            responseCode = "200", 
-            description = "수정 성공", 
+            responseCode = "200",
+            description = "수정 성공",
             content = @Content(schema = @Schema(implementation = com.trip.treaxure.common.ApiResponse.class))
         ),
         @io.swagger.v3.oas.annotations.responses.ApiResponse(
-            responseCode = "400", 
-            description = "유효성 검사 실패", 
+            responseCode = "400",
+            description = "유효성 검사 실패",
             content = @Content(schema = @Schema(implementation = com.trip.treaxure.common.ApiResponse.class))
         ),
         @io.swagger.v3.oas.annotations.responses.ApiResponse(
-            responseCode = "401", 
-            description = "인증 실패", 
+            responseCode = "401",
+            description = "인증 실패",
             content = @Content(schema = @Schema(implementation = com.trip.treaxure.common.ApiResponse.class))
         )
     })
@@ -107,26 +111,26 @@ public class MemberController {
         memberService.updateMyProfile(userDetails, request);
         return ResponseEntity.ok(com.trip.treaxure.common.ApiResponse.success("Profile updated successfully."));
     }
-    
+
     @GetMapping("/{nickname}")
     @Operation(
-        summary = "닉네임으로 회원 프로필 조회", 
+        summary = "닉네임으로 회원 프로필 조회",
         description = "특정 닉네임을 가진 회원의 프로필 정보를 조회합니다"
     )
     @ApiResponses({
         @io.swagger.v3.oas.annotations.responses.ApiResponse(
-            responseCode = "200", 
-            description = "조회 성공", 
+            responseCode = "200",
+            description = "조회 성공",
             content = @Content(schema = @Schema(implementation = MemberProfileResponse.class))
         ),
         @io.swagger.v3.oas.annotations.responses.ApiResponse(
-            responseCode = "401", 
-            description = "인증 실패", 
+            responseCode = "401",
+            description = "인증 실패",
             content = @Content(schema = @Schema(implementation = com.trip.treaxure.common.ApiResponse.class))
         ),
         @io.swagger.v3.oas.annotations.responses.ApiResponse(
-            responseCode = "404", 
-            description = "회원을 찾을 수 없음", 
+            responseCode = "404",
+            description = "회원을 찾을 수 없음",
             content = @Content(schema = @Schema(implementation = com.trip.treaxure.common.ApiResponse.class))
         )
     })
@@ -136,21 +140,21 @@ public class MemberController {
         MemberProfileResponse response = memberService.getMemberProfileByNickname(nickname);
         return ResponseEntity.ok(response);
     }
-    
+
     @GetMapping("/me/boards")
     @Operation(
-        summary = "내 게시글 목록 조회", 
+        summary = "내 게시글 목록 조회",
         description = "현재 로그인한 회원이 작성한 게시글 목록을 조회합니다"
     )
     @ApiResponses({
         @io.swagger.v3.oas.annotations.responses.ApiResponse(
-            responseCode = "200", 
-            description = "조회 성공", 
+            responseCode = "200",
+            description = "조회 성공",
             content = @Content(schema = @Schema(implementation = BoardListResponse.class))
         ),
         @io.swagger.v3.oas.annotations.responses.ApiResponse(
-            responseCode = "401", 
-            description = "인증 실패", 
+            responseCode = "401",
+            description = "인증 실패",
             content = @Content(schema = @Schema(implementation = com.trip.treaxure.common.ApiResponse.class))
         )
     })
@@ -159,26 +163,26 @@ public class MemberController {
         BoardListResponse response = memberService.getMyBoards(userDetails);
         return ResponseEntity.ok(response);
     }
-    
+
     @GetMapping("/me/boards/{boardId}")
     @Operation(
-        summary = "내 게시글 상세 조회", 
+        summary = "내 게시글 상세 조회",
         description = "현재 로그인한 회원이, 작성한 특정 게시글의 상세 정보를 조회합니다"
     )
     @ApiResponses({
         @io.swagger.v3.oas.annotations.responses.ApiResponse(
-            responseCode = "200", 
-            description = "조회 성공", 
+            responseCode = "200",
+            description = "조회 성공",
             content = @Content(schema = @Schema(implementation = BoardDetailResponse.class))
         ),
         @io.swagger.v3.oas.annotations.responses.ApiResponse(
-            responseCode = "401", 
-            description = "인증 실패", 
+            responseCode = "401",
+            description = "인증 실패",
             content = @Content(schema = @Schema(implementation = com.trip.treaxure.common.ApiResponse.class))
         ),
         @io.swagger.v3.oas.annotations.responses.ApiResponse(
-            responseCode = "404", 
-            description = "게시글을 찾을 수 없음", 
+            responseCode = "404",
+            description = "게시글을 찾을 수 없음",
             content = @Content(schema = @Schema(implementation = com.trip.treaxure.common.ApiResponse.class))
         )
     })
