@@ -22,7 +22,6 @@ public class Mission {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "mission_id")
-
     @Comment("미션 고유 ID")
     @Schema(description = "미션 고유 ID", example = "1")
     private Long missionId;
@@ -36,6 +35,7 @@ public class Mission {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)
     @Comment("유저 고유 ID")
+
     @Schema(description = "사용자 ID", example = "501")
     private Member memberId;
 
