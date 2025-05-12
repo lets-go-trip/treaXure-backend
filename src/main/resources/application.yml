@@ -12,7 +12,7 @@ spring:
   datasource:
     url: jdbc:h2:file:./testdb;MODE=MySQL;AUTO_SERVER=TRUE
     driver-class-name: org.h2.Driver
-    username:
+    membername:
     password:
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
@@ -26,6 +26,6 @@ spring:
 # MySQL 또는 다른 DB 사용 시 해당 설정 추가
 #  datasource:
 #    url: jdbc:mysql://localhost:3306/데이터베이스명?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8
-#    username: 유저명
+#    membername: 유저명
 #    password: 패스워드
 #    driver-class-name: com.mysql.cj.jdbc.Driver 

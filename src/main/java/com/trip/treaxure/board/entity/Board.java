@@ -30,9 +30,9 @@ public class Board {
     @Comment("저장된 사진 URL")
     private String imageUrl;
 
-    @Column(name = "like_count", nullable = false)
+    @Column(name = "favorite_count", nullable = false)
     @Comment("좋아요 개수")
-    private Integer likeCount;
+    private Integer favoriteCount;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)

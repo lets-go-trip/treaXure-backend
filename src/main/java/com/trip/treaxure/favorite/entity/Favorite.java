@@ -1,7 +1,7 @@
-package com.trip.treaxure.like.entity;
+package com.trip.treaxure.favorite.entity;
 
 import com.trip.treaxure.board.entity.Board;
-import com.trip.treaxure.user.entity.User;
+import com.trip.treaxure.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Comment;
@@ -10,32 +10,32 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "LIKE_TB", 
+@Table(name = "Favorite", 
        uniqueConstraints = {
-           @UniqueConstraint(name = "uk_user_post", columnNames = {"post_id", "user_id"})
+           @UniqueConstraint(name = "uk_member_board", columnNames = {"board_id", "member_id"})
        }
 )
 
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Like {
+public class Favorite {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "like_id")
+    @Column(name = "favorite_id")
     @Comment("좋아요 고유 ID")
-    private Long likeId;
+    private Long favoriteId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id", nullable = false)
+    @JoinColumn(name = "board_id", nullable = false)
     @Comment("게시글 고유 ID")
-    private Board post;
+    private Board board;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "member_id", nullable = false)
     @Comment("좋아요한 사용자 ID")
-    private User user;
+    private Member member;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)

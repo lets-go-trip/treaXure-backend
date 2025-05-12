@@ -1,4 +1,4 @@
-package com.trip.treaxure.user.entity;
+package com.trip.treaxure.member.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -13,13 +13,13 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class Member {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id", nullable = false)
+    @Column(name = "member_id", nullable = false)
     @Comment("사용자 고유 ID")
-    private Integer userId;
+    private Integer memberId;
 
     @Column(name = "email", nullable = false)
     @Comment("로그인용 이메일")
@@ -40,7 +40,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false, columnDefinition = "ENUM('ADMIN','USER') DEFAULT 'USER'")
     @Comment("권한")
-    private UserRole role = UserRole.USER;
+    private MemberRole role = MemberRole.USER;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -66,7 +66,7 @@ public class User {
         updatedAt = LocalDateTime.now();
     }
 
-    public enum UserRole {
+    public enum MemberRole {
         ADMIN, USER
     }
 } 
