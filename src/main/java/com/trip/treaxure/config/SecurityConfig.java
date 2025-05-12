@@ -22,14 +22,14 @@ public class SecurityConfig {
                     "/h2-console/**"
                 ).permitAll()
                 .anyRequest().authenticated() // 나머지 경로는 인증 필요
-            )
-            .formLogin(form -> form
-                .permitAll() // 별도 loginPage 없이 기본 로그인 페이지 사용
-            )
-            .logout(logout -> logout
-                .logoutSuccessUrl("/") // 로그아웃 후 리디렉션
-                .permitAll()
             );
+//            .formLogin(form -> form.loginPage("/")
+//                .permitAll() // 별도 loginPage 없이 기본 로그인 페이지 사용
+//            )
+//            .logout(logout -> logout
+//                .logoutSuccessUrl("/") // 로그아웃 후 리디렉션
+//                .permitAll()
+//            );
 
         // H2 콘솔 프레임 허용 (frameOptions 비활성화)
         http.headers(headers -> headers.frameOptions(frame -> frame.disable()));
