@@ -1,19 +1,32 @@
 package com.trip.treaxure.mission.entity;
 
+import java.time.LocalDateTime;
+
+import org.hibernate.annotations.Comment;
+
 import com.trip.treaxure.member.entity.Member;
 import com.trip.treaxure.place.entity.Place;
-import jakarta.persistence.*;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Comment;
-
-import java.time.LocalDateTime;
-
-import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Setter;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "MISSION")
@@ -23,21 +36,20 @@ public class Mission {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "mission_id")
     @Comment("미션 고유 ID")
-    @Schema(description = "미션 고유 ID", example = "1")
+    @Schema(description = "미션 고유 ID", example = "1", accessMode = Schema.AccessMode.READ_ONLY)
     private Long missionId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "place_id", nullable = false)
     @Comment("장소 고유 ID")
-    @Schema(description = "장소 ID", example = "101")
-    private Place placeId;
+    @Schema(description = "해당 미션이 속한 장소", implementation = Place.class)
+    private Place place;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)
     @Comment("유저 고유 ID")
-
-    @Schema(description = "사용자 ID", example = "501")
-    private Member memberId;
+    @Schema(description = "미션을 생성한 사용자", implementation = Member.class)
+    private Member member;
 
     @Column(name = "title", length = 200, nullable = false)
     @Comment("미션 제목")
@@ -51,7 +63,7 @@ public class Mission {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "type", nullable = false)
-    @Comment("심사 상태")
+    @Comment("미션 타입")
     @Schema(description = "미션 타입", example = "PHOTO")
     private MissionType type = MissionType.PHOTO;
 
@@ -67,18 +79,18 @@ public class Mission {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    @Comment("심사 상태")
+    @Comment("미션 상태")
     @Schema(description = "미션 상태", example = "PENDING")
     private MissionStatus status = MissionStatus.PENDING;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     @Comment("생성 시각")
-    @Schema(description = "생성 시각", example = "2025-05-01T00:00:00")
+    @Schema(description = "생성 시각", example = "2025-05-01T00:00:00", accessMode = Schema.AccessMode.READ_ONLY)
     private LocalDateTime createdAt = LocalDateTime.now();
 
     @Column(name = "evaluated_at", nullable = false)
-    @Comment("수정 시각")
-    @Schema(description = "평가 시각", example = "2025-05-02T00:00:00")
+    @Comment("평가 시각")
+    @Schema(description = "평가 시각", example = "2025-05-02T00:00:00", accessMode = Schema.AccessMode.READ_ONLY)
     private LocalDateTime evaluatedAt = LocalDateTime.now();
 
     @Column(name = "is_active", nullable = false)
@@ -93,4 +105,4 @@ public class Mission {
     public enum MissionStatus {
         PENDING, APPROVED, REJECTED
     }
-} 
+}
