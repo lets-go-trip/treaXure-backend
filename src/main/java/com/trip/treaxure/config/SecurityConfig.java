@@ -21,6 +21,7 @@ public class SecurityConfig {
                     "/webjars/**",
                     "/h2-console/**"
                 ).permitAll()
+                .requestMatchers("/api/**").permitAll() // 모든 API 경로를 인증 없이 허용
                 .anyRequest().authenticated() // 나머지 경로는 인증 필요
             )
             .formLogin(form -> form
