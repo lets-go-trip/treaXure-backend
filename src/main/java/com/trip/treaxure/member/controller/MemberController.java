@@ -1,9 +1,6 @@
 package com.trip.treaxure.member.controller;
 
-import com.trip.treaxure.member.dto.BoardDetailResponse;
-import com.trip.treaxure.member.dto.BoardListResponse;
-import com.trip.treaxure.member.dto.MemberProfileResponse;
-import com.trip.treaxure.member.dto.UpdateProfileRequest;
+import com.trip.treaxure.member.dto.*;
 import com.trip.treaxure.member.entity.Member;
 import com.trip.treaxure.member.service.MemberService;
 
@@ -12,7 +9,6 @@ import io.swagger.v3.oas.annotations.*;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
@@ -28,7 +24,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/members")
 @Tag(name = "Member", description = "회원 관련 API")
-@SecurityRequirement(name = "bearerAuth")
+//@SecurityRequirement(name = "bearerAuth")
 public class MemberController {
 
     @Autowired
@@ -112,7 +108,7 @@ public class MemberController {
         return ResponseEntity.ok(com.trip.treaxure.common.ApiResponse.success("Profile updated successfully."));
     }
 
-    @GetMapping("/{nickname}")
+    @GetMapping("/profile/{nickname}")
     @Operation(
         summary = "닉네임으로 회원 프로필 조회",
         description = "특정 닉네임을 가진 회원의 프로필 정보를 조회합니다"

@@ -68,8 +68,7 @@ public class MemberService {
     @Transactional
     public void updateMyProfile(UserDetails userDetails, UpdateProfileRequest request) {
         Member member = getMemberByEmail(userDetails.getUsername());
-        member.setNickname(request.getNickname());
-        member.setProfileUrl(request.getProfileUrl());
+        member.updateProfile(request.getNickname(), request.getProfileUrl());
         memberRepository.save(member);
     }
     
