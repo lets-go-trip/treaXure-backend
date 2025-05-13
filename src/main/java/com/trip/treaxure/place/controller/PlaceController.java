@@ -38,7 +38,7 @@ public class PlaceController {
             @ApiResponse(responseCode = "404", description = "장소를 찾을 수 없음")
     })
     @GetMapping("/{id}")
-    public ResponseEntity<Place> getPlaceById(@PathVariable Long id) {
+    public ResponseEntity<Place> getPlaceById(@PathVariable Integer id) {
         Optional<Place> place = placeService.getPlaceById(id);
         return place.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
@@ -57,7 +57,7 @@ public class PlaceController {
             @ApiResponse(responseCode = "204", description = "장소 삭제 성공")
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePlace(@PathVariable Long id) {
+    public ResponseEntity<Void> deletePlace(@PathVariable Integer id) {
         placeService.deletePlace(id);
         return ResponseEntity.noContent().build();
     }

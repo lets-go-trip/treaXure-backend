@@ -5,6 +5,13 @@
             "name": "treaxureApplication",
             "request": "launch",
             "mainClass": "com.trip.treaxure.treaxureApplication",
+            "projectName": ""
+        },
+        {
+            "type": "java",
+            "name": "treaxureApplication",
+            "request": "launch",
+            "mainClass": "com.trip.treaxure.treaxureApplication",
             "projectName": "treaxure"
         },
         {}
