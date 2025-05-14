@@ -3,6 +3,7 @@ package com.trip.treaxure.auth.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -107,6 +108,20 @@ public class AuthController {
         Long memberId = userDetails.getMember().getMemberId().longValue();
         MemberResponseDto updated = memberService.updateMember(memberId, dto);
         return ResponseEntity.ok(ApiResponseDto.success(updated));
+    }
+
+    @Operation(summary = "회원 탈퇴", description = "현재 로그인한 사용자의 계정을 비활성화합니다.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "204", description = "회원 탈퇴 성공"),
+        @ApiResponse(responseCode = "404", description = "회원 정보 없음")
+    })
+    @DeleteMapping("/me")
+    public ResponseEntity<Void> deleteMyAccount(
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
+
+        Long memberId = userDetails.getMember().getMemberId().longValue();
+        memberService.deactivateMember(memberId);
+        return ResponseEntity.noContent().build(); // 204 No Content
     }
 
 }

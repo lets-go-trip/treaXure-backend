@@ -13,6 +13,7 @@ import com.trip.treaxure.member.entity.Member;
 import com.trip.treaxure.member.repository.MemberRepository;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -63,6 +64,14 @@ public class MemberService {
         }
 
         return MemberResponseDto.fromEntity(memberRepository.save(member));
+    }
+
+    @Transactional
+    public void deactivateMember(Long memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 회원입니다."));
+
+        member.setIsActive(false); // 계정 비활성화
     }
 
 }
