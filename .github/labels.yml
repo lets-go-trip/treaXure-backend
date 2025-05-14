@@ -21,3 +21,11 @@
 - name: chore
   color: "3498DB"
   description: "빌드 업무 수정, 패키지 매니저 수정(ex .gitignore 수정 같은 경우)"
+
+- name: infra
+  color: "F39C12"
+  description: "AWS‧CI/CD‧Terraform 등 인프라·DevOps 작업"
+
+- name: perf
+  color: "1ABC9C"
+  description: "성능 최적화(쿼리·캐시·로딩 속도 개선 등)"
