@@ -72,6 +72,14 @@ public class SwaggerConfig {
     }
 
     @Bean
+    public GroupedOpenApi weekApi() {
+        return GroupedOpenApi.builder()
+                .group("Week API")
+                .pathsToMatch("/api/weeks/**")
+                .build();
+    }
+
+    @Bean
     public GroupedOpenApi boardApi() {
         return GroupedOpenApi.builder()
                 .group("Board API")
