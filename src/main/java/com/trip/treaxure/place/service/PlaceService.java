@@ -48,6 +48,24 @@ public class PlaceService {
     }
 
     /**
+     * 장소 정보 수정
+     */
+    public Optional<Place> updatePlace(Long id, Place newPlace) {
+        return placeRepository.findById(id)
+            .map(place -> {
+                place.setName(newPlace.getName());
+                place.setCategory(newPlace.getCategory());
+                place.setDescription(newPlace.getDescription());
+                place.setAddress(newPlace.getAddress());
+                place.setLatitude(newPlace.getLatitude());
+                place.setLongitude(newPlace.getLongitude());
+                place.setThumbnailUrl(newPlace.getThumbnailUrl());
+                place.setIsActive(newPlace.getIsActive());
+                return placeRepository.save(place);
+            });
+    }
+
+    /**
      * 장소 삭제
      *
      * @param id 삭제할 장소 ID
