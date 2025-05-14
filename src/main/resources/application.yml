@@ -27,6 +27,14 @@ jwt:
   access-token-validity: 3600000 # 1시간 (1,000 x 60 x 60)
   refresh-token-validity: 604800000 # 7일 (1,000 x 60 x 60 x 24 x 7)
 
+server:
+  port: 8081
+# JWT 설정 (반드시 application.yml 최하단에 위치)
+app:
+  jwtSecret: your_super_secret_key_here
+  jwtExpirationMs: 900000 # 15분
+  jwtRefreshExpirationMs: 604800000 # 7일
+
 # MySQL 또는 다른 DB 사용 시 해당 설정 추가
 #  datasource:
 #    url: jdbc:mysql://localhost:3306/데이터베이스명?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8

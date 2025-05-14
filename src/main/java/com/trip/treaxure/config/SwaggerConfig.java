@@ -12,7 +12,13 @@ import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 
 @Configuration
-@OpenAPIDefinition(info = @Info(title = "TreaXure API 문서", description = "TreaXure 프로젝트의 API 명세입니다.", version = "v1"))
+@OpenAPIDefinition(
+    info = @Info(
+        title = "TreaXure API 문서",
+        description = "TreaXure 프로젝트의 API 명세입니다.",
+        version = "v1"
+    )
+)
 public class SwaggerConfig {
 
     // Swagger에서 JWT 인증 헤더 설정
@@ -64,10 +70,10 @@ public class SwaggerConfig {
     }
 
     @Bean
-    public GroupedOpenApi voteApi() {
+    public GroupedOpenApi missionApi() {
         return GroupedOpenApi.builder()
-                .group("Vote API")
-                .pathsToMatch("/api/votes/**")
+                .group("Mission API")
+                .pathsToMatch("/api/missions/**")
                 .build();
     }
 
@@ -96,10 +102,20 @@ public class SwaggerConfig {
     }
 
     @Bean
-    public GroupedOpenApi missionApi() {
+    public GroupedOpenApi likeApi() {
         return GroupedOpenApi.builder()
-                .group("Mission API")
-                .pathsToMatch("/api/missions/**")
+                .group("Favorite API")
+                .pathsToMatch("/api/favorites/**")
                 .build();
     }
+    
+    // 혹은 auth 엔드포인트도 보고 싶다면:
+    @Bean
+    public GroupedOpenApi authApi() {
+        return GroupedOpenApi.builder()
+                .group("Auth API")
+                .pathsToMatch("/api/auth/**")
+                .build();
+    }
+
 }

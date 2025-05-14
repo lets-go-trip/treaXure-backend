@@ -1,5 +1,8 @@
 package com.trip.treaxure.config;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -14,6 +17,9 @@ import com.trip.treaxure.auth.jwt.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 
 
+/**
+ * Spring Security 설정 클래스
+ */
 @Configuration
 @RequiredArgsConstructor
 @EnableMethodSecurity(prePostEnabled = true) // 꼭 있어야 @PreAuthorize 사용 가능
@@ -22,7 +28,7 @@ public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth

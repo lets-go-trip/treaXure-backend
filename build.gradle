@@ -20,14 +20,29 @@ repositories {
 }
 
 dependencies {
+	// Spring Boot 기본
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'	//Swagger
+
+	// DTO 유효성 검사용
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+	// JWT 라이브러리
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+	runtimeOnly  'io.jsonwebtoken:jjwt-impl:0.11.5'
+	runtimeOnly  'io.jsonwebtoken:jjwt-jackson:0.11.5' // Jackson 기반 직렬화
+
+	// Lombok
 	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+
+	// JDBC 드라이버
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	runtimeOnly 'com.h2database:h2'
-	annotationProcessor 'org.projectlombok:lombok'
+	
+	// 테스트
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
