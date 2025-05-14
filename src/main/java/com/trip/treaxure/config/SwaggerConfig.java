@@ -6,10 +6,46 @@ import org.springframework.context.annotation.Configuration;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 
 @Configuration
 @OpenAPIDefinition(info = @Info(title = "TreaXure API 문서", description = "TreaXure 프로젝트의 API 명세입니다.", version = "v1"))
 public class SwaggerConfig {
+
+    // Swagger에서 JWT 인증 헤더 설정
+    @Bean
+    public OpenAPI customOpenAPI() {
+        final String securitySchemeName = "bearerAuth";
+        return new OpenAPI()
+            .addSecurityItem(new SecurityRequirement().addList(securitySchemeName))
+            .components(new Components()
+                .addSecuritySchemes(securitySchemeName,
+                    new SecurityScheme()
+                        .name(securitySchemeName)
+                        .type(SecurityScheme.Type.HTTP)
+                        .scheme("bearer")
+                        .bearerFormat("JWT")));
+    }
+
+    // 통합된 모든 API 보기
+    @Bean
+    public GroupedOpenApi allApis() {
+        return GroupedOpenApi.builder()
+                .group("All APIs")
+                .pathsToMatch("/api/**")
+                .build();
+    }
+
+    @Bean
+    public GroupedOpenApi authApi() {
+        return GroupedOpenApi.builder()
+                .group("Auth API")
+                .pathsToMatch("/api/auth/**")
+                .build();
+    }
 
     @Bean
     public GroupedOpenApi memberApi() {
