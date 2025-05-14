@@ -8,8 +8,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.trip.treaxure.global.dto.ApiResponseDto;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.persistence.EntityNotFoundException;
 
+@Hidden
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
