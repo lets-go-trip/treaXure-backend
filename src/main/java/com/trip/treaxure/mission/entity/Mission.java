@@ -28,7 +28,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder // 🔹 Builder 패턴 적용: Mission.builder().title(...).build()
+@Builder
 @Table(name = "MISSION")
 @Schema(description = "미션 정보를 나타내는 엔티티")
 public class Mission {
