@@ -8,7 +8,8 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.trip.treaxure.member.entity.Member;
+import com.trip.treaxure.auth.security.CustomUserDetails;
+import com.trip.treaxure.auth.util.JwtUtils;
 import com.trip.treaxure.member.repository.MemberRepository;
 
 import jakarta.servlet.FilterChain;
@@ -17,37 +18,37 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
-@Component
 @RequiredArgsConstructor
+@Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private final JwtTokenProvider jwtTokenProvider;
+    private final JwtUtils jwtUtils;
     private final MemberRepository memberRepository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain)
-            throws ServletException, IOException {
+                                    throws ServletException, IOException {
 
         String authHeader = request.getHeader("Authorization");
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             String token = authHeader.substring(7);
-            if (jwtTokenProvider.validateToken(token)) {
-                Long userId = jwtTokenProvider.getUserId(token);
 
-                Member member = memberRepository.findById(userId)
-                        .orElseThrow(() -> new RuntimeException("사용자 정보를 찾을 수 없습니다."));
+            if (jwtUtils.validateToken(token)) {
+                Long userId = jwtUtils.getUserIdFromToken(token);
 
-                JwtUserDetails userDetails = new JwtUserDetails(member);
+                memberRepository.findById(userId).ifPresent(member -> {
+                    CustomUserDetails userDetails = new CustomUserDetails(member);
 
-                UsernamePasswordAuthenticationToken authentication =
-                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                            userDetails, null, userDetails.getAuthorities()
+                    );
+                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
-                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                });
             }
         }
 
