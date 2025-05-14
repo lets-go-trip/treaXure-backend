@@ -20,4 +20,4 @@
 
 - name: chore
   color: "3498DB"
-  description: "빌드 업무 수정, 패키지 매니저 수정(ex .gitignore 수정 같은 경우)" 
+  description: "빌드 업무 수정, 패키지 매니저 수정(ex .gitignore 수정 같은 경우)"
