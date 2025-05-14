@@ -1,14 +1,27 @@
 package com.trip.treaxure.member.entity;
 
-import jakarta.persistence.*;
-import lombok.*;
+import java.time.LocalDateTime;
+
 import org.hibernate.annotations.Comment;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-
-import java.time.LocalDateTime;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "MEMBER")
@@ -16,6 +29,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Schema(description = "사용자 정보를 나타내는 엔티티")
 public class Member {
 
@@ -28,7 +42,7 @@ public class Member {
 
     @Column(name = "email", nullable = false)
     @Comment("로그인용 이메일")
-    @Schema(description = "사용자 이메일", example = "user@example.com")
+    @Schema(description = "사용자 이메일", example = "member@example.com")
     private String email;
 
     @Column(name = "password", nullable = false)

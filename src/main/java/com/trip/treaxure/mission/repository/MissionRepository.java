@@ -13,14 +13,17 @@ public interface MissionRepository extends JpaRepository<Mission, Long> {
      * 특정 장소의 미션 조회
      *   Place 엔티티의 placeId 필드를 비교하도록 JPQL 작성
      */
-    @Query("SELECT m FROM Mission m WHERE m.placeId.placeId = :placeId")
+    @Query("SELECT m FROM Mission m JOIN FETCH m.place WHERE m.place.placeId = :placeId")
     List<Mission> findByPlaceId(@Param("placeId") Long placeId);
 
     /**
      * 특정 사용자의 미션 조회
+     *
+     * @param memberId 사용자 ID
+     * @return 해당 사용자가 생성한 미션 목록
      */
-    @Query("SELECT m FROM Mission m WHERE m.memberId.memberId = :userId")
-    List<Mission> findByUserId(@Param("userId") Long userId);
+    @Query("SELECT m FROM Mission m JOIN FETCH m.member WHERE m.member.memberId = :memberId")
+    List<Mission> findByMemberId(@Param("memberId") Long memberId);
 
     /**
      * 상태별 미션 조회

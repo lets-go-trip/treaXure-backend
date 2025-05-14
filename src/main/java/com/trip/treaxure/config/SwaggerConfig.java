@@ -6,6 +6,10 @@ import org.springframework.context.annotation.Configuration;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 
 @Configuration
 @OpenAPIDefinition(
@@ -17,19 +21,40 @@ import io.swagger.v3.oas.annotations.info.Info;
 )
 public class SwaggerConfig {
 
-    // 기존에 개별적으로 묶어두신 그룹들은 그대로 두셔도 되고,
-    // 한번에 전체 API를 보고 싶으시면 아래 All API 그룹을 사용하세요.
-
+    // Swagger에서 JWT 인증 헤더 설정
     @Bean
-    public GroupedOpenApi allApi() {
+    public OpenAPI customOpenAPI() {
+        final String securitySchemeName = "bearerAuth";
+        return new OpenAPI()
+            .addSecurityItem(new SecurityRequirement().addList(securitySchemeName))
+            .components(new Components()
+                .addSecuritySchemes(securitySchemeName,
+                    new SecurityScheme()
+                        .name(securitySchemeName)
+                        .type(SecurityScheme.Type.HTTP)
+                        .scheme("bearer")
+                        .bearerFormat("JWT")));
+    }
+
+    // 통합된 모든 API 보기
+    @Bean
+    public GroupedOpenApi allApis() {
         return GroupedOpenApi.builder()
-                .group("All API")
+                .group("All APIs")
                 .pathsToMatch("/api/**")
                 .build();
     }
 
     @Bean
-    public GroupedOpenApi userApi() {
+    public GroupedOpenApi authApi() {
+        return GroupedOpenApi.builder()
+                .group("Auth API")
+                .pathsToMatch("/api/auth/**")
+                .build();
+    }
+
+    @Bean
+    public GroupedOpenApi memberApi() {
         return GroupedOpenApi.builder()
                 .group("Member API")
                 .pathsToMatch("/api/members/**")
@@ -53,6 +78,14 @@ public class SwaggerConfig {
     }
 
     @Bean
+    public GroupedOpenApi weekApi() {
+        return GroupedOpenApi.builder()
+                .group("Week API")
+                .pathsToMatch("/api/weeks/**")
+                .build();
+    }
+
+    @Bean
     public GroupedOpenApi boardApi() {
         return GroupedOpenApi.builder()
                 .group("Board API")
@@ -61,10 +94,10 @@ public class SwaggerConfig {
     }
 
     @Bean
-    public GroupedOpenApi voteApi() {
+    public GroupedOpenApi favoriteApi() {
         return GroupedOpenApi.builder()
-                .group("Vote API")
-                .pathsToMatch("/api/votes/**")
+                .group("Favorite API")
+                .pathsToMatch("/api/favorites/**")
                 .build();
     }
 

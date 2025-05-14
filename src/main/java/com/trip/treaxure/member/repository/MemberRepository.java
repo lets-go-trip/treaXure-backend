@@ -1,10 +1,11 @@
 package com.trip.treaxure.member.repository;
 
-import com.trip.treaxure.member.entity.Member;
-import org.springframework.data.jpa.repository.JpaRepository;
-
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.trip.treaxure.member.entity.Member;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
     /**

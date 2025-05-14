@@ -1,116 +1,96 @@
 package com.trip.treaxure.auth.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import com.trip.treaxure.auth.dto.request.RefreshTokenRequest;
 import com.trip.treaxure.auth.dto.request.SignInRequest;
 import com.trip.treaxure.auth.dto.request.SignUpRequest;
-import com.trip.treaxure.auth.dto.request.TokenRefreshRequest;
-import com.trip.treaxure.auth.dto.response.TokenRefreshResponse;
-import com.trip.treaxure.auth.entity.RefreshToken;
-import com.trip.treaxure.auth.repository.RefreshTokenRepository;
-import com.trip.treaxure.auth.security.CustomUserDetails;
-import com.trip.treaxure.auth.security.JwtUtil;
+import com.trip.treaxure.auth.dto.response.JwtResponse;
+import com.trip.treaxure.auth.util.JwtUtils;
+import com.trip.treaxure.auth.util.RefreshTokenStore;
 import com.trip.treaxure.member.entity.Member;
 import com.trip.treaxure.member.repository.MemberRepository;
 
+import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class AuthService {
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final MemberRepository memberRepository;
+    private final JwtUtils jwtUtils;
+    private final RefreshTokenStore refreshTokenStore;
+    private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private MemberRepository memberRepository;
+    /**
+     * 로그인 처리 및 토큰 발급
+     */
+    public JwtResponse signin(SignInRequest request) {
+        Member member = memberRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 이메일입니다."));
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private JwtUtil jwtUtil;
-
-    @Autowired
-    private RefreshTokenService refreshTokenService;
-
-    @Autowired
-    private RefreshTokenRepository refreshTokenRepository;
-
-    /** 회원가입 */
-    public ResponseEntity<?> register(SignUpRequest req) {
-        if (memberRepository.findByEmail(req.getEmail()).isPresent()) {
-            return ResponseEntity.badRequest().body("Error: Email already in use!");
+        if (!passwordEncoder.matches(request.getPassword(), member.getPassword())) {
+            throw new BadCredentialsException("비밀번호가 일치하지 않습니다.");
         }
-        if (memberRepository.findByNickname(req.getNickname()).isPresent()) {
-            return ResponseEntity.badRequest().body("Error: Nickname already taken!");
-        }
-        Member user = new Member();
-        user.setEmail(req.getEmail());
-        user.setPassword(passwordEncoder.encode(req.getPassword()));
-        user.setNickname(req.getNickname());
-        user.setRole(Member.MemberRole.USER);
-        memberRepository.save(user);
-        return ResponseEntity.ok("User registered successfully!");
+
+        String accessToken = jwtUtils.generateAccessToken(member.getMemberId().longValue());
+        String refreshToken = jwtUtils.generateRefreshToken(member.getMemberId().longValue());
+
+        refreshTokenStore.save(member.getMemberId().longValue(), refreshToken);
+
+        return new JwtResponse(accessToken, refreshToken);
     }
 
-    /** 로그인(Access + Refresh Token 발급) */
-    @Transactional
-    public ResponseEntity<TokenRefreshResponse> signin(SignInRequest req) {
-        Authentication authentication = authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(req.getEmail(), req.getPassword())
-        );
-        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-        Long userId = userDetails.getMember().getMemberId().longValue();
+    /**
+     * 회원가입 처리
+     */
+    public void signup(SignUpRequest request) {
+        if (memberRepository.findByEmail(request.getEmail()).isPresent()) {
+            throw new IllegalArgumentException("이미 사용 중인 이메일입니다.");
+        }
 
-        // Access Token 생성
-        String accessToken = jwtUtil.generateToken(authentication);
-        // Refresh Token 생성 및 저장
-        RefreshToken refreshToken = refreshTokenService.createRefreshToken(userId);
+        Member newMember = Member.builder()
+                .email(request.getEmail())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .nickname(request.getNickname())
+                .role(Member.MemberRole.USER)
+                .isActive(true)
+                .build();
 
-        return ResponseEntity.ok(
-            new TokenRefreshResponse(accessToken, refreshToken.getToken())
-        );
+        memberRepository.save(newMember);
     }
 
-    /** Access Token 재발급 */
-    public ResponseEntity<TokenRefreshResponse> refreshToken(TokenRefreshRequest request) {
-        String requestToken = request.getRefreshToken();
-        RefreshToken storedToken = refreshTokenRepository.findByToken(requestToken)
-            .orElseThrow(() -> new RuntimeException("Refresh token not found."));
-        // 만료 여부 검증
-        refreshTokenService.verifyExpiration(storedToken);
+    /**
+     * 로그아웃 처리 (Refresh Token 제거)
+     */
+    public void signout(Long memberId) {
+        refreshTokenStore.remove(memberId);
+    }
+
+    /**
+     * Refresh
+     */
+    public JwtResponse refresh(RefreshTokenRequest request) {
+        String refreshToken = request.getRefreshToken();
+
+        if (!jwtUtils.validateToken(refreshToken)) {
+            throw new IllegalArgumentException("유효하지 않은 Refresh Token 입니다.");
+        }
+
+        Long memberId = jwtUtils.getUserIdFromToken(refreshToken);
+
+        // 저장소에 존재하는지 확인
+        String stored = refreshTokenStore.get(memberId);
+        if (stored == null || !stored.equals(refreshToken)) {
+            throw new SecurityException("저장된 Refresh Token과 일치하지 않습니다.");
+        }
 
         // 새로운 Access Token 발급
-        UsernamePasswordAuthenticationToken auth =
-            new UsernamePasswordAuthenticationToken(
-                storedToken.getUser().getEmail(),
-                null,
-                userDetailsAuthorities(storedToken.getUser())
-            );
-        String newAccessToken = jwtUtil.generateToken(auth);
+        String newAccessToken = jwtUtils.generateAccessToken(memberId);
 
-        return ResponseEntity.ok(
-            new TokenRefreshResponse(newAccessToken, requestToken)
-        );
-    }
-
-    /** 로그아웃(Refresh Token 삭제) */
-    public void signout(Long userId) {
-        refreshTokenService.deleteByUserId(userId);
-    }
-
-    // Helper: Member → GrantedAuthority 목록 생성
-    private java.util.List<org.springframework.security.core.authority.SimpleGrantedAuthority>
-        userDetailsAuthorities(Member user) {
-        return java.util.List.of(
-            new org.springframework.security.core.authority.SimpleGrantedAuthority(
-                "ROLE_" + user.getRole().name()
-            )
-        );
+        return new JwtResponse(newAccessToken, refreshToken); // refresh는 재발급하지 않음
     }
 }

@@ -1,5 +1,8 @@
 package com.trip.treaxure.mission.controller;
 
+import com.trip.treaxure.global.dto.ApiResponseDto;
+import com.trip.treaxure.mission.dto.request.MissionRequestDto;
+import com.trip.treaxure.mission.dto.response.MissionResponseDto;
 import com.trip.treaxure.mission.entity.Mission;
 import com.trip.treaxure.mission.service.MissionService;
 
@@ -28,8 +31,8 @@ public class MissionController {
             @ApiResponse(responseCode = "200", description = "미션 리스트 조회 성공")
     })
     @GetMapping
-    public List<Mission> getAllMissions() {
-        return missionService.getAllMissions();
+    public ResponseEntity<ApiResponseDto<List<MissionResponseDto>>> getAllMissions() {
+        return ResponseEntity.ok(ApiResponseDto.success(missionService.getAllMissions()));
     }
 
     @Operation(summary = "미션 ID로 조회")
@@ -38,9 +41,11 @@ public class MissionController {
             @ApiResponse(responseCode = "404", description = "미션을 찾을 수 없음")
     })
     @GetMapping("/{id}")
-    public ResponseEntity<Mission> getMissionById(@PathVariable Long id) {
-        Optional<Mission> mission = missionService.getMissionById(id);
-        return mission.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<ApiResponseDto<MissionResponseDto>> getMissionById(@PathVariable Long id) {
+        return missionService.getMissionById(id)
+                .map(ApiResponseDto::success)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @Operation(summary = "미션 생성")
@@ -48,8 +53,8 @@ public class MissionController {
             @ApiResponse(responseCode = "200", description = "미션 생성 성공")
     })
     @PostMapping
-    public Mission createMission(@RequestBody Mission mission) {
-        return missionService.createMission(mission);
+    public ResponseEntity<ApiResponseDto<MissionResponseDto>> createMission(@RequestBody MissionRequestDto requestDto) {
+        return ResponseEntity.ok(ApiResponseDto.success(missionService.createMission(requestDto)));
     }
 
     @Operation(summary = "미션 삭제")
@@ -57,8 +62,8 @@ public class MissionController {
             @ApiResponse(responseCode = "204", description = "미션 삭제 성공")
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteMission(@PathVariable Long id) {
+    public ResponseEntity<ApiResponseDto<Void>> deleteMission(@PathVariable Long id) {
         missionService.deleteMission(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(ApiResponseDto.success(null));
     }
-} 
+}
