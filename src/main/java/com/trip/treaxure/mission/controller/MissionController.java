@@ -11,13 +11,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Optional;
-
 @RestController
 @RequestMapping("/api/missions")
 @Tag(name = "Mission Controller", description = "미션 관리를 위한 API")
@@ -25,6 +18,16 @@ public class MissionController {
 
     @Autowired
     private MissionService missionService;
+
+    @Operation(summary = "미션 생성")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "미션 생성 성공"),
+        @ApiResponse(responseCode = "404", description = "장소 또는 사용자를 찾을 수 없음")
+    })
+    @PostMapping
+    public Mission createMission(@RequestBody MissionRequest request) {
+        return missionService.createMissionFromDto(request);
+    }
 
     @Operation(summary = "전체 미션 조회")
     @ApiResponses(value = {

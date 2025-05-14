@@ -22,6 +22,12 @@ public class MissionService {
     private final MemberRepository memberRepository;
     private final PlaceRepository placeRepository;
 
+    @Autowired
+    private PlaceRepository placeRepository;
+
+    @Autowired
+    private MemberRepository memberRepository;
+
     /**
      * 전체 미션 조회
      */

@@ -23,9 +23,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -37,7 +39,7 @@ public class Mission {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "mission_id")
     @Comment("미션 고유 ID")
-    @Schema(description = "미션 고유 ID", example = "1")
+    @Schema(description = "미션 고유 ID", example = "1", accessMode = Schema.AccessMode.READ_ONLY)
     private Long missionId;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -80,7 +82,7 @@ public class Mission {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    @Comment("심사 상태")
+    @Comment("미션 상태")
     @Schema(description = "미션 상태", example = "PENDING")
     private MissionStatus status;
 

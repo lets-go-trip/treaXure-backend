@@ -49,6 +49,19 @@ public class PlaceController {
         return ResponseEntity.ok(ApiResponseDto.success(placeService.createPlace(dto)));
     }
 
+    @Operation(summary = "장소 정보 수정")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "장소 수정 성공"),
+        @ApiResponse(responseCode = "404", description = "장소를 찾을 수 없음")
+    })
+    @PutMapping("/{id}")
+    public ResponseEntity<Place> updatePlace(
+            @PathVariable Long id,
+            @RequestBody Place place) {
+        Optional<Place> updated = placeService.updatePlace(id, place);
+        return updated.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
     @Operation(summary = "장소 삭제")
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponseDto<Void>> deletePlace(@PathVariable Long id) {

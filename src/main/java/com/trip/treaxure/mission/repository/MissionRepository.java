@@ -18,6 +18,7 @@ public interface MissionRepository extends JpaRepository<Mission, Long> {
 
     /**
      * 특정 사용자의 미션 조회
+     * member 필드의 memberId로 비교
      *
      * @param memberId 사용자 ID
      * @return 해당 사용자가 생성한 미션 목록

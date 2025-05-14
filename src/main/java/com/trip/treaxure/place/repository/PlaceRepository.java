@@ -9,7 +9,7 @@ import com.trip.treaxure.place.entity.Place;
 /**
  * 장소 관련 DB 작업을 처리하는 JPA 리포지토리
  */
-public interface PlaceRepository extends JpaRepository<Place, Long> {
+public interface PlaceRepository extends JpaRepository<Place, Integer> {
 
     /**
      * 카테고리로 장소 목록 조회

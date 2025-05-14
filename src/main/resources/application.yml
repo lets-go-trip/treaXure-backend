@@ -1,3 +1,7 @@
+logging:
+  level:
+    org.springframework.security: DEBUG
+
 # Spring Boot 기본 설정
 spring:
   application:
