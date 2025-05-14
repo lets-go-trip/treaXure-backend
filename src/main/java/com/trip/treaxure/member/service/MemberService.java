@@ -11,6 +11,7 @@ import com.trip.treaxure.member.dto.response.MemberResponseDto;
 import com.trip.treaxure.member.entity.Member;
 import com.trip.treaxure.member.repository.MemberRepository;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -28,6 +29,11 @@ public class MemberService {
     public Optional<MemberResponseDto> getMemberById(Long id) {
         return memberRepository.findById(id)
                 .map(MemberResponseDto::fromEntity);
+    }
+
+    public Member getEntityById(Long id) {
+        return memberRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 회원입니다."));
     }
 
     public MemberResponseDto createMember(MemberRequestDto dto) {
