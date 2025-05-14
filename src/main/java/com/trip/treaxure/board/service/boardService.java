@@ -1,32 +1,57 @@
 package com.trip.treaxure.board.service;
 
-import com.trip.treaxure.board.entity.Board;
-import com.trip.treaxure.board.repository.boardRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+
+import com.trip.treaxure.board.dto.request.BoardRequestDto;
+import com.trip.treaxure.board.dto.response.BoardResponseDto;
+import com.trip.treaxure.board.entity.Board;
+import com.trip.treaxure.board.repository.BoardRepository;
+import com.trip.treaxure.mission.entity.Mission;
+import com.trip.treaxure.mission.repository.MissionRepository;
+
+import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 
 @Service
-public class boardService {
+@RequiredArgsConstructor
+public class BoardService {
 
-    @Autowired
-    private boardRepository boardRepository;
+    private final BoardRepository boardRepository;
+    private final MissionRepository missionRepository;
 
-    public List<Board> getAllboards() {
-        return boardRepository.findAll();
+    public List<BoardResponseDto> getAllBoards() {
+        return boardRepository.findAll().stream()
+                .map(BoardResponseDto::fromEntity)
+                .collect(Collectors.toList());
     }
 
-    public Optional<Board> getboardById(Long id) {
-        return boardRepository.findById(id);
+    public Optional<BoardResponseDto> getBoardById(Long id) {
+        return boardRepository.findById(id)
+                .map(BoardResponseDto::fromEntity);
     }
 
-    public Board createboard(Board board) {
-        return boardRepository.save(board);
+    public BoardResponseDto createBoard(BoardRequestDto dto) {
+        Mission mission = missionRepository.findById(dto.getMissionId())
+                .orElseThrow(() -> new EntityNotFoundException("미션을 찾을 수 없습니다."));
+
+        Board board = new Board(
+                null,
+                mission,
+                dto.getImageUrl(),
+                0, // 좋아요 수 기본값
+                null, // createdAt은 자동
+                true,
+                dto.getTitle()
+        );
+
+        return BoardResponseDto.fromEntity(boardRepository.save(board));
     }
 
-    public void deleteboard(Long id) {
+    public void deleteBoard(Long id) {
         boardRepository.deleteById(id);
     }
-} 
+}
