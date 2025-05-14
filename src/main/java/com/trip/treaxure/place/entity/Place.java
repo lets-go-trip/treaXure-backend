@@ -90,10 +90,6 @@ public class Place {
 
     @Column(name = "is_active", nullable = false, columnDefinition = "TINYINT(1) DEFAULT 1")
     @Comment("장소 활성화 여부")
-    @Schema(
-        description = "장소 활성 여부",
-        example = "true",
-        accessMode = Schema.AccessMode.READ_ONLY   // 읽기 전용
-    )
+    @Schema(description = "장소 활성 여부", example = "true")
     private Boolean isActive = true;
 }

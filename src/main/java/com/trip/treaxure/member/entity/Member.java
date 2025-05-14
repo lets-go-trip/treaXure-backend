@@ -15,7 +15,6 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "MEMBER")
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "사용자 정보를 나타내는 엔티티")
@@ -26,7 +25,7 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id", nullable = false)
     @Comment("사용자 고유 ID")
-    @Schema(description = "사용자 고유 ID", example = "1")
+    @Schema(description = "사용자 고유 ID", example = "1", accessMode = Schema.AccessMode.READ_ONLY)
     private Integer memberId;
 
     @Column(name = "email", nullable = false)
@@ -58,13 +57,13 @@ public class Member {
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     @Comment("가입 시각")
-    @Schema(description = "가입 시각", example = "2025-05-11T12:00:00")
+    @Schema(description = "가입 시각", example = "2025-05-11T12:00:00", accessMode = Schema.AccessMode.READ_ONLY)
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
     @Column(name = "updated_at", nullable = false)
     @Comment("수정 시각")
-    @Schema(description = "수정 시각", example = "2025-05-12T10:30:00")
+    @Schema(description = "수정 시각", example = "2025-05-12T10:30:00", accessMode = Schema.AccessMode.READ_ONLY)
     private LocalDateTime updatedAt;
 
     @Column(name = "is_active", nullable = false, columnDefinition = "TINYINT(1) DEFAULT 1")
@@ -84,5 +83,10 @@ public class Member {
 
     public enum MemberRole {
         ADMIN, USER
+    }
+
+    public void updateProfile(String nickname, String profileUrl) {
+        this.nickname = nickname;
+        this.profileUrl = profileUrl;
     }
 } 
