@@ -28,11 +28,12 @@ server:
 # JWT 설정 (반드시 application.yml 최하단에 위치)
 app:
   jwtSecret: your_super_secret_key_here
-  jwtExpirationMs: 86400000  # 24시간(밀리초)
+  jwtExpirationMs: 900000 # 15분
+  jwtRefreshExpirationMs: 604800000 # 7일
 
 # MySQL 또는 다른 DB 사용 시 해당 설정 추가
 #  datasource:
 #    url: jdbc:mysql://localhost:3306/데이터베이스명?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8
 #    membername: 유저명
 #    password: 패스워드
-#    driver-class-name: com.mysql.cj.jdbc.Driver 
+#    driver-class-name: com.mysql.cj.jdbc.Driver

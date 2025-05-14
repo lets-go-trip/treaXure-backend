@@ -1,17 +1,23 @@
 package com.trip.treaxure.auth.security;
 
-import com.trip.treaxure.member.entity.Member;
+import java.util.Collection;
+import java.util.List;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.*;
+import com.trip.treaxure.member.entity.Member;
 
 public class CustomUserDetails implements UserDetails {
     private final Member member;
 
     public CustomUserDetails(Member member) {
         this.member = member;
+    }
+
+    public Member getMember() {
+        return this.member;
     }
 
     @Override
