@@ -3,6 +3,8 @@ package com.trip.treaxure.mission.repository;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import com.trip.treaxure.mission.entity.Mission;
 
@@ -17,7 +19,8 @@ public interface MissionRepository extends JpaRepository<Mission, Long> {
      * @param placeId 장소 ID
      * @return 해당 장소의 미션 목록
      */
-    List<Mission> findByPlaceId(Long placeId);
+    @Query("SELECT m FROM Mission m JOIN FETCH m.place WHERE m.place.placeId = :placeId")
+    List<Mission> findByPlaceId(@Param("placeId") Long placeId);
 
     /**
      * 특정 사용자의 미션 조회
@@ -25,7 +28,8 @@ public interface MissionRepository extends JpaRepository<Mission, Long> {
      * @param memberId 사용자 ID
      * @return 해당 사용자가 생성한 미션 목록
      */
-    List<Mission> findByMemberId(Long memberId);
+    @Query("SELECT m FROM Mission m JOIN FETCH m.member WHERE m.member.memberId = :memberId")
+    List<Mission> findByMemberId(@Param("memberId") Long memberId);
 
     /**
      * 상태별 미션 조회
