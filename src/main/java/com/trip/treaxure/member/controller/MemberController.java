@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.trip.treaxure.global.dto.ApiResponseDto;
 import com.trip.treaxure.member.dto.request.MemberRequestDto;
 import com.trip.treaxure.member.dto.response.MemberResponseDto;
 import com.trip.treaxure.member.service.MemberService;
@@ -48,8 +49,9 @@ public class MemberController {
             @ApiResponse(responseCode = "200", description = "회원 생성 성공")
     })
     @PostMapping
-    public ResponseEntity<MemberResponseDto> createMember(@RequestBody MemberRequestDto dto) {
-        return ResponseEntity.ok(memberService.createMember(dto));
+    public ResponseEntity<ApiResponseDto<MemberResponseDto>> createMember(@RequestBody MemberRequestDto dto) {
+        MemberResponseDto response = memberService.createMember(dto);
+        return ResponseEntity.ok(ApiResponseDto.success(response));
     }
 
     @Operation(summary = "회원 삭제")

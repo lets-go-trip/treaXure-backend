@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.trip.treaxure.global.dto.ApiResponseDto;
 import com.trip.treaxure.place.dto.request.PlaceRequestDto;
 import com.trip.treaxure.place.dto.response.PlaceResponseDto;
 import com.trip.treaxure.place.service.PlaceService;
@@ -29,28 +30,29 @@ public class PlaceController {
 
     @Operation(summary = "전체 장소 조회")
     @GetMapping
-    public List<PlaceResponseDto> getAllPlaces() {
-        return placeService.getAllPlaces();
+    public ResponseEntity<ApiResponseDto<List<PlaceResponseDto>>> getAllPlaces() {
+        return ResponseEntity.ok(ApiResponseDto.success(placeService.getAllPlaces()));
     }
 
     @Operation(summary = "장소 ID로 조회")
     @GetMapping("/{id}")
-    public ResponseEntity<PlaceResponseDto> getPlaceById(@PathVariable Long id) {
+    public ResponseEntity<ApiResponseDto<PlaceResponseDto>> getPlaceById(@PathVariable Long id) {
         return placeService.getPlaceById(id)
+                .map(ApiResponseDto::success)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @Operation(summary = "장소 등록")
     @PostMapping
-    public ResponseEntity<PlaceResponseDto> createPlace(@RequestBody PlaceRequestDto dto) {
-        return ResponseEntity.ok(placeService.createPlace(dto));
+    public ResponseEntity<ApiResponseDto<PlaceResponseDto>> createPlace(@RequestBody PlaceRequestDto dto) {
+        return ResponseEntity.ok(ApiResponseDto.success(placeService.createPlace(dto)));
     }
 
     @Operation(summary = "장소 삭제")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePlace(@PathVariable Long id) {
+    public ResponseEntity<ApiResponseDto<Void>> deletePlace(@PathVariable Long id) {
         placeService.deletePlace(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(ApiResponseDto.success(null));
     }
 }

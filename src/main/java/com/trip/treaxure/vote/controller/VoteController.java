@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.trip.treaxure.global.dto.ApiResponseDto;
 import com.trip.treaxure.vote.dto.request.VoteRequestDto;
 import com.trip.treaxure.vote.dto.response.VoteResponseDto;
 import com.trip.treaxure.vote.service.VoteService;
@@ -29,28 +30,29 @@ public class VoteController {
 
     @Operation(summary = "전체 투표 조회")
     @GetMapping
-    public List<VoteResponseDto> getAllVotes() {
-        return voteService.getAllVotes();
+    public ResponseEntity<ApiResponseDto<List<VoteResponseDto>>> getAllVotes() {
+        return ResponseEntity.ok(ApiResponseDto.success(voteService.getAllVotes()));
     }
 
     @Operation(summary = "투표 ID로 조회")
     @GetMapping("/{id}")
-    public ResponseEntity<VoteResponseDto> getVoteById(@PathVariable Long id) {
+    public ResponseEntity<ApiResponseDto<VoteResponseDto>> getVoteById(@PathVariable Long id) {
         return voteService.getVoteById(id)
+                .map(ApiResponseDto::success)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @Operation(summary = "투표 생성")
     @PostMapping
-    public VoteResponseDto createVote(@RequestBody VoteRequestDto dto) {
-        return voteService.createVote(dto);
+    public ResponseEntity<ApiResponseDto<VoteResponseDto>> createVote(@RequestBody VoteRequestDto dto) {
+        return ResponseEntity.ok(ApiResponseDto.success(voteService.createVote(dto)));
     }
 
     @Operation(summary = "투표 삭제")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteVote(@PathVariable Long id) {
+    public ResponseEntity<ApiResponseDto<Void>> deleteVote(@PathVariable Long id) {
         voteService.deleteVote(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(ApiResponseDto.success(null));
     }
 }

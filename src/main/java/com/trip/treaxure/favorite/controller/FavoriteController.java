@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.trip.treaxure.favorite.dto.request.FavoriteRequestDto;
 import com.trip.treaxure.favorite.dto.response.FavoriteResponseDto;
 import com.trip.treaxure.favorite.service.FavoriteService;
+import com.trip.treaxure.global.dto.ApiResponseDto;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -29,28 +30,29 @@ public class FavoriteController {
 
     @Operation(summary = "전체 좋아요 조회")
     @GetMapping
-    public List<FavoriteResponseDto> getAllFavorites() {
-        return favoriteService.getAllFavorites();
+    public ResponseEntity<ApiResponseDto<List<FavoriteResponseDto>>> getAllFavorites() {
+        return ResponseEntity.ok(ApiResponseDto.success(favoriteService.getAllFavorites()));
     }
 
     @Operation(summary = "좋아요 ID로 조회")
     @GetMapping("/{id}")
-    public ResponseEntity<FavoriteResponseDto> getFavoriteById(@PathVariable Long id) {
+    public ResponseEntity<ApiResponseDto<FavoriteResponseDto>> getFavoriteById(@PathVariable Long id) {
         return favoriteService.getFavoriteById(id)
+                .map(ApiResponseDto::success)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @Operation(summary = "좋아요 생성")
     @PostMapping
-    public FavoriteResponseDto createFavorite(@RequestBody FavoriteRequestDto dto) {
-        return favoriteService.createFavorite(dto);
+    public ResponseEntity<ApiResponseDto<FavoriteResponseDto>> createFavorite(@RequestBody FavoriteRequestDto dto) {
+        return ResponseEntity.ok(ApiResponseDto.success(favoriteService.createFavorite(dto)));
     }
 
     @Operation(summary = "좋아요 삭제")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteFavorite(@PathVariable Long id) {
+    public ResponseEntity<ApiResponseDto<Void>> deleteFavorite(@PathVariable Long id) {
         favoriteService.deleteFavorite(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(ApiResponseDto.success(null));
     }
 }

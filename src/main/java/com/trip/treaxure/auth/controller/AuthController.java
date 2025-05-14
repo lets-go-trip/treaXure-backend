@@ -1,5 +1,6 @@
 package com.trip.treaxure.auth.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -10,7 +11,10 @@ import com.trip.treaxure.auth.dto.request.SignInRequest;
 import com.trip.treaxure.auth.dto.request.SignUpRequest;
 import com.trip.treaxure.auth.dto.response.JwtResponse;
 import com.trip.treaxure.auth.service.AuthService;
+import com.trip.treaxure.auth.util.JwtUtils;
+import com.trip.treaxure.global.dto.ApiResponseDto;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -20,20 +24,35 @@ public class AuthController {
 
     private final AuthService authService;
 
-    @PostMapping("/signup")
-    public ResponseEntity<String> signup(@RequestBody SignUpRequest request) {
-        authService.signup(request);
-        return ResponseEntity.ok("회원가입 성공");
+    @PostMapping("/signin")
+    public ResponseEntity<ApiResponseDto<JwtResponse>> signin(@RequestBody SignInRequest request) {
+        JwtResponse jwt = authService.signin(request);
+        return ResponseEntity.ok(ApiResponseDto.success(jwt));
     }
 
-    @PostMapping("/signin")
-    public ResponseEntity<JwtResponse> signin(@RequestBody SignInRequest request) {
-        return ResponseEntity.ok(authService.signin(request));
+    @PostMapping("/signup")
+    public ResponseEntity<ApiResponseDto<String>> signup(@RequestBody SignUpRequest request) {
+        authService.signup(request);
+        return ResponseEntity.ok(ApiResponseDto.success("회원가입 완료"));
     }
 
     @PostMapping("/signout")
-    public ResponseEntity<String> signout() {
-        // 인증된 사용자 정보 활용하여 userId 추출 필요
-        return ResponseEntity.ok("로그아웃 성공 (토큰 만료 처리)");
+    public ResponseEntity<ApiResponseDto<String>> signout(HttpServletRequest request) {
+        Long userId = getUserIdFromJwt(request);
+        authService.signout(userId);
+        return ResponseEntity.ok(ApiResponseDto.success("로그아웃 완료"));
     }
+
+    @Autowired
+    private JwtUtils jwtUtils;
+
+    private Long getUserIdFromJwt(HttpServletRequest request) {
+        String authHeader = request.getHeader("Authorization");
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            String token = authHeader.substring(7);
+            return jwtUtils.getUserIdFromToken(token);
+        }
+        throw new IllegalArgumentException("Authorization header is missing or malformed.");
+    }
+
 }

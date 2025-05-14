@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.trip.treaxure.global.dto.ApiResponseDto;
 import com.trip.treaxure.vote.dto.request.WeekRequestDto;
 import com.trip.treaxure.vote.dto.response.WeekResponseDto;
 import com.trip.treaxure.vote.service.WeekService;
@@ -29,28 +30,30 @@ public class WeekController {
 
     @Operation(summary = "전체 주차 조회")
     @GetMapping
-    public List<WeekResponseDto> getAllWeeks() {
-        return weekService.getAllWeeks();
+    public ResponseEntity<ApiResponseDto<List<WeekResponseDto>>> getAllWeeks() {
+        return ResponseEntity.ok(ApiResponseDto.success(weekService.getAllWeeks()));
     }
 
     @Operation(summary = "주차 ID로 조회")
     @GetMapping("/{id}")
-    public ResponseEntity<WeekResponseDto> getWeekById(@PathVariable Long id) {
+    public ResponseEntity<ApiResponseDto<WeekResponseDto>> getWeekById(@PathVariable Long id) {
         return weekService.getWeekById(id)
+                .map(ApiResponseDto::success)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
+    
 
     @Operation(summary = "주차 생성")
     @PostMapping
-    public ResponseEntity<WeekResponseDto> createWeek(@RequestBody WeekRequestDto dto) {
-        return ResponseEntity.ok(weekService.createWeek(dto));
+    public ResponseEntity<ApiResponseDto<WeekResponseDto>> createWeek(@RequestBody WeekRequestDto dto) {
+        return ResponseEntity.ok(ApiResponseDto.success(weekService.createWeek(dto)));
     }
 
     @Operation(summary = "주차 삭제")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteWeek(@PathVariable Long id) {
+    public ResponseEntity<ApiResponseDto<Void>> deleteWeek(@PathVariable Long id) {
         weekService.deleteWeek(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(ApiResponseDto.success(null));
     }
 }

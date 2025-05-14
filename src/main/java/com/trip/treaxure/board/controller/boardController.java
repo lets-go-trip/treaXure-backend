@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.trip.treaxure.board.dto.request.BoardRequestDto;
 import com.trip.treaxure.board.dto.response.BoardResponseDto;
 import com.trip.treaxure.board.service.BoardService;
+import com.trip.treaxure.global.dto.ApiResponseDto;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -31,8 +32,8 @@ public class BoardController {
 
     @Operation(summary = "전체 게시물 조회")
     @GetMapping
-    public List<BoardResponseDto> getAllBoards() {
-        return boardService.getAllBoards();
+    public ResponseEntity<ApiResponseDto<List<BoardResponseDto>>> getAllBoards() {
+        return ResponseEntity.ok(ApiResponseDto.success(boardService.getAllBoards()));
     }
 
     @Operation(summary = "게시물 ID로 조회")
@@ -41,22 +42,23 @@ public class BoardController {
             @ApiResponse(responseCode = "404", description = "게시물을 찾을 수 없음")
     })
     @GetMapping("/{id}")
-    public ResponseEntity<BoardResponseDto> getBoardById(@PathVariable Long id) {
+    public ResponseEntity<ApiResponseDto<BoardResponseDto>> getBoardById(@PathVariable Long id) {
         return boardService.getBoardById(id)
+                .map(ApiResponseDto::success)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @Operation(summary = "게시물 생성")
     @PostMapping
-    public BoardResponseDto createBoard(@RequestBody BoardRequestDto requestDto) {
-        return boardService.createBoard(requestDto);
+    public ResponseEntity<ApiResponseDto<BoardResponseDto>> createBoard(@RequestBody BoardRequestDto dto) {
+        return ResponseEntity.ok(ApiResponseDto.success(boardService.createBoard(dto)));
     }
 
     @Operation(summary = "게시물 삭제")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteBoard(@PathVariable Long id) {
+    public ResponseEntity<ApiResponseDto<Void>> deleteBoard(@PathVariable Long id) {
         boardService.deleteBoard(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(ApiResponseDto.success(null));
     }
 }
