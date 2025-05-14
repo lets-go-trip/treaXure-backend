@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import com.trip.treaxure.member.dto.request.MemberRequestDto;
+import com.trip.treaxure.member.dto.request.MemberUpdateRequestDto;
 import com.trip.treaxure.member.dto.response.MemberResponseDto;
 import com.trip.treaxure.member.entity.Member;
 import com.trip.treaxure.member.repository.MemberRepository;
@@ -31,11 +32,6 @@ public class MemberService {
                 .map(MemberResponseDto::fromEntity);
     }
 
-    public Member getEntityById(Long id) {
-        return memberRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 회원입니다."));
-    }
-
     public MemberResponseDto createMember(MemberRequestDto dto) {
         Member member = new Member();
         member.setEmail(dto.getEmail());
@@ -47,4 +43,26 @@ public class MemberService {
     public void deleteMember(Long id) {
         memberRepository.deleteById(id);
     }
+
+    // Auth 인증 후 사용
+
+    public Member getEntityById(Long id) {
+        return memberRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 회원입니다."));
+    }
+
+    public MemberResponseDto updateMember(Long memberId, MemberUpdateRequestDto dto) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 회원입니다."));
+
+        if (dto.getNickname() != null) {
+            member.setNickname(dto.getNickname());
+        }
+        if (dto.getProfileUrl() != null) {
+            member.setProfileUrl(dto.getProfileUrl());
+        }
+
+        return MemberResponseDto.fromEntity(memberRepository.save(member));
+    }
+
 }
