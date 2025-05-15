@@ -22,6 +22,8 @@ spring:
     properties:
       hibernate:
         format_sql: true
+server:
+  port: 8081
 jwt:
   secret: "myverysecretjwtkeymyverysecretjwtkey" # 32자 이상
   access-token-validity: 3600000 # 1시간 (1,000 x 60 x 60)
