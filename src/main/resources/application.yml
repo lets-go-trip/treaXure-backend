@@ -1,19 +1,21 @@
-# Spring Boot 기본 설정
 spring:
   application:
     name: treaxure-backend
+
   profiles:
     active: local
-  # H2 설정
+
   h2:
     console:
       enabled: true
       path: /h2-console
+
   datasource:
     url: jdbc:h2:file:./testdb;MODE=MySQL;AUTO_SERVER=TRUE
     driver-class-name: org.h2.Driver
     membername:
     password:
+
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
@@ -22,16 +24,27 @@ spring:
     properties:
       hibernate:
         format_sql: true
+
+  config:
+    import: optional:file:.env[.properties]
+
 server:
   port: 8081
-jwt:
-  secret: "myverysecretjwtkeymyverysecretjwtkey" # 32자 이상
-  access-token-validity: 3600000 # 1시간 (1,000 x 60 x 60)
-  refresh-token-validity: 604800000 # 7일 (1,000 x 60 x 60 x 24 x 7)
 
-# MySQL 또는 다른 DB 사용 시 해당 설정 추가
-#  datasource:
-#    url: jdbc:mysql://localhost:3306/데이터베이스명?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8
-#    membername: 유저명
-#    password: 패스워드
-#    driver-class-name: com.mysql.cj.jdbc.Driver
+jwt:
+  secret: ${JWT_SECRET}
+  access-token-validity: ${JWT_ACCESS_TOKEN_VALIDITY}
+  refresh-token-validity: ${JWT_REFRESH_TOKEN_VALIDITY}
+
+oauth:
+  kakao:
+    client-id: ${KAKAO_CLIENT_ID}
+    redirect-uri: ${KAKAO_REDIRECT_URI}
+    token-uri: ${KAKAO_TOKEN_URI}
+    user-info-uri: ${KAKAO_USER_INFO_URI}
+  naver:
+    client-id: ${NAVER_CLIENT_ID}
+    client-secret: ${NAVER_CLIENT_SECRET}
+    redirect-uri: ${NAVER_REDIRECT_URI}
+    token-uri: ${NAVER_TOKEN_URI}
+    user-info-uri: ${NAVER_USER_INFO_URI}

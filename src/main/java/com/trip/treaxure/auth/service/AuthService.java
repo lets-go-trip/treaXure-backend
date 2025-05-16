@@ -93,4 +93,10 @@ public class AuthService {
 
         return new JwtResponse(newAccessToken, refreshToken); // refresh는 재발급하지 않음
     }
+
+    // AuthService 클래스 내부에 추가
+    public void saveRefreshToken(Long memberId, String refreshToken) {
+        refreshTokenStore.save(memberId, refreshToken);
+    }
+
 }
