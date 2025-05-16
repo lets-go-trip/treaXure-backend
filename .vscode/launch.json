@@ -1,12 +1,22 @@
 {
-    "configurations": [
-        {
-            "type": "java",
-            "name": "treaxureApplication",
-            "request": "launch",
-            "mainClass": "com.trip.treaxure.treaxureApplication",
-            "projectName": "treaxure"
-        },
-        {}
-    ]
+  "configurations": [
+    {
+      "type": "java",
+      "name": "treaxureApplication",
+      "request": "launch",
+      "mainClass": "com.trip.treaxure.treaxureApplication",
+      "projectName": "treaxure"
+    },
+    {},
+    {
+      "type": "java",
+      "name": "Spring Boot-treaxureApplication<treaXure-backend>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "com.trip.treaxure.treaxureApplication",
+      "projectName": "treaXure-backend",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    }
+  ]
 }

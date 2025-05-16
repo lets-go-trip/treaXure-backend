@@ -375,3 +375,6 @@ gradle-app.setting
 
 # Custom application properties
 application-local.yml
+
+### env ###
+.env
