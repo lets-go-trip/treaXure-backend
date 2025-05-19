@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -51,9 +52,16 @@ public class AuthController {
     }
 
     @PostMapping("/signout")
-    public ResponseEntity<ApiResponseDto<String>> signout(HttpServletRequest request, HttpServletResponse response) {
-        Long userId = getUserIdFromJwt(request);
-        authService.signout(userId);
+    public ResponseEntity<ApiResponseDto<String>> signout(
+            @RequestHeader(value = "Authorization", required = false) String authHeader,
+            HttpServletResponse response) {
+
+        // 토큰이 있으면 스토어에서만 제거
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            Long userId = jwtUtils.getUserIdFromToken(authHeader.substring(7));
+            authService.signout(userId);
+        }
+        // 쿠키는 무조건 삭제
         deleteRefreshTokenCookie(response);
         return ResponseEntity.ok(ApiResponseDto.success("로그아웃 완료"));
     }
