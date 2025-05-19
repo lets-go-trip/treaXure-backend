@@ -91,7 +91,7 @@ public class Member {
 
     @PrePersist
     protected void onCreate() {
-        if (profileUrl == null) profileUrl = "기본_사용자_이미지_URL";
+        if (profileUrl == null) profileUrl = "https://thumb16.iclickart.co.kr/Thumb16/1170000/1166288.jpg";
     }
 
     @PreUpdate
