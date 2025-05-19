@@ -66,6 +66,12 @@ public class Member {
     @Schema(description = "사용자 역할", example = "USER")
     private MemberRole role = MemberRole.USER;
 
+    @Builder.Default
+    @Column(name = "point", nullable = false, columnDefinition = "INT DEFAULT 0")
+    @Comment("사용자 포인트")
+    @Schema(description = "사용자 포인트", example = "0")
+    private Integer point = 0;
+
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     @Comment("가입 시각")
