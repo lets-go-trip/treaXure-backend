@@ -87,3 +87,95 @@
 - 시즌별 챌린지
 - 친구 초대 보상
 - 테마별 미션 (봄꽃 명소, 야경 명소 등)
+
+# Treaxure Backend
+
+## 프로젝트 소개
+여행 관련 미션과 트레져 사냥을 제공하는 앱의 백엔드 서버입니다.
+
+## 기술 스택
+- Java 21
+- Spring Boot 3.4.5
+- Spring Security
+- Spring Data JPA
+- H2 Database (개발용)
+- AWS (S3, CloudFront, SQS, CloudWatch)
+- Gradle
+
+## 환경 설정
+
+### 개발 환경 준비하기
+1. Java 21 설치
+2. 소스코드 다운로드
+```
+git clone https://github.com/your-org/treaxure-backend.git
+cd treaxure-backend
+```
+
+### AWS 및 환경 변수 설정
+이 프로젝트는 다음과 같은 AWS 서비스를 사용합니다:
+- S3: 이미지 저장
+- CloudFront: 이미지 전송 및 보안
+- SQS: 비동기 작업 처리
+- CloudWatch: 모니터링
+
+프로젝트 루트에 `.env` 파일을 생성하고 다음 환경 변수를 설정하세요:
+
+```
+# AWS 자격 증명
+AWS_REGION=ap-northeast-2
+AWS_ACCESS_KEY=your-access-key
+AWS_SECRET_KEY=your-secret-key
+
+# S3 설정
+S3_BUCKET_NAME=your-bucket-name
+
+# CloudFront 설정
+CLOUDFRONT_DOMAIN=your-cloudfront-domain
+CLOUDFRONT_KEY_PAIR_ID=your-key-pair-id
+CLOUDFRONT_PRIVATE_KEY_PATH=./your-private-key.pem
+
+# SQS 설정
+SQS_QUEUE_URL=your-sqs-queue-url
+
+# JWT 설정
+JWT_SECRET=your-jwt-secret-key
+JWT_ACCESS_TOKEN_VALIDITY=3600
+JWT_REFRESH_TOKEN_VALIDITY=86400
+
+# OAuth 설정 (옵션)
+KAKAO_CLIENT_ID=your-kakao-client-id
+KAKAO_REDIRECT_URI=http://localhost:8081/api/auth/kakao/callback
+KAKAO_TOKEN_URI=https://kauth.kakao.com/oauth/token
+KAKAO_USER_INFO_URI=https://kapi.kakao.com/v2/user/me
+
+NAVER_CLIENT_ID=your-naver-client-id
+NAVER_CLIENT_SECRET=your-naver-client-secret
+NAVER_REDIRECT_URI=http://localhost:8081/api/auth/naver/callback
+NAVER_TOKEN_URI=https://nid.naver.com/oauth2.0/token
+NAVER_USER_INFO_URI=https://openapi.naver.com/v1/nid/me
+```
+
+### 실행하기
+```
+./gradlew bootRun
+```
+
+또는
+
+```
+./gradlew build
+java -jar build/libs/treaxure-0.0.1-SNAPSHOT.jar
+```
+
+기본적으로 애플리케이션은 8081 포트에서 실행됩니다.
+
+## API 문서
+API 문서는 Swagger UI를 통해 제공됩니다.
+서버 실행 후 다음 URL에서 확인할 수 있습니다:
+```
+http://localhost:8081/swagger-ui/index.html
+```
+
+## AWS 통합 설명서
+AWS 서비스 사용에 대한 자세한 내용은 [README_AWS_INTEGRATION.md](README_AWS_INTEGRATION.md) 문서를 참조하세요.

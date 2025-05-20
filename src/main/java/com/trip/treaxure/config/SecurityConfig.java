@@ -2,6 +2,7 @@ package com.trip.treaxure.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 @Configuration
 @RequiredArgsConstructor
 @EnableMethodSecurity(prePostEnabled = true) // 꼭 있어야 @PreAuthorize 사용 가능
+@Profile("!test") // Not active in test profile
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
