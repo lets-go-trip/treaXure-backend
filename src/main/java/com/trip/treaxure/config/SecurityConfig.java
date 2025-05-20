@@ -14,11 +14,9 @@ import com.trip.treaxure.auth.jwt.JwtAuthenticationFilter;
 
 import lombok.RequiredArgsConstructor;
 
-
 @Configuration
 @RequiredArgsConstructor
-@EnableMethodSecurity(prePostEnabled = true) // 꼭 있어야 @PreAuthorize 사용 가능
-@Profile("!test") // Not active in test profile
+@EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
@@ -28,16 +26,28 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
+                // 프론트 진입점, Swagger, H2 콘솔, 인증 API, OAuth 콜백 모두 공개
                 .requestMatchers(
-                    "/", "/swagger-ui/**", "/v3/api-docs/**", "/h2-console/**", "/api/auth/**"
+                    "/",
+                    "/swagger-ui/**",
+                    "/v3/api-docs/**",
+                    "/h2-console/**",
+                    "/api/auth/**",
+                    "/oauth/**"            // ← 여기에 추가
                 ).permitAll()
-                .requestMatchers("/api/**").permitAll() // 모든 API 경로를 인증 없이 허용
+                // (선택) API 전체를 공개하고 싶다면 남겨두세요
+                .requestMatchers("/api/**").permitAll()
+                // 그 외 모든 요청은 인증 필요
                 .anyRequest().authenticated()
             )
+            // JWT 필터
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+            // 기본 폼 로그인 페이지 사용
             .formLogin(form -> form.permitAll())
+            // 로그아웃 성공 시 루트로
             .logout(logout -> logout.logoutSuccessUrl("/").permitAll());
 
+        // H2 콘솔을 위한 frameOptions 비활성화
         http.headers(headers -> headers.frameOptions(frame -> frame.disable()));
 
         return http.build();

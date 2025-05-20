@@ -68,6 +68,12 @@ public class Member {
     @Default
     private MemberRole role = MemberRole.USER;
 
+    @Builder.Default
+    @Column(name = "point", nullable = false, columnDefinition = "INT DEFAULT 0")
+    @Comment("사용자 포인트")
+    @Schema(description = "사용자 포인트", example = "0")
+    private Integer point = 0;
+
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     @Comment("가입 시각")
@@ -88,7 +94,7 @@ public class Member {
 
     @PrePersist
     protected void onCreate() {
-        if (profileUrl == null) profileUrl = "기본_사용자_이미지_URL";
+        if (profileUrl == null) profileUrl = "https://thumb16.iclickart.co.kr/Thumb16/1170000/1166288.jpg";
     }
 
     @PreUpdate

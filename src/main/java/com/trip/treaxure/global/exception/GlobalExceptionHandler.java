@@ -50,9 +50,19 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponseDto<Void>> handleUnexpected(Exception ex) {
-        ex.printStackTrace(); // 로그 확인용
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(ApiResponseDto.fail("서버 내부 오류가 발생했습니다."));
     }
+
+    /**
+     * 401 - 비활성화된 사용자
+     */
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<ApiResponseDto<Void>> handleIllegalState(IllegalStateException ex) {
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(ApiResponseDto.fail(ex.getMessage()));
+    }
+
 }
