@@ -375,6 +375,13 @@ gradle-app.setting
 
 # Custom application properties
 application-local.yml
+application-test.yml
+
+# H2 Database files
+testdb.*
 
 ### env ###
 .env
+
+### Security keys ###
+*.pem

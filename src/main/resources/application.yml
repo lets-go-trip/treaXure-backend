@@ -31,20 +31,28 @@ spring:
 server:
   port: 8081
 
+# 로깅 설정
+logging:
+  level:
+    root: INFO
+    com.trip.treaxure: DEBUG
+    org.springframework.web: DEBUG
+    org.springframework.security: INFO
+
 jwt:
-  secret: ${JWT_SECRET}
-  access-token-validity: ${JWT_ACCESS_TOKEN_VALIDITY}
-  refresh-token-validity: ${JWT_REFRESH_TOKEN_VALIDITY}
+  secret: ${JWT_SECRET:example-jwt-secret-key-for-development}
+  access-token-validity: ${JWT_ACCESS_TOKEN_VALIDITY:3600}
+  refresh-token-validity: ${JWT_REFRESH_TOKEN_VALIDITY:86400}
 
 oauth:
   kakao:
-    client-id: ${KAKAO_CLIENT_ID}
-    redirect-uri: ${KAKAO_REDIRECT_URI}
-    token-uri: ${KAKAO_TOKEN_URI}
-    user-info-uri: ${KAKAO_USER_INFO_URI}
+    client-id: ${KAKAO_CLIENT_ID:example-kakao-client-id}
+    redirect-uri: ${KAKAO_REDIRECT_URI:http://localhost:8081/api/auth/kakao/callback}
+    token-uri: ${KAKAO_TOKEN_URI:https://kauth.kakao.com/oauth/token}
+    user-info-uri: ${KAKAO_USER_INFO_URI:https://kapi.kakao.com/v2/user/me}
   naver:
-    client-id: ${NAVER_CLIENT_ID}
-    client-secret: ${NAVER_CLIENT_SECRET}
-    redirect-uri: ${NAVER_REDIRECT_URI}
-    token-uri: ${NAVER_TOKEN_URI}
-    user-info-uri: ${NAVER_USER_INFO_URI}
+    client-id: ${NAVER_CLIENT_ID:example-naver-client-id}
+    client-secret: ${NAVER_CLIENT_SECRET:example-naver-client-secret}
+    redirect-uri: ${NAVER_REDIRECT_URI:http://localhost:8081/api/auth/naver/callback}
+    token-uri: ${NAVER_TOKEN_URI:https://nid.naver.com/oauth2.0/token}
+    user-info-uri: ${NAVER_USER_INFO_URI:https://openapi.naver.com/v1/nid/me}
