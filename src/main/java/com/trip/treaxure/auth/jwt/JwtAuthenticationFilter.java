@@ -40,6 +40,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 Long userId = jwtUtils.getUserIdFromToken(token);
 
                 memberRepository.findById(userId).ifPresent(member -> {
+                    if (!member.getIsActive()) {
+                        return; // 인증 무시하고 다음 필터로 넘김 → SecurityContext 비어 있음
+                    }
+
                     CustomUserDetails userDetails = new CustomUserDetails(member);
 
                     UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
