@@ -19,6 +19,7 @@ import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Builder.Default;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -64,6 +65,7 @@ public class Member {
     @Column(name = "role", nullable = false, columnDefinition = "ENUM('ADMIN','USER') DEFAULT 'USER'")
     @Comment("권한")
     @Schema(description = "사용자 역할", example = "USER")
+    @Default
     private MemberRole role = MemberRole.USER;
 
     @Builder.Default
@@ -87,6 +89,7 @@ public class Member {
     @Column(name = "is_active", nullable = false, columnDefinition = "TINYINT(1) DEFAULT 1")
     @Comment("계정 활성화 여부")
     @Schema(description = "활성 여부", example = "true")
+    @Default
     private Boolean isActive = true;
 
     @PrePersist

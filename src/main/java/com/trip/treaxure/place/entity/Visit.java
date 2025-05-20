@@ -5,6 +5,7 @@ import com.trip.treaxure.member.entity.Member;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.Builder.Default;
 import org.hibernate.annotations.Comment;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -46,16 +47,19 @@ public class Visit {
     @Column(name = "visit_count", nullable = false, columnDefinition = "INT DEFAULT 1")
     @Comment("방문 횟수")
     @Schema(description = "방문 횟수", example = "3")
+    @Default
     private Integer visitCount = 1;
 
     @Column(name = "visited_at", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
     @Comment("체크인 시각")
     @Schema(description = "체크인 시각", example = "2025-05-11T08:00:00")
+    @Default
     private LocalDateTime visitedAt = LocalDateTime.now();
 
     @Column(name = "left_at", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
     @Comment("체크아웃 시각")
     @Schema(description = "체크아웃 시각", example = "2025-05-11T09:30:00")
+    @Default
     private LocalDateTime leftAt = LocalDateTime.now();
 
     @Column(name = "duration_at", nullable = false)

@@ -15,6 +15,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Builder.Default;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -84,5 +85,6 @@ public class Place {
     @Column(name = "is_active", nullable = false, columnDefinition = "TINYINT(1) DEFAULT 1")
     @Comment("장소 활성화 여부")
     @Schema(description = "장소 활성 여부", example = "true")
+    @Default
     private Boolean isActive = true;
 } 
