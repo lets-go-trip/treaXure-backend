@@ -52,6 +52,13 @@ public class MissionController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @Operation(summary = "장소 ID로 미션 목록 조회")
+    @GetMapping("/place/{placeId}")
+    public ResponseEntity<ApiResponseDto<List<MissionResponseDto>>> getMissionsByPlace(@PathVariable("placeId") Long placeId) {
+        List<MissionResponseDto> missions = missionService.getMissionsByPlaceId(placeId);
+        return ResponseEntity.ok(ApiResponseDto.success(missions));
+    }
+
     @Operation(summary = "미션 생성")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "미션 생성 성공")

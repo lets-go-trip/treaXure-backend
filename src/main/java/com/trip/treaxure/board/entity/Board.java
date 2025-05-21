@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 import org.hibernate.annotations.Comment;
 import org.hibernate.annotations.CreationTimestamp;
 
-import com.trip.treaxure.member.entity.Member;
 import com.trip.treaxure.mission.entity.Mission;
 
 import io.swagger.v3.oas.annotations.media.Schema;
