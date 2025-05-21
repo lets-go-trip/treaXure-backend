@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.trip.treaxure.auth.security.CustomUserDetails;
 import com.trip.treaxure.board.dto.request.BoardRequestDto;
 import com.trip.treaxure.board.dto.response.BoardResponseDto;
 import com.trip.treaxure.board.entity.Board;
@@ -62,9 +63,9 @@ public class BoardController {
     @PostMapping
     public ResponseEntity<ApiResponseDto<BoardResponseDto>> createBoard(
         @Valid @RequestBody BoardRequestDto dto,
-        @AuthenticationPrincipal Member member
+        @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
-        dto.setMemberId(member.getMemberId());
+        dto.setMemberId(userDetails.getMember().getMemberId());
         return ResponseEntity.ok(ApiResponseDto.success(boardService.createBoard(dto)));
     }
 
@@ -78,7 +79,7 @@ public class BoardController {
     @GetMapping("/my/{missionId}")
     @Operation(summary = "미션별 내 게시글 단건 조회")
     public ResponseEntity<ApiResponseDto<BoardResponseDto>> getMyBoardByMissionId(
-            @PathVariable Long missionId,
+            @PathVariable("missionId") Long missionId,
             @AuthenticationPrincipal Member member
     ) {
         Optional<Board> board = boardService.getBoardByMissionAndMember(missionId, member.getMemberId());
@@ -90,8 +91,9 @@ public class BoardController {
     @GetMapping("/my")
     @Operation(summary = "내 전체 게시글 조회")
     public ResponseEntity<ApiResponseDto<List<BoardResponseDto>>> getMyBoards(
-            @AuthenticationPrincipal Member member
+        @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
+        Member member = userDetails.getMember();  // 또는 getMemberId()
         List<Board> boards = boardService.getBoardsByMember(member.getMemberId());
         List<BoardResponseDto> dtos = boards.stream().map(BoardResponseDto::fromEntity).toList();
         return ResponseEntity.ok(ApiResponseDto.success(dtos));
