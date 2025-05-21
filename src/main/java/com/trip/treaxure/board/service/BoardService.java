@@ -38,20 +38,30 @@ public class BoardService {
         Mission mission = missionRepository.findById(dto.getMissionId())
                 .orElseThrow(() -> new EntityNotFoundException("미션을 찾을 수 없습니다."));
 
-        Board board = new Board(
-                null,
-                mission,
-                dto.getImageUrl(),
-                0, // 좋아요 수 기본값
-                null, // createdAt은 자동
-                true,
-                dto.getTitle()
-        );
+        Board board = Board.builder()
+                .memberId(dto.getMemberId())
+                .mission(mission)
+                .imageUrl(dto.getImageUrl())
+                .favoriteCount(0)
+                .isActive(true)
+                .title(dto.getTitle())
+                .build();
 
         return BoardResponseDto.fromEntity(boardRepository.save(board));
     }
 
     public void deleteBoard(Long id) {
-        boardRepository.deleteById(id);
+        Board board = boardRepository.findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("게시물을 찾을 수 없습니다."));
+        board.setIsActive(false);
+        boardRepository.save(board);
+    }
+
+    public Optional<Board> getBoardByMissionAndMember(Long missionId, Long memberId) {
+        return boardRepository.findByMission_MissionIdAndMemberId(missionId, memberId);
+    }
+
+    public List<Board> getBoardsByMember(Long memberId) {
+        return boardRepository.findAllByMemberId(memberId);
     }
 }

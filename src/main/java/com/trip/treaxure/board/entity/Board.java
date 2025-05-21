@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import org.hibernate.annotations.Comment;
 import org.hibernate.annotations.CreationTimestamp;
 
+import com.trip.treaxure.member.entity.Member;
 import com.trip.treaxure.mission.entity.Mission;
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -18,14 +19,18 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "BOARD")
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Schema(description = "게시글 정보를 나타내는 엔티티")
 public class Board {
 
@@ -35,6 +40,11 @@ public class Board {
     @Comment("게시글 고유 ID")
     @Schema(description = "게시글 고유 ID", example = "1")
     private Integer boardId;
+
+    @Column(name = "member_id", nullable = false)
+    @Comment("작성자 회원 ID")
+    @Schema(description = "작성자 회원 ID", example = "101")
+    private Long memberId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mission_id", nullable = false)
