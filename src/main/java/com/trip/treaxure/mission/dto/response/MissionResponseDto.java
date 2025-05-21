@@ -19,7 +19,7 @@ public class MissionResponseDto {
     private Integer placeId;
 
     @Schema(description = "회원 ID", example = "501")
-    private Integer memberId;
+    private Long memberId;
 
     @Schema(description = "미션 제목", example = "서울타워 방문")
     private String title;

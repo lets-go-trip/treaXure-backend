@@ -375,6 +375,7 @@ gradle-app.setting
 
 # Custom application properties
 application-local.yml
+application-prod.yml
 application-test.yml
 
 # H2 Database files
