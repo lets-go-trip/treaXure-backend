@@ -56,7 +56,7 @@ public class Member {
     @Schema(description = "사용자 닉네임", example = "트레져헌터")
     private String nickname;
 
-    @Column(name = "profile_url")
+    @Column(name = "profile_url", length = 1024)
     @Comment("프로필 이미지 URL")
     @Schema(description = "프로필 이미지 URL", example = "https://example.com/image.jpg")
     private String profileUrl;
