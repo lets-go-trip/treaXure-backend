@@ -18,7 +18,7 @@ public class VoteResponseDto {
     private Integer weekId;
 
     @Schema(description = "회원 ID", example = "1")
-    private Integer memberId;
+    private Long memberId;
 
     @Schema(description = "게시물 ID", example = "1")
     private Integer boardId;

@@ -15,7 +15,7 @@ import lombok.Getter;
 public class MemberResponseDto {
 
     @Schema(description = "회원 ID", example = "1")
-    private Integer memberId;
+    private Long memberId;
 
     @Schema(description = "이메일", example = "user@example.com")
     private String email;
