@@ -70,7 +70,7 @@ public class Mission {
 
     @Column(name = "score", nullable = false)
     @Comment("미션 점수")
-    @Schema(description = "미션 점수", example = "10")
+    @Schema(description = "미션 점수", example = "100")
     private Integer score;
 
     @Column(name = "reference_url", nullable = false)
