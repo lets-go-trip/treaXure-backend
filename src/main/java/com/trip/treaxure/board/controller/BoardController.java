@@ -55,6 +55,29 @@ public class BoardController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/my")
+    @Operation(summary = "내 전체 게시글 조회")
+    public ResponseEntity<ApiResponseDto<List<BoardResponseDto>>> getMyBoards(
+        @AuthenticationPrincipal CustomUserDetails userDetails
+    ) {
+        Member member = userDetails.getMember();  // 또는 getMemberId()
+        List<Board> boards = boardService.getBoardsByMember(member.getMemberId());
+        List<BoardResponseDto> dtos = boards.stream().map(BoardResponseDto::fromEntity).toList();
+        return ResponseEntity.ok(ApiResponseDto.success(dtos));
+    }
+
+    @GetMapping("/my/{missionId}")
+    @Operation(summary = "미션별 내 게시글 단건 조회")
+    public ResponseEntity<ApiResponseDto<BoardResponseDto>> getMyBoardByMissionId(
+            @PathVariable("missionId") Long missionId,
+            @AuthenticationPrincipal Member member
+    ) {
+        Optional<Board> board = boardService.getBoardByMissionAndMember(missionId, member.getMemberId());
+        return board
+                .map(b -> ResponseEntity.ok(ApiResponseDto.success(BoardResponseDto.fromEntity(b))))
+                .orElseGet(() -> ResponseEntity.ok(ApiResponseDto.success(null))); // 없으면 null 응답
+    }
+
     @Operation(summary = "게시물 생성")
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "게시물 생성 성공"),
@@ -76,26 +99,4 @@ public class BoardController {
         return ResponseEntity.ok(ApiResponseDto.success(null));
     }
 
-    @GetMapping("/my/{missionId}")
-    @Operation(summary = "미션별 내 게시글 단건 조회")
-    public ResponseEntity<ApiResponseDto<BoardResponseDto>> getMyBoardByMissionId(
-            @PathVariable("missionId") Long missionId,
-            @AuthenticationPrincipal Member member
-    ) {
-        Optional<Board> board = boardService.getBoardByMissionAndMember(missionId, member.getMemberId());
-        return board
-                .map(b -> ResponseEntity.ok(ApiResponseDto.success(BoardResponseDto.fromEntity(b))))
-                .orElseGet(() -> ResponseEntity.ok(ApiResponseDto.success(null))); // 없으면 null 응답
-    }
-
-    @GetMapping("/my")
-    @Operation(summary = "내 전체 게시글 조회")
-    public ResponseEntity<ApiResponseDto<List<BoardResponseDto>>> getMyBoards(
-        @AuthenticationPrincipal CustomUserDetails userDetails
-    ) {
-        Member member = userDetails.getMember();  // 또는 getMemberId()
-        List<Board> boards = boardService.getBoardsByMember(member.getMemberId());
-        List<BoardResponseDto> dtos = boards.stream().map(BoardResponseDto::fromEntity).toList();
-        return ResponseEntity.ok(ApiResponseDto.success(dtos));
-    }
 }
