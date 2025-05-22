@@ -13,4 +13,5 @@ public interface VisitRepository extends JpaRepository<Visit, Integer> {
     Optional<Visit> findByMemberAndPlace(Member member, Place place);
     List<Visit> findByPlace(Place place);
     List<Visit> findByMember(Member member);
+    long countByPlace(Place place);
 }

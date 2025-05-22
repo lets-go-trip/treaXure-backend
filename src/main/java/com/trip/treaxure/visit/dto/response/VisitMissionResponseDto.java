@@ -20,6 +20,9 @@ public class VisitMissionResponseDto {
     @Schema(description = "방문한 장소 ID", example = "1")
     private Long placeId;
 
+    @Schema(description = "방문한 장소 설명", example = "서울의 대표적인 관광지입니다.")
+    private String placeDescription;
+
     @Schema(description = "방문한 장소 이름", example = "경복궁")
     private String placeName;
 
@@ -28,6 +31,12 @@ public class VisitMissionResponseDto {
 
     @Schema(description = "썸네일 이미지 URL", example = "https://example.com/thumbnail.jpg")
     private String thumbnailUrl;
+
+    @Schema(description = "방문자 수", example = "100")
+    private int visitorCount;
+
+    @Schema(description = "미션 완료 수", example = "500")
+    private int boardCount;
 
     @Schema(description = "해당 장소의 미션 목록")
     private List<MissionResponseDto> missions;

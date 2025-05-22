@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.trip.treaxure.board.repository.BoardRepository;
 import com.trip.treaxure.member.entity.Member;
 import com.trip.treaxure.member.repository.MemberRepository;
 import com.trip.treaxure.mission.dto.response.MissionResponseDto;
@@ -28,6 +29,7 @@ public class VisitService {
     private final MemberRepository memberRepository;
     private final PlaceRepository placeRepository;
     private final MissionRepository missionRepository;
+    private final BoardRepository boardRepository;
 
     /**
      * 장소 방문 시 호출: 새 방문 기록 생성 or 방문 횟수 증가
@@ -97,16 +99,28 @@ public class VisitService {
         return visitRepository.findByMember(member).stream()
                 .map((Visit visit) -> {
                     Place place = visit.getPlace();
+
+                    // visitorCount 계산
+                    long visitorCount = visitRepository.countByPlace(place);
+
+                    // 해당 장소의 미션 리스트
                     List<MissionResponseDto> missions = missionRepository.findAllByPlace_PlaceId((long) place.getPlaceId())
                             .stream()
                             .map(MissionResponseDto::fromEntity)
                             .collect(Collectors.toList());
+
+                    // boardCount 계산
+                    int boardCount = boardRepository.countByMission_Place(place);
+
                     return VisitMissionResponseDto.builder()
                             .placeId((long) place.getPlaceId())
                             .placeName(place.getName())
+                            .placeDescription(place.getDescription())
                             .address(place.getAddress())
                             .thumbnailUrl(place.getThumbnailUrl())
                             .missions(missions)
+                            .visitorCount((int) visitorCount)
+                            .boardCount(boardCount)
                             .build();
                 })
                 .collect(Collectors.toList());
