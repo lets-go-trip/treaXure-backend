@@ -7,8 +7,11 @@ import org.springframework.stereotype.Service;
 
 import com.trip.treaxure.member.entity.Member;
 import com.trip.treaxure.member.repository.MemberRepository;
+import com.trip.treaxure.mission.dto.response.MissionResponseDto;
+import com.trip.treaxure.mission.repository.MissionRepository;
 import com.trip.treaxure.place.entity.Place;
 import com.trip.treaxure.place.repository.PlaceRepository;
+import com.trip.treaxure.visit.dto.response.VisitMissionResponseDto;
 import com.trip.treaxure.visit.dto.response.VisitResponseDto;
 import com.trip.treaxure.visit.entity.Visit;
 import com.trip.treaxure.visit.repository.VisitRepository;
@@ -24,6 +27,7 @@ public class VisitService {
     private final VisitRepository visitRepository;
     private final MemberRepository memberRepository;
     private final PlaceRepository placeRepository;
+    private final MissionRepository missionRepository;
 
     /**
      * 장소 방문 시 호출: 새 방문 기록 생성 or 방문 횟수 증가
@@ -82,4 +86,29 @@ public class VisitService {
                 .collect(Collectors.toList());
     }
     
+    /**
+     * 사용자 방문 기록 기반으로 장소 + 미션 목록 조합 조회
+     */
+    @Transactional
+    public List<VisitMissionResponseDto> getVisitMissionsByMember(Long memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new EntityNotFoundException("회원을 찾을 수 없습니다."));
+
+        return visitRepository.findByMember(member).stream()
+                .map((Visit visit) -> {
+                    Place place = visit.getPlace();
+                    List<MissionResponseDto> missions = missionRepository.findAllByPlace_PlaceId((long) place.getPlaceId())
+                            .stream()
+                            .map(MissionResponseDto::fromEntity)
+                            .collect(Collectors.toList());
+                    return VisitMissionResponseDto.builder()
+                            .placeId((long) place.getPlaceId())
+                            .placeName(place.getName())
+                            .address(place.getAddress())
+                            .thumbnailUrl(place.getThumbnailUrl())
+                            .missions(missions)
+                            .build();
+                })
+                .collect(Collectors.toList());
+    }
 }

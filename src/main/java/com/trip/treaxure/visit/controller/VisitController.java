@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.trip.treaxure.global.dto.ApiResponseDto;
+import com.trip.treaxure.visit.dto.response.VisitMissionResponseDto;
 import com.trip.treaxure.visit.dto.response.VisitResponseDto;
 import com.trip.treaxure.visit.service.VisitService;
 
@@ -48,4 +49,13 @@ public class VisitController {
             @PathVariable Long memberId) {
         return ResponseEntity.ok(ApiResponseDto.success(visitService.getVisitsByMemberId(memberId)));
     }
+
+    @Operation(summary = "사용자의 방문 장소 및 해당 장소의 미션 목록 조회")
+    @GetMapping("/member/{memberId}/missions")
+    public ResponseEntity<ApiResponseDto<List<VisitMissionResponseDto>>> getVisitMissionsByMember(
+            @PathVariable Long memberId) {
+        List<VisitMissionResponseDto> result = visitService.getVisitMissionsByMember(memberId);
+        return ResponseEntity.ok(ApiResponseDto.success(result));
+    }
+
 }
