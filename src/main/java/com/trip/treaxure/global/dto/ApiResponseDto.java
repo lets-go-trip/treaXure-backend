@@ -43,4 +43,11 @@ public class ApiResponseDto<T> {
                 .data(null)
                 .build();
     }
+
+    /**
+     * 오류 응답 생성
+     */
+    public static <T> ApiResponseDto<T> error(String message) {
+        return new ApiResponseDto<>(false, message, null);
+    }
 }

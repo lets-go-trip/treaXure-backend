@@ -39,7 +39,7 @@ public class FavoriteService {
         var member = memberRepository.findById(dto.getMemberId())
                 .orElseThrow(() -> new EntityNotFoundException("사용자를 찾을 수 없습니다."));
 
-        var board = boardRepository.findById(dto.getBoardId())
+        var board = boardRepository.findById(dto.getBoardId().intValue())
                 .orElseThrow(() -> new EntityNotFoundException("게시글을 찾을 수 없습니다."));
 
         var favorite = new Favorite(null, board, member, null); // createdAt 자동

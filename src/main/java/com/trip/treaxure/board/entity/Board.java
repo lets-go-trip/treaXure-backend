@@ -70,10 +70,20 @@ public class Board {
     @Column(name = "is_active", nullable = false, columnDefinition = "TINYINT(1) DEFAULT 1")
     @Comment("사진 삭제 여부")
     @Schema(description = "활성 상태 (true = 공개, false = 삭제)", example = "true")
+    @Builder.Default
     private Boolean isActive = true;
 
     @Column(name = "title")
     @Comment("게시글 제목")
     @Schema(description = "게시글 제목", example = "오늘의 여행 사진")
     private String title;
+
+    @Column(name = "similarity_score")
+    @Comment("이미지 유사도 점수 (0~1)")
+    @Schema(description = "이미지 유사도 점수", example = "0.8234")
+    private Float similarityScore;
+
+    public void setSimilarityScore(Float score) {
+        this.similarityScore = score;
+    }
 } 
