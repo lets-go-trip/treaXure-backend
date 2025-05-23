@@ -1,6 +1,7 @@
 package com.trip.treaxure.member.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -52,6 +53,17 @@ public class MemberController {
     public ResponseEntity<ApiResponseDto<MemberResponseDto>> createMember(@RequestBody MemberRequestDto dto) {
         MemberResponseDto response = memberService.createMember(dto);
         return ResponseEntity.ok(ApiResponseDto.success(response));
+    }
+
+    @Operation(summary = "포인트 추가", description = "지정한 사용자에게 포인트를 추가합니다.")
+    @PostMapping("/{id}/add-point")
+    public ResponseEntity<ApiResponseDto<String>> addPoint(
+            @PathVariable Long id,
+            @RequestBody Map<String, Integer> request
+    ) {
+        Integer point = request.get("point");
+        memberService.addPointToMember(id, point);
+        return ResponseEntity.ok(ApiResponseDto.success("포인트가 추가되었습니다."));
     }
 
     @Operation(summary = "회원 삭제")

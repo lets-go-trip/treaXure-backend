@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.trip.treaxure.global.dto.ApiResponseDto;
 import com.trip.treaxure.mission.dto.request.MissionRequestDto;
 import com.trip.treaxure.mission.dto.response.MissionResponseDto;
+import com.trip.treaxure.mission.dto.response.PlaceMissionStatusDto;
 import com.trip.treaxure.mission.service.MissionService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -77,4 +78,14 @@ public class MissionController {
         missionService.deleteMission(id);
         return ResponseEntity.ok(ApiResponseDto.success(null));
     }
+
+    @Operation(summary = "사용자의 장소별 미션 완료 현황 조회")
+    @GetMapping("/place-status/{memberId}")
+    public ResponseEntity<ApiResponseDto<List<PlaceMissionStatusDto>>> getMissionStatusByPlace(
+            @PathVariable Long memberId
+    ) {
+        List<PlaceMissionStatusDto> result = missionService.getMissionCompletionStatusByMember(memberId);
+        return ResponseEntity.ok(ApiResponseDto.success(result));
+    }
+
 }

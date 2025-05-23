@@ -20,6 +20,7 @@ import com.trip.treaxure.board.entity.Board;
 import com.trip.treaxure.board.service.BoardService;
 import com.trip.treaxure.global.dto.ApiResponseDto;
 import com.trip.treaxure.member.entity.Member;
+import com.trip.treaxure.mission.repository.MissionRepository;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -34,6 +35,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class BoardController {
 
+    private final MissionRepository missionRepository;
     private final BoardService boardService;
 
     @Operation(summary = "전체 게시물 조회")
@@ -85,10 +87,8 @@ public class BoardController {
     })
     @PostMapping
     public ResponseEntity<ApiResponseDto<BoardResponseDto>> createBoard(
-        @Valid @RequestBody BoardRequestDto dto,
-        @AuthenticationPrincipal CustomUserDetails userDetails
+        @Valid @RequestBody BoardRequestDto dto
     ) {
-        dto.setMemberId(userDetails.getMember().getMemberId());
         return ResponseEntity.ok(ApiResponseDto.success(boardService.createBoard(dto)));
     }
 
