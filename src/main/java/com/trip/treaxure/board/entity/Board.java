@@ -18,6 +18,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -26,6 +27,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Schema(description = "게시글 정보를 나타내는 엔티티")
 public class Board {
 
@@ -67,4 +69,13 @@ public class Board {
     @Comment("게시글 제목")
     @Schema(description = "게시글 제목", example = "오늘의 여행 사진")
     private String title;
+
+    @Column(name = "similarity_score")
+    @Comment("이미지 유사도 점수 (0~1)")
+    @Schema(description = "이미지 유사도 점수", example = "0.8234")
+    private Float similarityScore;
+
+    public void setSimilarityScore(Float score) {
+        this.similarityScore = score;
+    }
 } 

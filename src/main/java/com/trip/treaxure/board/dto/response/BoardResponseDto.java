@@ -34,6 +34,9 @@ public class BoardResponseDto {
     @Schema(description = "게시물 제목", example = "오늘의 여행 사진")
     private String title;
 
+    @Schema(description = "이미지 유사도 점수", example = "0.8234")
+    private Float similarityScore;
+
     public static BoardResponseDto fromEntity(Board board) {
         return BoardResponseDto.builder()
                 .boardId(board.getBoardId())
@@ -43,6 +46,7 @@ public class BoardResponseDto {
                 .createdAt(board.getCreatedAt())
                 .isActive(board.getIsActive())
                 .title(board.getTitle())
+                .similarityScore(board.getSimilarityScore())
                 .build();
     }
 }
