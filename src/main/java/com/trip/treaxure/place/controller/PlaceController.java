@@ -36,7 +36,7 @@ public class PlaceController {
 
     @Operation(summary = "장소 ID로 조회")
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponseDto<PlaceResponseDto>> getPlaceById(@PathVariable Long id) {
+    public ResponseEntity<ApiResponseDto<PlaceResponseDto>> getPlaceById(@PathVariable("id") Long id) {
         return placeService.getPlaceById(id)
                 .map(ApiResponseDto::success)
                 .map(ResponseEntity::ok)

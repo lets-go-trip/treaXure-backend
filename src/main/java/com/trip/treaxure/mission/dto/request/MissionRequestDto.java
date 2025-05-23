@@ -32,7 +32,7 @@ public class MissionRequestDto {
     @Schema(description = "미션 타입", example = "PHOTO", required = true)
     private MissionType type;
 
-    @Schema(description = "미션 점수", example = "10", required = true)
+    @Schema(description = "미션 점수", example = "100", required = true)
     private Integer score;
 
     @Schema(description = "참고 이미지 URL", example = "https://example.com/image.jpg", required = true)

@@ -30,7 +30,7 @@ public class MissionResponseDto {
     @Schema(description = "미션 타입", example = "PHOTO")
     private Mission.MissionType type;
 
-    @Schema(description = "미션 점수", example = "10")
+    @Schema(description = "미션 점수", example = "100")
     private Integer score;
 
     @Schema(description = "참고 이미지 URL", example = "https://example.com/mission.jpg")

@@ -20,7 +20,7 @@ public interface MissionRepository extends JpaRepository<Mission, Long> {
      * @return 해당 장소의 미션 목록
      */
     @Query("SELECT m FROM Mission m JOIN FETCH m.place WHERE m.place.placeId = :placeId")
-    List<Mission> findByPlaceId(@Param("placeId") Long placeId);
+    List<Mission> findAllByPlace_PlaceId(@Param("placeId") Long placeId);
 
     /**
      * 특정 사용자의 미션 조회

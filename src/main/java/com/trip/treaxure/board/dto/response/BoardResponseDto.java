@@ -16,6 +16,9 @@ public class BoardResponseDto {
     @Schema(description = "게시물 ID", example = "1")
     private Integer boardId;
 
+    @Schema(description = "작성자 ID", example = "1")
+    private Long memberId;
+
     @Schema(description = "미션 ID", example = "1")
     private Long missionId;
 
@@ -40,6 +43,7 @@ public class BoardResponseDto {
     public static BoardResponseDto fromEntity(Board board) {
         return BoardResponseDto.builder()
                 .boardId(board.getBoardId())
+                .memberId(board.getMemberId())
                 .missionId(board.getMission().getMissionId())
                 .imageUrl(board.getImageUrl())
                 .favoriteCount(board.getFavoriteCount())

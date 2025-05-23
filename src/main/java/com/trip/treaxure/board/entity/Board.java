@@ -21,10 +21,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "BOARD")
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -37,6 +39,11 @@ public class Board {
     @Comment("게시글 고유 ID")
     @Schema(description = "게시글 고유 ID", example = "1")
     private Integer boardId;
+
+    @Column(name = "member_id", nullable = false)
+    @Comment("작성자 회원 ID")
+    @Schema(description = "작성자 회원 ID", example = "101")
+    private Long memberId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mission_id", nullable = false)
