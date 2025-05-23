@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.math3.linear.ArrayRealVector;
 import org.apache.commons.math3.linear.RealVector;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import java.awt.*;
@@ -18,6 +19,7 @@ import java.io.IOException;
  */
 @Slf4j
 @Service
+@Primary
 @RequiredArgsConstructor
 public class LocalImageSimilarityService implements ImageSimilarityService {
 

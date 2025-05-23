@@ -395,6 +395,7 @@ testdb.*
 /target/
 .gradle/
 *.sh
+*.sql
 
 # 로컬 설정 파일
 .env.local

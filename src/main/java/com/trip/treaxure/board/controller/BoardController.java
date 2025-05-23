@@ -19,21 +19,14 @@ import com.trip.treaxure.board.dto.response.BoardResponseDto;
 import com.trip.treaxure.board.entity.Board;
 import com.trip.treaxure.board.service.BoardService;
 import com.trip.treaxure.global.dto.ApiResponseDto;
-<<<<<<< HEAD
-import com.trip.treaxure.mission.service.MissionService;
-=======
 import com.trip.treaxure.member.entity.Member;
->>>>>>> c4b3b2c1b9c52f66ee97d1dcde3e56dfdf7e707c
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-<<<<<<< HEAD
 import jakarta.persistence.EntityNotFoundException;
-=======
 import jakarta.validation.Valid;
->>>>>>> c4b3b2c1b9c52f66ee97d1dcde3e56dfdf7e707c
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,7 +38,6 @@ import org.slf4j.LoggerFactory;
 public class BoardController {
 
     private final BoardService boardService;
-    private final MissionService missionService;
     private static final Logger log = LoggerFactory.getLogger(BoardController.class);
 
     @Operation(summary = "전체 게시물 조회")
@@ -60,7 +52,7 @@ public class BoardController {
             @ApiResponse(responseCode = "404", description = "게시물을 찾을 수 없음")
     })
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponseDto<BoardResponseDto>> getBoardById(@PathVariable Long id) {
+    public ResponseEntity<ApiResponseDto<BoardResponseDto>> getBoardById(@PathVariable Integer id) {
         return boardService.getBoardById(id)
                 .map(ApiResponseDto::success)
                 .map(ResponseEntity::ok)
@@ -96,17 +88,21 @@ public class BoardController {
         @ApiResponse(responseCode = "400", description = "요청 유효성 실패")
     })
     @PostMapping
-<<<<<<< HEAD
-    public ResponseEntity<ApiResponseDto<BoardResponseDto>> createBoard(@RequestBody BoardRequestDto dto) {
+    public ResponseEntity<ApiResponseDto<BoardResponseDto>> createBoard(
+        @Valid @RequestBody BoardRequestDto dto,
+        @AuthenticationPrincipal CustomUserDetails userDetails
+    ) {
+        dto.setMemberId(userDetails.getMember().getMemberId());
         BoardResponseDto createdBoard = boardService.createBoard(dto);
+        dto.setMemberId(userDetails.getMember().getMemberId());
         
         // 게시물 생성 후 자동으로 유사도 평가 수행
         try {
-            Float similarityScore = missionService.evaluateImageSimilarity(
+            Float similarityScore = boardService.evaluateImageSimilarity(
                     createdBoard.getMissionId(), 
-                    Long.valueOf(createdBoard.getBoardId())
+                    Integer.valueOf(createdBoard.getBoardId())
             );
-            // 로그 추가
+
             log.info("Board created with ID: {} and similarity score: {}", 
                     createdBoard.getBoardId(), similarityScore);
         } catch (Exception e) {
@@ -124,27 +120,19 @@ public class BoardController {
         @ApiResponse(responseCode = "404", description = "게시물을 찾을 수 없음")
     })
     @PostMapping("/{boardId}/evaluate")
-    public ResponseEntity<ApiResponseDto<Float>> evaluateImageSimilarity(@PathVariable Long boardId) {
+    public ResponseEntity<ApiResponseDto<Float>> evaluateImageSimilarity(@PathVariable Integer boardId) {
         BoardResponseDto board = boardService.getBoardById(boardId)
                 .orElseThrow(() -> new EntityNotFoundException("게시글을 찾을 수 없습니다."));
         
-        Float similarityScore = missionService.evaluateImageSimilarity(
+        Float similarityScore = boardService.evaluateImageSimilarity(
                 board.getMissionId(), boardId);
         
         return ResponseEntity.ok(ApiResponseDto.success(similarityScore));
-=======
-    public ResponseEntity<ApiResponseDto<BoardResponseDto>> createBoard(
-        @Valid @RequestBody BoardRequestDto dto,
-        @AuthenticationPrincipal CustomUserDetails userDetails
-    ) {
-        dto.setMemberId(userDetails.getMember().getMemberId());
-        return ResponseEntity.ok(ApiResponseDto.success(boardService.createBoard(dto)));
->>>>>>> c4b3b2c1b9c52f66ee97d1dcde3e56dfdf7e707c
     }
 
     @Operation(summary = "게시물 삭제")
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponseDto<Void>> deleteBoard(@PathVariable Long id) {
+    public ResponseEntity<ApiResponseDto<Void>> deleteBoard(@PathVariable Integer id) {
         boardService.deleteBoard(id);
         return ResponseEntity.ok(ApiResponseDto.success(null));
     }

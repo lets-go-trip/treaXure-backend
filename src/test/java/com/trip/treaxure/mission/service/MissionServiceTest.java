@@ -14,25 +14,16 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.trip.treaxure.board.entity.Board;
-import com.trip.treaxure.board.repository.BoardRepository;
-import com.trip.treaxure.global.service.ImageSimilarityService;
 import com.trip.treaxure.mission.entity.Mission;
 import com.trip.treaxure.mission.repository.MissionRepository;
 import com.trip.treaxure.member.entity.Member;
 import com.trip.treaxure.place.entity.Place;
-import jakarta.persistence.EntityNotFoundException;
 
 @ExtendWith(MockitoExtension.class)
 class MissionServiceTest {
 
     @Mock
     private MissionRepository missionRepository;
-
-    @Mock
-    private BoardRepository boardRepository;
-    
-    @Mock
-    private ImageSimilarityService imageSimilarityService;
 
     @InjectMocks
     private MissionService missionService;
@@ -79,54 +70,5 @@ class MissionServiceTest {
                 .build();
     }
 
-    @Test
-    void evaluateImageSimilarity_Success() {
-        // Given
-        when(missionRepository.findById(1L)).thenReturn(Optional.of(testMission));
-        when(boardRepository.findById(1L)).thenReturn(Optional.of(testBoard));
-        when(imageSimilarityService.compare(anyString(), anyString())).thenReturn(0.85f);
-        when(boardRepository.save(any(Board.class))).thenAnswer(invocation -> {
-            Board savedBoard = invocation.getArgument(0);
-            assertNotNull(savedBoard.getSimilarityScore(), "유사도 점수가 저장되어야 합니다");
-            return savedBoard;
-        });
-
-        // When
-        Float score = missionService.evaluateImageSimilarity(1L, 1L);
-
-        // Then
-        assertNotNull(score, "유사도 점수가 null이 아니어야 합니다");
-        assertTrue(score >= 0 && score <= 1, "유사도 점수는 0과 1 사이여야 합니다");
-        assertEquals(0.85f, score, "Expected similarity score of 0.85");
-        verify(boardRepository).save(argThat(board -> 
-            board.getSimilarityScore() != null && 
-            board.getSimilarityScore().equals(score)
-        ));
-        verify(imageSimilarityService).compare(testMission.getReferenceUrl(), testBoard.getImageUrl());
-    }
-
-    @Test
-    void evaluateImageSimilarity_MissionNotFound() {
-        // Given
-        when(missionRepository.findById(999L)).thenReturn(Optional.empty());
-
-        // When & Then
-        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
-            missionService.evaluateImageSimilarity(999L, 1L);
-        });
-        assertEquals("미션을 찾을 수 없습니다.", exception.getMessage());
-    }
-
-    @Test
-    void evaluateImageSimilarity_BoardNotFound() {
-        // Given
-        when(missionRepository.findById(1L)).thenReturn(Optional.of(testMission));
-        when(boardRepository.findById(999L)).thenReturn(Optional.empty());
-
-        // When & Then
-        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
-            missionService.evaluateImageSimilarity(1L, 999L);
-        });
-        assertEquals("게시글을 찾을 수 없습니다.", exception.getMessage());
-    }
+    // 여기에 MissionService의 다른 메서드에 대한 테스트를 추가할 수 있습니다.
 } 

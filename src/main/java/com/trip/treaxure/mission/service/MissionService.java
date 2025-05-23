@@ -13,11 +13,9 @@ import com.trip.treaxure.mission.dto.response.MissionResponseDto;
 import com.trip.treaxure.mission.entity.Mission;
 import com.trip.treaxure.mission.repository.MissionRepository;
 import com.trip.treaxure.place.repository.PlaceRepository;
-import com.trip.treaxure.board.repository.BoardRepository;
-import com.trip.treaxure.board.entity.Board;
+
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import com.trip.treaxure.global.service.ImageSimilarityService;
 
 @Service
 @RequiredArgsConstructor
@@ -26,8 +24,6 @@ public class MissionService {
     private final MissionRepository missionRepository;
     private final MemberRepository memberRepository;
     private final PlaceRepository placeRepository;
-    private final BoardRepository boardRepository;
-    private final ImageSimilarityService imageSimilarityService;
 
     /**
      * 전체 미션 조회
@@ -73,25 +69,5 @@ public class MissionService {
      */
     public void deleteMission(Long id) {
         missionRepository.deleteById(id);
-    }
-
-    /**
-     * 이미지 유사도 평가 및 점수 저장
-     */
-    public Float evaluateImageSimilarity(Long missionId, Long boardId) {
-        Mission mission = missionRepository.findById(missionId)
-                .orElseThrow(() -> new EntityNotFoundException("미션을 찾을 수 없습니다."));
-        
-        Board board = boardRepository.findById(boardId)
-                .orElseThrow(() -> new EntityNotFoundException("게시글을 찾을 수 없습니다."));
-
-        // Spring AI를 통한 이미지 유사도 계산
-        Float similarityScore = imageSimilarityService.compare(mission.getReferenceUrl(), board.getImageUrl());
-        
-        // 점수 저장
-        board.setSimilarityScore(similarityScore);
-        boardRepository.save(board);
-        
-        return similarityScore;
     }
 }
