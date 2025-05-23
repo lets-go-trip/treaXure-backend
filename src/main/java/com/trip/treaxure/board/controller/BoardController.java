@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.trip.treaxure.auth.security.CustomUserDetails;
@@ -90,21 +91,30 @@ public class BoardController {
     @PostMapping
     public ResponseEntity<ApiResponseDto<BoardResponseDto>> createBoard(
         @Valid @RequestBody BoardRequestDto dto,
-        @AuthenticationPrincipal CustomUserDetails userDetails
+        @AuthenticationPrincipal CustomUserDetails userDetails,
+        @RequestParam(required = false, defaultValue = "false") Boolean useOpenAI
     ) {
         dto.setMemberId(userDetails.getMember().getMemberId());
         BoardResponseDto createdBoard = boardService.createBoard(dto);
-        dto.setMemberId(userDetails.getMember().getMemberId());
+        Float similarityScore = null;
         
         // 게시물 생성 후 자동으로 유사도 평가 수행
         try {
-            Float similarityScore = boardService.evaluateImageSimilarity(
+            similarityScore = boardService.evaluateImageSimilarity(
                     createdBoard.getMissionId(), 
-                    Integer.valueOf(createdBoard.getBoardId())
+                    Integer.valueOf(createdBoard.getBoardId()),
+                    useOpenAI
             );
 
             log.info("Board created with ID: {} and similarity score: {}", 
                     createdBoard.getBoardId(), similarityScore);
+            
+            // 업데이트된 게시물 정보 다시 조회
+            Optional<BoardResponseDto> updatedBoard = boardService.getBoardById(Integer.valueOf(createdBoard.getBoardId()));
+            if (updatedBoard.isPresent()) {
+                createdBoard = updatedBoard.get();
+            }
+            
         } catch (Exception e) {
             // 유사도 평가 실패 시에도 게시물 생성은 성공으로 처리
             log.error("Failed to evaluate image similarity for board ID: {}", 
@@ -120,12 +130,15 @@ public class BoardController {
         @ApiResponse(responseCode = "404", description = "게시물을 찾을 수 없음")
     })
     @PostMapping("/{boardId}/evaluate")
-    public ResponseEntity<ApiResponseDto<Float>> evaluateImageSimilarity(@PathVariable Integer boardId) {
+    public ResponseEntity<ApiResponseDto<Float>> evaluateImageSimilarity(
+            @PathVariable Integer boardId,
+            @RequestParam(required = false, defaultValue = "false") Boolean useOpenAI
+    ) {
         BoardResponseDto board = boardService.getBoardById(boardId)
                 .orElseThrow(() -> new EntityNotFoundException("게시글을 찾을 수 없습니다."));
         
         Float similarityScore = boardService.evaluateImageSimilarity(
-                board.getMissionId(), boardId);
+                board.getMissionId(), boardId, useOpenAI);
         
         return ResponseEntity.ok(ApiResponseDto.success(similarityScore));
     }

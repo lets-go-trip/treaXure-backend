@@ -2,11 +2,13 @@ package com.trip.treaxure.board.service;
 
 import com.trip.treaxure.board.entity.Board;
 import com.trip.treaxure.board.repository.BoardRepository;
-import com.trip.treaxure.global.service.ImageSimilarityService;
+import com.trip.treaxure.global.service.LocalImageSimilarityService;
+import com.trip.treaxure.global.service.OpenAiVisionSimilarityService;
 import com.trip.treaxure.mission.entity.Mission;
 import com.trip.treaxure.mission.repository.MissionRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -29,7 +31,10 @@ class BoardServiceTest {
     private MissionRepository missionRepository;
 
     @Mock
-    private ImageSimilarityService imageSimilarityService;
+    private LocalImageSimilarityService localImageSimilarityService;
+
+    @Mock
+    private OpenAiVisionSimilarityService openAiVisionSimilarityService;
 
     @InjectMocks
     private BoardService boardService;
@@ -69,7 +74,7 @@ class BoardServiceTest {
         // Given
         when(missionRepository.findById(missionId)).thenReturn(Optional.of(mission));
         when(boardRepository.findById(boardId)).thenReturn(Optional.of(board));
-        when(imageSimilarityService.compare(referenceUrl, imageUrl)).thenReturn(similarityScore);
+        when(localImageSimilarityService.compare(referenceUrl, imageUrl)).thenReturn(similarityScore);
 
         // When
         Float result = boardService.evaluateImageSimilarity(missionId, boardId);
@@ -105,5 +110,105 @@ class BoardServiceTest {
         });
         
         verify(boardRepository, never()).save(any());
+    }
+
+    @Test
+    @DisplayName("로컬 이미지 유사도 서비스 선택 테스트")
+    void testEvaluateImageSimilarityWithLocalService() {
+        // Given
+        Long missionId = 1L;
+        Integer boardId = 1;
+        String referenceUrl = "http://example.com/reference.jpg";
+        String targetUrl = "http://example.com/target.jpg";
+        float expectedScore = 0.85f;
+
+        Mission mission = Mission.builder()
+                .missionId(missionId)
+                .referenceUrl(referenceUrl)
+                .build();
+
+        Board board = new Board();
+        board.setBoardId(boardId);
+        board.setImageUrl(targetUrl);
+
+        when(missionRepository.findById(missionId)).thenReturn(Optional.of(mission));
+        when(boardRepository.findById(boardId)).thenReturn(Optional.of(board));
+        when(localImageSimilarityService.compare(referenceUrl, targetUrl)).thenReturn(expectedScore);
+
+        // When
+        Float result = boardService.evaluateImageSimilarity(missionId, boardId, false);
+
+        // Then
+        assertEquals(expectedScore, result);
+        verify(localImageSimilarityService).compare(referenceUrl, targetUrl);
+        verify(openAiVisionSimilarityService, never()).compare(anyString(), anyString());
+        verify(boardRepository).save(board);
+        assertEquals(expectedScore, board.getSimilarityScore());
+    }
+
+    @Test
+    @DisplayName("OpenAI 이미지 유사도 서비스 선택 테스트")
+    void testEvaluateImageSimilarityWithOpenAIService() {
+        // Given
+        Long missionId = 1L;
+        Integer boardId = 1;
+        String referenceUrl = "http://example.com/reference.jpg";
+        String targetUrl = "http://example.com/target.jpg";
+        float expectedScore = 0.92f;
+
+        Mission mission = Mission.builder()
+                .missionId(missionId)
+                .referenceUrl(referenceUrl)
+                .build();
+
+        Board board = new Board();
+        board.setBoardId(boardId);
+        board.setImageUrl(targetUrl);
+
+        when(missionRepository.findById(missionId)).thenReturn(Optional.of(mission));
+        when(boardRepository.findById(boardId)).thenReturn(Optional.of(board));
+        when(openAiVisionSimilarityService.compare(referenceUrl, targetUrl)).thenReturn(expectedScore);
+
+        // When
+        Float result = boardService.evaluateImageSimilarity(missionId, boardId, true);
+
+        // Then
+        assertEquals(expectedScore, result);
+        verify(openAiVisionSimilarityService).compare(referenceUrl, targetUrl);
+        verify(localImageSimilarityService, never()).compare(anyString(), anyString());
+        verify(boardRepository).save(board);
+        assertEquals(expectedScore, board.getSimilarityScore());
+    }
+
+    @Test
+    @DisplayName("기본 메소드는 로컬 서비스를 사용해야 함")
+    void testDefaultMethodUsesLocalService() {
+        // Given
+        Long missionId = 1L;
+        Integer boardId = 1;
+        String referenceUrl = "http://example.com/reference.jpg";
+        String targetUrl = "http://example.com/target.jpg";
+        float expectedScore = 0.75f;
+
+        Mission mission = Mission.builder()
+                .missionId(missionId)
+                .referenceUrl(referenceUrl)
+                .build();
+
+        Board board = new Board();
+        board.setBoardId(boardId);
+        board.setImageUrl(targetUrl);
+
+        when(missionRepository.findById(missionId)).thenReturn(Optional.of(mission));
+        when(boardRepository.findById(boardId)).thenReturn(Optional.of(board));
+        when(localImageSimilarityService.compare(referenceUrl, targetUrl)).thenReturn(expectedScore);
+
+        // When
+        Float result = boardService.evaluateImageSimilarity(missionId, boardId);
+
+        // Then
+        assertEquals(expectedScore, result);
+        verify(localImageSimilarityService).compare(referenceUrl, targetUrl);
+        verify(openAiVisionSimilarityService, never()).compare(anyString(), anyString());
     }
 } 
