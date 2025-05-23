@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import com.trip.treaxure.global.service.ImageSimilarityService;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +25,7 @@ public class MissionService {
     private final MemberRepository memberRepository;
     private final PlaceRepository placeRepository;
     private final BoardRepository boardRepository;
+    private final ImageSimilarityService imageSimilarityService;
 
     /**
      * 전체 미션 조회
@@ -73,21 +75,12 @@ public class MissionService {
                 .orElseThrow(() -> new EntityNotFoundException("게시글을 찾을 수 없습니다."));
 
         // Spring AI를 통한 이미지 유사도 계산
-        Float similarityScore = calculateImageSimilarity(mission.getReferenceUrl(), board.getImageUrl());
+        Float similarityScore = imageSimilarityService.compare(mission.getReferenceUrl(), board.getImageUrl());
         
         // 점수 저장
         board.setSimilarityScore(similarityScore);
         boardRepository.save(board);
         
         return similarityScore;
-    }
-
-    /**
-     * Spring AI를 사용하여 두 이미지의 유사도를 계산
-     */
-    private Float calculateImageSimilarity(String referenceUrl, String targetUrl) {
-        // TODO: Spring AI 구현
-        // 임시로 랜덤 점수 반환
-        return (float) Math.random();
     }
 }

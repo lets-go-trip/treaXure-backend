@@ -15,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.trip.treaxure.board.entity.Board;
 import com.trip.treaxure.board.repository.BoardRepository;
+import com.trip.treaxure.global.service.ImageSimilarityService;
 import com.trip.treaxure.mission.entity.Mission;
 import com.trip.treaxure.mission.repository.MissionRepository;
 import com.trip.treaxure.member.entity.Member;
@@ -29,6 +30,9 @@ class MissionServiceTest {
 
     @Mock
     private BoardRepository boardRepository;
+    
+    @Mock
+    private ImageSimilarityService imageSimilarityService;
 
     @InjectMocks
     private MissionService missionService;
@@ -80,6 +84,7 @@ class MissionServiceTest {
         // Given
         when(missionRepository.findById(1L)).thenReturn(Optional.of(testMission));
         when(boardRepository.findById(1L)).thenReturn(Optional.of(testBoard));
+        when(imageSimilarityService.compare(anyString(), anyString())).thenReturn(0.85f);
         when(boardRepository.save(any(Board.class))).thenAnswer(invocation -> {
             Board savedBoard = invocation.getArgument(0);
             assertNotNull(savedBoard.getSimilarityScore(), "유사도 점수가 저장되어야 합니다");
@@ -92,10 +97,12 @@ class MissionServiceTest {
         // Then
         assertNotNull(score, "유사도 점수가 null이 아니어야 합니다");
         assertTrue(score >= 0 && score <= 1, "유사도 점수는 0과 1 사이여야 합니다");
+        assertEquals(0.85f, score, "Expected similarity score of 0.85");
         verify(boardRepository).save(argThat(board -> 
             board.getSimilarityScore() != null && 
             board.getSimilarityScore().equals(score)
         ));
+        verify(imageSimilarityService).compare(testMission.getReferenceUrl(), testBoard.getImageUrl());
     }
 
     @Test

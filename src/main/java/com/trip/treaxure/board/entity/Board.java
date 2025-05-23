@@ -63,6 +63,7 @@ public class Board {
     @Column(name = "is_active", nullable = false, columnDefinition = "TINYINT(1) DEFAULT 1")
     @Comment("사진 삭제 여부")
     @Schema(description = "활성 상태 (true = 공개, false = 삭제)", example = "true")
+    @Builder.Default
     private Boolean isActive = true;
 
     @Column(name = "title")
