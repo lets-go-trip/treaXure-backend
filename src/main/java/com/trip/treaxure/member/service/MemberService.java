@@ -74,4 +74,12 @@ public class MemberService {
         member.setIsActive(false); // 계정 비활성화
     }
 
+    @Transactional
+    public void addPointToMember(Long memberId, int point) {
+        Member member = memberRepository.findById(memberId)
+            .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 회원입니다."));
+        member.setPoint(member.getPoint() + point);
+        memberRepository.save(member);
+    }
+
 }

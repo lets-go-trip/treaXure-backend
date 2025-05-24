@@ -21,6 +21,7 @@ import com.trip.treaxure.board.entity.Board;
 import com.trip.treaxure.board.service.BoardService;
 import com.trip.treaxure.global.dto.ApiResponseDto;
 import com.trip.treaxure.member.entity.Member;
+import com.trip.treaxure.mission.repository.MissionRepository;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -38,6 +39,7 @@ import org.slf4j.LoggerFactory;
 @RequiredArgsConstructor
 public class BoardController {
 
+    private final MissionRepository missionRepository;
     private final BoardService boardService;
     private static final Logger log = LoggerFactory.getLogger(BoardController.class);
 
@@ -91,7 +93,6 @@ public class BoardController {
     @PostMapping
     public ResponseEntity<ApiResponseDto<BoardResponseDto>> createBoard(
         @Valid @RequestBody BoardRequestDto dto,
-        @AuthenticationPrincipal CustomUserDetails userDetails,
         @RequestParam(required = false, defaultValue = "false") Boolean useOpenAI
     ) {
         dto.setMemberId(userDetails.getMember().getMemberId());
@@ -141,6 +142,7 @@ public class BoardController {
                 board.getMissionId(), boardId, useOpenAI);
         
         return ResponseEntity.ok(ApiResponseDto.success(similarityScore));
+
     }
 
     @Operation(summary = "게시물 삭제")
