@@ -28,8 +28,12 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name = "Mission Controller", description = "미션 관리를 위한 API")
 public class MissionController {
 
+    private final MissionService missionService;
+
     @Autowired
-    private MissionService missionService;
+    public MissionController(MissionService missionService) {
+        this.missionService = missionService;
+    }
 
     @Operation(summary = "전체 미션 조회")
     @ApiResponses(value = {
