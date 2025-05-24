@@ -19,8 +19,17 @@ public class BoardResponseDto {
     @Schema(description = "작성자 ID", example = "1")
     private Long memberId;
 
+    @Schema(description = "작성자 닉네임", example = "홍길동")
+    private String nickname;
+
+    @Schema(description = "작성자 프로필 이미지", example = "https://example.com/profile.jpg")
+    private String profileUrl;
+
     @Schema(description = "미션 ID", example = "1")
     private Long missionId;
+
+    @Schema(description = "장소 이름", example = "경복궁")
+    private String placeName;
 
     @Schema(description = "이미지 URL", example = "https://example.com/image.jpg")
     private String imageUrl;
@@ -44,7 +53,10 @@ public class BoardResponseDto {
         return BoardResponseDto.builder()
                 .boardId(board.getBoardId())
                 .memberId(board.getMemberId())
+                .nickname(board.getMember() != null ? board.getMember().getNickname() : null)
+                .profileUrl(board.getMember() != null ? board.getMember().getProfileUrl() : null)
                 .missionId(board.getMission().getMissionId())
+                .placeName(board.getMission().getPlace().getName())
                 .imageUrl(board.getImageUrl())
                 .favoriteCount(board.getFavoriteCount())
                 .createdAt(board.getCreatedAt())

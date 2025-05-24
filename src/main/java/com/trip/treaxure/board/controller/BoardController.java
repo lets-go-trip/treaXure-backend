@@ -43,10 +43,10 @@ public class BoardController {
     private final BoardService boardService;
     private static final Logger log = LoggerFactory.getLogger(BoardController.class);
 
-    @Operation(summary = "전체 게시물 조회")
+    @Operation(summary = "최신순 게시물 조회")
     @GetMapping
     public ResponseEntity<ApiResponseDto<List<BoardResponseDto>>> getAllBoards() {
-        return ResponseEntity.ok(ApiResponseDto.success(boardService.getAllBoards()));
+        return ResponseEntity.ok(ApiResponseDto.success(boardService.getAllBoardsWithDetails()));
     }
 
     @Operation(summary = "게시물 ID로 조회")

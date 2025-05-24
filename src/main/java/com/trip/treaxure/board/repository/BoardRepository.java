@@ -22,6 +22,10 @@ public interface BoardRepository extends JpaRepository<Board, Integer> {
     @Query("SELECT b FROM Board b JOIN FETCH b.mission WHERE b.memberId = :memberId")
     List<Board> findAllByMemberIdWithMission(@Param("memberId") Long memberId);
 
+    // 전체 board 내림차순 정렬
+    @Query("SELECT b FROM Board b JOIN FETCH b.mission m JOIN FETCH m.place p JOIN FETCH b.member ORDER BY b.createdAt DESC")
+    List<Board> findAllWithMissionPlaceAndMember();
+
     // 장소별 게시물 수
     int countByMission_Place(Place place);
 }

@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import org.hibernate.annotations.Comment;
 import org.hibernate.annotations.CreationTimestamp;
 
+import com.trip.treaxure.member.entity.Member;
 import com.trip.treaxure.mission.entity.Mission;
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -44,6 +45,11 @@ public class Board {
     @Comment("작성자 회원 ID")
     @Schema(description = "작성자 회원 ID", example = "101")
     private Long memberId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id", insertable = false, updatable = false)
+    @Comment("작성자 회원")
+    private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mission_id", nullable = false)

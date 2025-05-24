@@ -10,11 +10,11 @@ import com.trip.treaxure.board.dto.request.BoardRequestDto;
 import com.trip.treaxure.board.dto.response.BoardResponseDto;
 import com.trip.treaxure.board.entity.Board;
 import com.trip.treaxure.board.repository.BoardRepository;
-import com.trip.treaxure.mission.entity.Mission;
-import com.trip.treaxure.mission.repository.MissionRepository;
 import com.trip.treaxure.global.service.ImageSimilarityService;
 import com.trip.treaxure.global.service.LocalImageSimilarityService;
 import com.trip.treaxure.global.service.OpenAiVisionSimilarityService;
+import com.trip.treaxure.mission.entity.Mission;
+import com.trip.treaxure.mission.repository.MissionRepository;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +34,12 @@ public class BoardService {
                 .map(BoardResponseDto::fromEntity)
                 .collect(Collectors.toList());
     }
+
+    public List<BoardResponseDto> getAllBoardsWithDetails() {
+        return boardRepository.findAllWithMissionPlaceAndMember().stream()
+                .map(BoardResponseDto::fromEntity)
+                .collect(Collectors.toList());
+    }    
 
     public Optional<BoardResponseDto> getBoardById(Integer id) {
         return boardRepository.findById(id)
