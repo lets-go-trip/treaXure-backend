@@ -95,7 +95,6 @@ public class BoardController {
         @Valid @RequestBody BoardRequestDto dto,
         @RequestParam(required = false, defaultValue = "false") Boolean useOpenAI
     ) {
-        dto.setMemberId(userDetails.getMember().getMemberId());
         BoardResponseDto createdBoard = boardService.createBoard(dto);
         Float similarityScore = null;
         

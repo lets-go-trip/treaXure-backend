@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 import com.trip.treaxure.board.entity.Board;
 import com.trip.treaxure.place.entity.Place;
 
-public interface BoardRepository extends JpaRepository<Board, Long> {
+public interface BoardRepository extends JpaRepository<Board, Integer> {
 
     // 미션 + 사용자 기준 단건
     Optional<Board> findByMission_MissionIdAndMemberId(Long missionId, Long memberId);
