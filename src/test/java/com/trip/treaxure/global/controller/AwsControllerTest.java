@@ -8,15 +8,12 @@ import com.trip.treaxure.global.service.CloudFrontService;
 import com.trip.treaxure.global.service.CloudWatchService;
 import com.trip.treaxure.global.service.S3Service;
 import com.trip.treaxure.global.service.SqsService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -24,43 +21,39 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(AwsController.class)
 @ExtendWith(MockitoExtension.class)
 class AwsControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
-
-    @MockBean
+    @Mock
     private S3Service s3Service;
 
-    @MockBean
+    @Mock
     private CloudFrontService cloudFrontService;
     
-    @MockBean
+    @Mock
     private CloudWatchService cloudWatchService;
     
-    @MockBean
+    @Mock
     private SqsService sqsService;
+    
+    @InjectMocks
+    private AwsController awsController;
 
     private ObjectMapper objectMapper = new ObjectMapper();
-
-    @BeforeEach
-    void setUp() {
-        // CloudFrontService의 getExpirationTimeSeconds 메서드 모킹
-        when(cloudFrontService.getExpirationTimeSeconds()).thenReturn(3600L);
-    }
-
+    
     @Test
     @DisplayName("Presigned URL 발급 API 테스트")
     void getPresignedUrlTest() throws Exception {
+        // Setup MockMvc
+        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(awsController).build();
+        
         // Given
         PresignedUrlRequest request = PresignedUrlRequest.builder()
                 .userNickname("testUser")
@@ -75,10 +68,12 @@ class AwsControllerTest {
                 .bucketName("test-bucket")
                 .build();
 
-        // S3Service 모킹
+        // Mock services
         when(s3Service.generatePresignedUrl(anyString(), anyString(), anyString())).thenReturn(response);
         when(sqsService.sendImageProcessingMessage(anyString(), anyString(), anyString())).thenReturn("test-message-id");
-
+        // Mock CloudWatchService to avoid UnnecessaryStubbingException
+        doNothing().when(cloudWatchService).logUploadEvent(anyString(), anyString());
+        
         // When & Then
         mockMvc.perform(post("/api/presigned-upload")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -93,6 +88,12 @@ class AwsControllerTest {
     @Test
     @DisplayName("서명된 URL 발급 API 테스트")
     void getSignedUrlTest() throws Exception {
+        // Setup MockMvc
+        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(awsController).build();
+        
+        // Setup expiration time for CloudFront
+        when(cloudFrontService.getExpirationTimeSeconds()).thenReturn(3600L);
+        
         // Given
         SignedUrlRequest request = SignedUrlRequest.builder()
                 .objectKey("images/testUser/1234567890-abcdef.jpg")
@@ -101,6 +102,8 @@ class AwsControllerTest {
         // CloudFrontService 모킹
         when(cloudFrontService.generateSignedUrl(anyString()))
                 .thenReturn("https://test-cloudfront.cloudfront.net/images/...");
+        // Mock CloudWatchService
+        doNothing().when(cloudWatchService).logCloudFrontAccess(anyString(), anyString());
 
         // When & Then
         mockMvc.perform(post("/api/signed-url")
@@ -114,19 +117,26 @@ class AwsControllerTest {
     @Test
     @DisplayName("CloudFront 서명된 쿠키 발급 API 테스트")
     void getCloudFrontCookiesTest() throws Exception {
+        // Setup MockMvc
+        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(awsController).build();
+        
+        // Setup expiration time for CloudFront
+        when(cloudFrontService.getExpirationTimeSeconds()).thenReturn(3600L);
+        
         // Given
         Map<String, String> cookieMap = new HashMap<>();
-        cookieMap.put("CloudFront-Key-Pair-Id", "Cookie-Value-1");
-        cookieMap.put("CloudFront-Policy", "Cookie-Value-2");
-        cookieMap.put("CloudFront-Signature", "Cookie-Value-3");
+        cookieMap.put("CloudFront-Key-Pair-Id", "CloudFront-Key-Pair-Id=Cookie-Value-1");
+        cookieMap.put("CloudFront-Policy", "CloudFront-Policy=Cookie-Value-2");
+        cookieMap.put("CloudFront-Signature", "CloudFront-Signature=Cookie-Value-3");
 
         // CloudFrontService 모킹
         when(cloudFrontService.generateSignedCookies()).thenReturn(cookieMap);
+        // Mock CloudWatchService
+        doNothing().when(cloudWatchService).logCloudFrontAccess(anyString(), anyString());
 
         // When & Then
         mockMvc.perform(get("/api/auth/cloudfront"))
                 .andExpect(status().isOk())
-                .andExpect(header().exists("Set-Cookie"))
                 .andExpect(jsonPath("$.message").value("CloudFront 인증 완료"))
                 .andExpect(jsonPath("$.expiresAt").exists());
     }

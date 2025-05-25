@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.trip.treaxure.global.dto.ApiResponseDto;
 import com.trip.treaxure.mission.dto.request.MissionRequestDto;
 import com.trip.treaxure.mission.dto.response.MissionResponseDto;
+import com.trip.treaxure.mission.dto.response.PlaceMissionStatusDto;
 import com.trip.treaxure.mission.service.MissionService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -27,8 +28,12 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name = "Mission Controller", description = "미션 관리를 위한 API")
 public class MissionController {
 
+    private final MissionService missionService;
+
     @Autowired
-    private MissionService missionService;
+    public MissionController(MissionService missionService) {
+        this.missionService = missionService;
+    }
 
     @Operation(summary = "전체 미션 조회")
     @ApiResponses(value = {
@@ -52,6 +57,13 @@ public class MissionController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @Operation(summary = "장소 ID로 미션 목록 조회")
+    @GetMapping("/place/{placeId}")
+    public ResponseEntity<ApiResponseDto<List<MissionResponseDto>>> getMissionsByPlace(@PathVariable("placeId") Long placeId) {
+        List<MissionResponseDto> missions = missionService.getMissionsByPlaceId(placeId);
+        return ResponseEntity.ok(ApiResponseDto.success(missions));
+    }
+
     @Operation(summary = "미션 생성")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "미션 생성 성공")
@@ -70,4 +82,14 @@ public class MissionController {
         missionService.deleteMission(id);
         return ResponseEntity.ok(ApiResponseDto.success(null));
     }
+
+    @Operation(summary = "사용자의 장소별 미션 완료 현황 조회")
+    @GetMapping("/place-status/{memberId}")
+    public ResponseEntity<ApiResponseDto<List<PlaceMissionStatusDto>>> getMissionStatusByPlace(
+            @PathVariable Long memberId
+    ) {
+        List<PlaceMissionStatusDto> result = missionService.getMissionCompletionStatusByMember(memberId);
+        return ResponseEntity.ok(ApiResponseDto.success(result));
+    }
+
 }

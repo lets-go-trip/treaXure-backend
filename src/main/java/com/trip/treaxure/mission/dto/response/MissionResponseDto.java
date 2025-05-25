@@ -19,7 +19,7 @@ public class MissionResponseDto {
     private Integer placeId;
 
     @Schema(description = "회원 ID", example = "501")
-    private Integer memberId;
+    private Long memberId;
 
     @Schema(description = "미션 제목", example = "서울타워 방문")
     private String title;
@@ -30,7 +30,7 @@ public class MissionResponseDto {
     @Schema(description = "미션 타입", example = "PHOTO")
     private Mission.MissionType type;
 
-    @Schema(description = "미션 점수", example = "10")
+    @Schema(description = "미션 점수", example = "100")
     private Integer score;
 
     @Schema(description = "참고 이미지 URL", example = "https://example.com/mission.jpg")

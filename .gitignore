@@ -375,6 +375,7 @@ gradle-app.setting
 
 # Custom application properties
 application-local.yml
+application-prod.yml
 application-test.yml
 
 # H2 Database files
@@ -383,5 +384,47 @@ testdb.*
 ### env ###
 .env
 
+# vscode
+.vscode/
+
 ### Security keys ###
 *.pem
+
+# 추가적인 빌드 결과물
+/build/
+/target/
+.gradle/
+*.sh
+*.sql
+
+# 로컬 설정 파일
+.env.local
+application-private.yml
+application-private.properties
+
+# 로컬 데이터베이스 파일
+testdb.mv.db
+testdb.trace.db
+localdb.mv.db
+localdb.trace.db
+/h2db/
+
+# 로그 파일
+/logs/
+
+# 비밀번호나 API 키가 담긴 파일
+secrets.properties
+keys.properties
+**/application-secret.yml
+**/application-secret.properties
+
+# OpenAI와 같은 API 키 
+.openai-key
+.ai-keys
+
+# 이미지 처리 관련
+/temp-images/
+/test-images/
+
+# 확실히 무시해야 하는 파일
+cloudfront-private-key.pem

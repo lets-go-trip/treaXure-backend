@@ -39,9 +39,9 @@ public class Member {
     @Column(name = "member_id", nullable = false)
     @Comment("사용자 고유 ID")
     @Schema(description = "사용자 고유 ID", example = "1")
-    private Integer memberId;
+    private Long memberId;
 
-    @Column(name = "email", nullable = false)
+    @Column(name = "email", nullable = false, unique = true)
     @Comment("로그인용 이메일")
     @Schema(description = "사용자 이메일", example = "member@example.com")
     private String email;
@@ -62,11 +62,17 @@ public class Member {
     private String profileUrl;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "role", nullable = false, columnDefinition = "ENUM('ADMIN','USER') DEFAULT 'USER'")
+    @Column(name = "role", nullable = false)
     @Comment("권한")
     @Schema(description = "사용자 역할", example = "USER")
     @Default
     private MemberRole role = MemberRole.USER;
+
+    @Builder.Default
+    @Column(name = "point", nullable = false, columnDefinition = "INT DEFAULT 0")
+    @Comment("사용자 포인트")
+    @Schema(description = "사용자 포인트", example = "0")
+    private Integer point = 0;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -80,7 +86,7 @@ public class Member {
     @Schema(description = "수정 시각", example = "2025-05-12T10:30:00")
     private LocalDateTime updatedAt;
 
-    @Column(name = "is_active", nullable = false, columnDefinition = "TINYINT(1) DEFAULT 1")
+    @Column(name = "is_active", nullable = false, columnDefinition = "BOOLEAN DEFAULT TRUE")
     @Comment("계정 활성화 여부")
     @Schema(description = "활성 여부", example = "true")
     @Default
@@ -88,7 +94,7 @@ public class Member {
 
     @PrePersist
     protected void onCreate() {
-        if (profileUrl == null) profileUrl = "기본_사용자_이미지_URL";
+        if (profileUrl == null) profileUrl = "https://thumb16.iclickart.co.kr/Thumb16/1170000/1166288.jpg";
     }
 
     @PreUpdate

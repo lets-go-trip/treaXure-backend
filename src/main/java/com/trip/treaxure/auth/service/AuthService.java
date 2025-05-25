@@ -32,8 +32,14 @@ public class AuthService {
         Member member = memberRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 이메일입니다."));
 
+        // 계정이 비활성화된 경우 로그인 차단
+        if (!member.getIsActive()) {
+            throw new IllegalStateException("비활성화된 사용자입니다. 다시 로그인해주세요.");
+        }
+
+        // 비밀번호 검사
         if (!passwordEncoder.matches(request.getPassword(), member.getPassword())) {
-            throw new BadCredentialsException("비밀번호가 일치하지 않습니다.");
+            throw new BadCredentialsException("이메일 또는 비밀번호가 일치하지 않습니다.");
         }
 
         String accessToken = jwtUtils.generateAccessToken(member.getMemberId().longValue());

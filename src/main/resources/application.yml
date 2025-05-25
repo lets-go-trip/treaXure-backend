@@ -13,13 +13,13 @@ spring:
   datasource:
     url: jdbc:h2:file:./testdb;MODE=MySQL;AUTO_SERVER=TRUE
     driver-class-name: org.h2.Driver
-    membername:
+    username: sa
     password:
 
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     show-sql: true
     properties:
       hibernate:

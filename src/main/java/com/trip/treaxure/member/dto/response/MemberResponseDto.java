@@ -15,7 +15,7 @@ import lombok.Getter;
 public class MemberResponseDto {
 
     @Schema(description = "회원 ID", example = "1")
-    private Integer memberId;
+    private Long memberId;
 
     @Schema(description = "이메일", example = "user@example.com")
     private String email;
@@ -26,6 +26,9 @@ public class MemberResponseDto {
     @Schema(description = "프로필 이미지 URL", example = "https://example.com/profile.jpg")
     private String profileUrl;
 
+    @Schema(description = "사용자 포인트", example = "0")
+    private Integer point;
+    
     @Schema(description = "권한", example = "USER")
     private MemberRole role;
 
@@ -42,6 +45,7 @@ public class MemberResponseDto {
                 .nickname(member.getNickname())
                 .profileUrl(member.getProfileUrl())
                 .role(member.getRole())
+                .point(member.getPoint())
                 .createdAt(member.getCreatedAt())
                 .updatedAt(member.getUpdatedAt())
                 .build();
