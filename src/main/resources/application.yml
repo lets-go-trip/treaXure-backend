@@ -64,6 +64,23 @@ openai:
     url: https://api.openai.com/v1/chat/completions
     model: gpt-4o-mini
 
+# AWS 설정
+aws:
+  region: ${AWS_REGION:ap-northeast-2}
+  access-key: ${AWS_ACCESS_KEY:dummy-access-key}
+  secret-key: ${AWS_SECRET_KEY:dummy-secret-key}
+  cloudfront:
+    domain-name: ${CLOUDFRONT_DOMAIN:https://d8h3hut1jkl2n.cloudfront.net}
+    key-pair-id: ${CLOUDFRONT_KEY_PAIR_ID:dummy-key-pair-id}
+    private-key-path: ${CLOUDFRONT_PRIVATE_KEY_PATH:./cloudfront-private-key.pem}
+    expiration-time-seconds: ${CLOUDFRONT_EXPIRATION_TIME:3600}
+  s3:
+    bucket-name: ${AWS_S3_BUCKET_NAME:treaxure-images}
+    image-path-prefix: ${AWS_S3_IMAGE_PATH_PREFIX:images/missions}
+  sqs:
+    queue-url: ${AWS_SQS_QUEUE_URL:}
+    disabled: ${AWS_SQS_DISABLED:true}
+
 # 이미지 유사도 설정
 image:
   similarity:
