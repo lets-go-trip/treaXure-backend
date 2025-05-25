@@ -1,8 +1,10 @@
 package com.trip.treaxure.board.repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -28,4 +30,15 @@ public interface BoardRepository extends JpaRepository<Board, Integer> {
 
     // 장소별 게시물 수
     int countByMission_Place(Place place);
+
+    @Query("""
+                SELECT b FROM Board b
+                JOIN FETCH b.mission m
+                JOIN FETCH m.place
+                JOIN FETCH b.member
+                WHERE b.createdAt >= :startDate
+                ORDER BY b.favoriteCount DESC, b.createdAt DESC
+            """)
+    List<Board> findTopRankedBoards(@Param("startDate") LocalDateTime startDate, Pageable pageable);
+
 }

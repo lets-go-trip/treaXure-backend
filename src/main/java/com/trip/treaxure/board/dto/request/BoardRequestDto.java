@@ -16,12 +16,12 @@ public class BoardRequestDto {
     @NotNull(message = "미션 ID는 필수입니다.")
     @Schema(description = "미션 ID", example = "1")
     private Long missionId;
-    
+
     @NotBlank(message = "이미지 URL은 필수입니다.")
     @Schema(description = "사진 URL", example = "https://example.com/image.jpg")
     private String imageUrl;
 
     @Schema(description = "게시물 제목", example = "오늘의 여행 사진")
     private String title;
-    
+
 }
