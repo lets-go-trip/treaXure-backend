@@ -50,6 +50,10 @@ public class BoardResponseDto {
     private Float similarityScore;
 
     public static BoardResponseDto fromEntity(Board board) {
+        return fromEntityWithFavoriteCount(board, board.getFavoriteCount());
+    }
+
+    public static BoardResponseDto fromEntityWithFavoriteCount(Board board, int favoriteCount) {
         return BoardResponseDto.builder()
                 .boardId(board.getBoardId())
                 .memberId(board.getMemberId())
@@ -58,7 +62,7 @@ public class BoardResponseDto {
                 .missionId(board.getMission().getMissionId())
                 .placeName(board.getMission().getPlace().getName())
                 .imageUrl(board.getImageUrl())
-                .favoriteCount(board.getFavoriteCount())
+                .favoriteCount(favoriteCount)
                 .createdAt(board.getCreatedAt())
                 .isActive(board.getIsActive())
                 .title(board.getTitle())

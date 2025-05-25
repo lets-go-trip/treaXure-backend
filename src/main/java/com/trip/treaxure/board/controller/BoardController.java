@@ -3,6 +3,8 @@ package com.trip.treaxure.board.controller;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,9 +21,9 @@ import com.trip.treaxure.board.dto.request.BoardRequestDto;
 import com.trip.treaxure.board.dto.response.BoardResponseDto;
 import com.trip.treaxure.board.entity.Board;
 import com.trip.treaxure.board.service.BoardService;
+import com.trip.treaxure.favorite.service.FavoriteService;
 import com.trip.treaxure.global.dto.ApiResponseDto;
 import com.trip.treaxure.member.entity.Member;
-import com.trip.treaxure.mission.repository.MissionRepository;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -30,8 +32,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @RestController
 @RequestMapping("/api/boards")
@@ -39,8 +39,8 @@ import org.slf4j.LoggerFactory;
 @RequiredArgsConstructor
 public class BoardController {
 
-    private final MissionRepository missionRepository;
     private final BoardService boardService;
+    private final FavoriteService favoriteService;
     private static final Logger log = LoggerFactory.getLogger(BoardController.class);
 
     @Operation(summary = "최신순 게시물 조회")
@@ -65,11 +65,10 @@ public class BoardController {
     @GetMapping("/my")
     @Operation(summary = "내 전체 게시글 조회")
     public ResponseEntity<ApiResponseDto<List<BoardResponseDto>>> getMyBoards(
-        @AuthenticationPrincipal CustomUserDetails userDetails
+            @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
-        Member member = userDetails.getMember();  // 또는 getMemberId()
-        List<Board> boards = boardService.getBoardsByMember(member.getMemberId());
-        List<BoardResponseDto> dtos = boards.stream().map(BoardResponseDto::fromEntity).toList();
+        Member member = userDetails.getMember();
+        List<BoardResponseDto> dtos = boardService.getBoardsByMemberWithFavorites(member.getMemberId());
         return ResponseEntity.ok(ApiResponseDto.success(dtos));
     }
 
@@ -79,55 +78,57 @@ public class BoardController {
             @PathVariable("missionId") Long missionId,
             @AuthenticationPrincipal Member member
     ) {
-        Optional<Board> board = boardService.getBoardByMissionAndMember(missionId, member.getMemberId());
-        return board
-                .map(b -> ResponseEntity.ok(ApiResponseDto.success(BoardResponseDto.fromEntity(b))))
-                .orElseGet(() -> ResponseEntity.ok(ApiResponseDto.success(null))); // 없으면 null 응답
+        Optional<Board> boardOpt = boardService.getBoardByMissionAndMember(missionId, member.getMemberId());
+        return boardOpt
+                .map(board -> {
+                    int favoriteCount = favoriteService.getFavoriteCountByBoardId(board.getBoardId());
+                    board.setFavoriteCount(favoriteCount);
+                    return ResponseEntity.ok(ApiResponseDto.success(BoardResponseDto.fromEntity(board)));
+                })
+                .orElseGet(() -> ResponseEntity.ok(ApiResponseDto.success(null)));
     }
 
     @Operation(summary = "게시물 생성")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "게시물 생성 성공"),
-        @ApiResponse(responseCode = "400", description = "요청 유효성 실패")
+            @ApiResponse(responseCode = "200", description = "게시물 생성 성공"),
+            @ApiResponse(responseCode = "400", description = "요청 유효성 실패")
     })
     @PostMapping
     public ResponseEntity<ApiResponseDto<BoardResponseDto>> createBoard(
-        @Valid @RequestBody BoardRequestDto dto,
-        @RequestParam(required = false, defaultValue = "false") Boolean useOpenAI
+            @Valid @RequestBody BoardRequestDto dto,
+            @RequestParam(required = false, defaultValue = "false") Boolean useOpenAI
     ) {
         BoardResponseDto createdBoard = boardService.createBoard(dto);
         Float similarityScore = null;
-        
-        // 게시물 생성 후 자동으로 유사도 평가 수행
+
         try {
             similarityScore = boardService.evaluateImageSimilarity(
-                    createdBoard.getMissionId(), 
-                    Integer.valueOf(createdBoard.getBoardId()),
+                    createdBoard.getMissionId(),
+                    createdBoard.getBoardId(),
                     useOpenAI
             );
 
-            log.info("Board created with ID: {} and similarity score: {}", 
+            log.info("Board created with ID: {} and similarity score: {}",
                     createdBoard.getBoardId(), similarityScore);
-            
-            // 업데이트된 게시물 정보 다시 조회
-            Optional<BoardResponseDto> updatedBoard = boardService.getBoardById(Integer.valueOf(createdBoard.getBoardId()));
+
+            Optional<BoardResponseDto> updatedBoard =
+                    boardService.getBoardById(createdBoard.getBoardId());
             if (updatedBoard.isPresent()) {
                 createdBoard = updatedBoard.get();
             }
-            
+
         } catch (Exception e) {
-            // 유사도 평가 실패 시에도 게시물 생성은 성공으로 처리
-            log.error("Failed to evaluate image similarity for board ID: {}", 
+            log.error("Failed to evaluate image similarity for board ID: {}",
                     createdBoard.getBoardId(), e);
         }
-        
+
         return ResponseEntity.ok(ApiResponseDto.success(createdBoard));
     }
 
     @Operation(summary = "이미지 유사도 평가", description = "게시물 이미지와 미션의 레퍼런스 이미지 간의 유사도를 평가합니다.")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "유사도 평가 성공"),
-        @ApiResponse(responseCode = "404", description = "게시물을 찾을 수 없음")
+            @ApiResponse(responseCode = "200", description = "유사도 평가 성공"),
+            @ApiResponse(responseCode = "404", description = "게시물을 찾을 수 없음")
     })
     @PostMapping("/{boardId}/evaluate")
     public ResponseEntity<ApiResponseDto<Float>> evaluateImageSimilarity(
@@ -136,12 +137,11 @@ public class BoardController {
     ) {
         BoardResponseDto board = boardService.getBoardById(boardId)
                 .orElseThrow(() -> new EntityNotFoundException("게시글을 찾을 수 없습니다."));
-        
+
         Float similarityScore = boardService.evaluateImageSimilarity(
                 board.getMissionId(), boardId, useOpenAI);
-        
-        return ResponseEntity.ok(ApiResponseDto.success(similarityScore));
 
+        return ResponseEntity.ok(ApiResponseDto.success(similarityScore));
     }
 
     @Operation(summary = "게시물 삭제")
@@ -150,5 +150,4 @@ public class BoardController {
         boardService.deleteBoard(id);
         return ResponseEntity.ok(ApiResponseDto.success(null));
     }
-
 }

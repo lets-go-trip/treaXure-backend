@@ -10,6 +10,7 @@ import com.trip.treaxure.board.dto.request.BoardRequestDto;
 import com.trip.treaxure.board.dto.response.BoardResponseDto;
 import com.trip.treaxure.board.entity.Board;
 import com.trip.treaxure.board.repository.BoardRepository;
+import com.trip.treaxure.favorite.repository.FavoriteRepository;
 import com.trip.treaxure.global.service.ImageSimilarityService;
 import com.trip.treaxure.global.service.LocalImageSimilarityService;
 import com.trip.treaxure.global.service.OpenAiVisionSimilarityService;
@@ -25,15 +26,11 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
     private final MissionRepository missionRepository;
+    private final FavoriteRepository favoriteRepository;
+
     private final ImageSimilarityService imageSimilarityService;
     private final LocalImageSimilarityService localImageSimilarityService;
     private final OpenAiVisionSimilarityService openAiVisionSimilarityService;
-
-    public List<BoardResponseDto> getAllBoards() {
-        return boardRepository.findAll().stream()
-                .map(BoardResponseDto::fromEntity)
-                .collect(Collectors.toList());
-    }
 
     public List<BoardResponseDto> getAllBoardsWithDetails() {
         return boardRepository.findAllWithMissionPlaceAndMember().stream()
@@ -54,7 +51,6 @@ public class BoardService {
                 .memberId(dto.getMemberId())
                 .mission(mission)
                 .imageUrl(dto.getImageUrl())
-                .favoriteCount(0)
                 .isActive(true)
                 .title(dto.getTitle())
                 .build();
@@ -73,10 +69,12 @@ public class BoardService {
         return boardRepository.findByMission_MissionIdAndMemberId(missionId, memberId);
     }
 
-    public List<Board> getBoardsByMember(Long memberId) {
-        return boardRepository.findAllByMemberId(memberId);
+    public List<BoardResponseDto> getBoardsByMemberWithFavorites(Long memberId) {
+        return boardRepository.findAllByMemberId(memberId).stream()
+                .map(this::convertToDtoWithFavoriteCount)
+                .collect(Collectors.toList());
     }
-    
+
     /**
      * 이미지 유사도 평가 및 점수 저장
      * @param useOpenAI OpenAI 서비스 사용 여부 (true: OpenAI, false: 로컬)
@@ -109,4 +107,11 @@ public class BoardService {
     public Float evaluateImageSimilarity(Long missionId, Integer boardId) {
         return evaluateImageSimilarity(missionId, boardId, false);
     }
+
+    private BoardResponseDto convertToDtoWithFavoriteCount(Board board) {
+        int favoriteCount = favoriteRepository.countByBoard_BoardId(board.getBoardId());
+        board.setFavoriteCount(favoriteCount);
+        return BoardResponseDto.fromEntity(board);
+    }
+
 }
