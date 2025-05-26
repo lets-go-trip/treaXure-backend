@@ -65,7 +65,8 @@ public class Board {
     @Column(name = "favorite_count", nullable = false)
     @Comment("좋아요 개수")
     @Schema(description = "좋아요 수", example = "5")
-    private Integer favoriteCount;
+    @Builder.Default
+    private Integer favoriteCount = 0;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)

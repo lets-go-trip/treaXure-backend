@@ -54,6 +54,7 @@ public class BoardService {
                 .memberId(dto.getMemberId())
                 .mission(mission)
                 .imageUrl(dto.getImageUrl())
+                .favoriteCount(0)
                 .isActive(true)
                 .title(dto.getTitle())
                 .build();
