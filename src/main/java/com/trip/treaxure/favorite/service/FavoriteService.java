@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.trip.treaxure.board.entity.Board;
 import com.trip.treaxure.board.repository.BoardRepository;
 import com.trip.treaxure.favorite.dto.request.FavoriteRequestDto;
 import com.trip.treaxure.favorite.dto.response.FavoriteResponseDto;
@@ -42,12 +43,33 @@ public class FavoriteService {
         var board = boardRepository.findById(dto.getBoardId().intValue())
                 .orElseThrow(() -> new EntityNotFoundException("게시글을 찾을 수 없습니다."));
 
-        var favorite = new Favorite(null, board, member, null); // createdAt 자동
+        // Favorite 엔티티 생성
+        var favorite = new Favorite(null, board, member, null);
+        Favorite saved = favoriteRepository.save(favorite);
 
-        return FavoriteResponseDto.fromEntity(favoriteRepository.save(favorite));
+        // 좋아요 수 증가 및 저장
+        board.setFavoriteCount(board.getFavoriteCount() + 1);
+        boardRepository.save(board);
+
+        return FavoriteResponseDto.fromEntity(saved);
     }
 
     public void deleteFavorite(Long id) {
+        Favorite favorite = favoriteRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("좋아요를 찾을 수 없습니다."));
+
+        Board board = favorite.getBoard();
+
         favoriteRepository.deleteById(id);
+
+        // 좋아요 수 감소 및 저장 (음수 방지)
+        if (board.getFavoriteCount() > 0) {
+            board.setFavoriteCount(board.getFavoriteCount() - 1);
+            boardRepository.save(board);
+        }
+    }
+
+    public int getFavoriteCountByBoardId(Integer boardId) {
+        return favoriteRepository.countByBoard_BoardId(boardId);
     }
 }
